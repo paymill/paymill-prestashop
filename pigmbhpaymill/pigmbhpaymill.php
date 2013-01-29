@@ -6,6 +6,10 @@ if (!defined('_PS_VERSION_'))
 class PigmbhPaymill extends PaymentModule
 {
 
+    /**
+     * Sets the Information for the Modulmanager
+     * Also creates an instance of this class
+     */
     public function __construct()
     {
         $this->name = 'pigmbhpaymill';
@@ -20,12 +24,14 @@ class PigmbhPaymill extends PaymentModule
         $this->description = $this->l('Payments via Paymill.');
     }
 
+    /**
+     * This function installs the Module
+     *
+     * @return boolean
+     */
     public function install()
     {
-        if (!parent::install() || !$this->registerHook('payment')) {
-            return false;
-        }
-        return true;
+        return !parent::install() || !$this->registerHook('payment');
     }
 
     /**
@@ -57,7 +63,6 @@ class PigmbhPaymill extends PaymentModule
         if (Tools::isSubmit('btnSubmit')) {
             $this->_updateConfiguration();
         }
-
         $this->_showConfigurationForm();
         return $this->_html;
     }
@@ -85,7 +90,7 @@ class PigmbhPaymill extends PaymentModule
     private function _getCheckboxState($value)
     {
         $return = '';
-        if ($value === "on") {
+        if (in_array($value, array("on", true))  ) {
             $return = 'checked';
         }
         return $return;
@@ -98,13 +103,12 @@ class PigmbhPaymill extends PaymentModule
             Configuration::updateValue('PIGMBH_PAYMILL_PRIVATEKEY', Tools::getValue('privatekey'));
             Configuration::updateValue('PIGMBH_PAYMILL_BRIDGEURL', Tools::getValue('bridgeurl'));
             Configuration::updateValue('PIGMBH_PAYMILL_APIURL', Tools::getValue('apiurl'));
-            Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', Tools::getValue('debug', 'off'));
-            Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', Tools::getValue('logging', 'off'));
-            Configuration::updateValue('PIGMBH_PAYMILL_LABEL', Tools::getValue('label', 'off'));
+            Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', Tools::getValue('debug'));
+            Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', Tools::getValue('logging'));
+            Configuration::updateValue('PIGMBH_PAYMILL_LABEL', Tools::getValue('label'));
             $this->_loadConfiguration();
-
+            $this->_html .= '<div class="conf confirm"> ' . $this->l('Settings updated') . '</div>';
         }
-        $this->_html .= '<div class="conf confirm"> ' . $this->l('Settings updated') . '</div>';
     }
 
     private function _loadConfiguration()
@@ -127,7 +131,7 @@ class PigmbhPaymill extends PaymentModule
             $this->privatekey = $config['PIGMBH_PAYMILL_PRIVATEKEY'];
         }
         if (isset($config['PIGMBH_PAYMILL_BRIDGEURL'])) {
-            $this->brideurl = $config['PIGMBH_PAYMILL_BRIDGEURL'];
+            $this->bridgeurl = $config['PIGMBH_PAYMILL_BRIDGEURL'];
         }
         if (isset($config['PIGMBH_PAYMILL_APIURL'])) {
             $this->apiurl = $config['PIGMBH_PAYMILL_APIURL'];

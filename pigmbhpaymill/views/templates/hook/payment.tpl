@@ -1,10 +1,10 @@
 <p class="payment_module">
-	<a href="{$link->getModuleLink('pigmbhpaymill', 'payment_creditcard')}" title="Paymill CC">
+	<a href="{$link->getModuleLink('pigmbhpaymill', 'payment')}&payment=creditcard" title="Paymill CC">
 		Paymill CC
 	</a>
 </p>
 <p class="payment_module">
-	<a href="{$link->getModuleLink('pigmbhpaymill', 'payment_debit')}" title="Paymill ELV">
+	<a href="{$link->getModuleLink('pigmbhpaymill', 'payment')}&payment=debit" title="Paymill ELV">
 		Paymill ELV
 	</a>
 </p>
