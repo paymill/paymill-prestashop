@@ -4,8 +4,7 @@
  * validation
  *
  * @category   PayIntelligent
- * @package    Expression package is undefined on line 6, column 18 in Templates/Scripting/PHPClass.php.
- * @copyright  Copyright (c) 2011 PayIntelligent GmbH (http://payintelligent.de)
+ * @copyright  Copyright (c) 2013 PayIntelligent GmbH (http://payintelligent.de)
  */
 class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 {
@@ -58,8 +57,6 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         // finish the order if payment was sucessfully processed
         if ($result === true) {
             $this->log("Finish order.");
-//            $this->saveOrder($token, md5($token));
-
             $this->module->validateOrder(
                     (int) $this->context->cart->id, Configuration::get('PS_OS_PREPARATION'), $cart->getOrderTotal(true, Cart::BOTH), $this->module->displayName, null, array(), null, false, $user->secure_key);
             Tools::redirectLink(__PS_BASE_URI__ . 'order-confirmation.php?key=' . $user->secure_key . '&id_cart=' . (int) $cart->id . '&id_module=' . (int) $this->module->id . '&id_order=' . (int) $this->module->currentOrder);
@@ -75,7 +72,6 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
      */
     private function processPayment($params)
     {
-
         // setup the logger
         $logger = $params['loggerCallback'];
 
@@ -173,7 +169,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
     {
         $logging = Configuration::get('PIGMBH_PAYMILL_LOGGING');
         $logfile = dirname(__FILE__) . '/../../log.txt';
-        if (is_writable($logfile) && $logging == '') {
+        if (is_writable($logfile) && $logging == 'on') {
             $handle = fopen($logfile, 'a'); //
             fwrite($handle, "[" . date(DATE_RFC822) . "] " . $message . "\n");
             fclose($handle);

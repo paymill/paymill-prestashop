@@ -5,6 +5,7 @@
 <script type="text/javascript" src="{$bridgeurl}"></script>
 <script type="text/javascript">
     function validate() {
+        debug("Paymill handler triggered");
         var errors = $("#errors");
         errors.parent().hide();
         errors.html("");
@@ -38,7 +39,10 @@
         {/if}
         if (!result) {
             errors.parent().show();
+        }else{
+            debug("Validations successful");
         }
+
     return result;
 }
 $(document).ready(function() {
@@ -71,30 +75,42 @@ $(document).ready(function() {
     });
 });
 function PaymillResponseHandler(error, result) {
+    debug("Started Paymill response handler");
     if (error) {
-        alert(error.apierror);
+        debug("API returned error" + error.apierror);
     } else {
+        debug("Received token from Paymill API: " + result.token);
         var form = $("#submitForm");
         var token = result.token;
         form.append("<input type='hidden' name='paymillToken' value='" + token + "'/>");
         form.submit();
     }
 }
+function debug(message){
+{if $paymillDebugging == 'true'}
+    {if $payment == "creditcard"}
+        console.log("[PaymillCC] " + message);
+    {elseif $payment == "debit"}
+        console.log("[PaymillELV] " + message);
+    {/if}
+{/if}
+}
+
 </script>
 
 {capture name=path}{l s='Paymill' mod='pigmbhpaymill'}{/capture}
 {include file="$tpl_dir./breadcrumb.tpl"}
 
-<h2>{l s='Bestell&uuml;bersicht' mod='pigmbhpaymill'}</h2>
+<h2>{l s='Order summary' mod='pigmbhpaymill'}</h2>
 
 {assign var='current_step' value='payment'}
 {include file="$tpl_dir./order-steps.tpl"}
 
 {if $nbProducts <= 0}
-    <p class="warning">{l s='Ihr Warenkorb ist leer.' mod='pigmbhpaymill'}</p>
+    <p class="warning">{l s='Your cart is empty.' mod='pigmbhpaymill'}</p>
 {else}
 
-    <h3>{l s='Paymill Zahlung' mod='pigmbhpaymill'}</h3>
+    <h3>{l s='Paymill payment' mod='pigmbhpaymill'}</h3>
     <form id='submitForm' action="{$link->getModuleLink('pigmbhpaymill', 'validation', [], true)}" method="post">
         <div class="error" style="display: none">
             <ul id="errors">
@@ -108,48 +124,48 @@ function PaymillResponseHandler(error, result) {
                 <img src="{$components}icon_visa.png" />
             </p>
             <p class="none">
-                <label>Kreditkarten-nummer *</label>
+                <label>{l s='Creditcard-number *' mod='pigmbhpaymill'}</label>
                 <input id="card-number" type="text" size="14" class="text" />
             </p>
             <p class="none">
-                <label>CVC*</label>
+                <label>{l s='CVC *' mod='pigmbhpaymill'}*</label>
                 <input id="card-cvc" type="text" size="4" class="text" />
             </p>
             <p class="none">
-                <label>Gültig bis (MM/YYYY) *</label>
+                <label>{l s='Valid until (MM/YYYY) *' mod='pigmbhpaymill'}</label>
                 <input id="card-expiry-year" type="text" style="width: 60px; display: inline-block;" class="text" />
                 <input id="card-expiry-month" type="text" style="width: 30px; display: inline-block;" class="text" />
             </p>
-            <p class="description">Die mit einem * markierten Felder sind Pflichtfelder.
+            <p class="description">{l s='Fields marked with a * are required' mod='pigmbhpaymill'}
             </p>
             {if $paymillShowLabel == 'true'}
-                <p><div class="paymill_powered"><div class="paymill_credits">Sichere Kreditkartenzahlung powered by <a href="http://www.paymill.de" target="_blank">Paymill</a></div></div></p>
+                <p><div class="paymill_powered"><div class="paymill_credits">{l s='Save creditcardpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">Paymill</a></div></div></p>
             {/if}
             {elseif $payment == "debit"}
             <input type="hidden" name="payment" value="debit">
             <p class="none">
-                <label>Kontoinhaber *</label>
+                <label>{l s='Accountholder *' mod='pigmbhpaymill'}</label>
                 <input id="paymill_accountholder" type="text" size="15" class="text" />
             </p>
             <p class="none">
-                <label>Kontonummer *</label>
+                <label>{l s='Accountnumber *' mod='pigmbhpaymill'}</label>
                 <input id="paymill_accountnumber" type="text" size="15" class="text" />
             </p>
             <p class="none">
-                <label>Bankleitzahl *</label>
+                <label>{l s='Banknumber *' mod='pigmbhpaymill'}</label>
                 <input id="paymill_banknumber" type="text" size="15" class="text" />
             </p>
-            <p class="description">Die mit einem * markierten Felder sind Pflichtfelder.
+            <p class="description">{l s='Fields marked with a * are required' mod='pigmbhpaymill'}
             </p>
             {if $paymillShowLabel == 'true'}
-                <p><div class="paymill_powered"><div class="paymill_credits">Sichere ELV-Zahlung <br>powered by <a href="http://www.paymill.de" target="_blank">Paymill</a></div></div></p>
+                <p><div class="paymill_powered"><div class="paymill_credits">{l s='Save debitpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">Paymill</a></div></div></p>
             {/if}
             {/if}
 
         </div>
         <p class="cart_navigation">
-            <a href="{$link->getPageLink('order', true)}?step=3" class="button_large">{l s='Zahlartenauswahl' mod='pigmbhpaymill'}</a>
-            <input type="button" id='submitButton' value="{l s='Bestellen' mod='pigmbhpaymill'}" class="exclusive_large" />
+            <a href="{$link->getPageLink('order', true)}?step=3" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
+            <input type="button" id='submitButton' value="{l s='Order' mod='pigmbhpaymill'}" class="exclusive_large" />
         </p>
     </form>
 {/if}

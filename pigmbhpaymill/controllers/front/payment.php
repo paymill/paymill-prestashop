@@ -4,8 +4,7 @@
  * PaymentController
  *
  * @category   PayIntelligent
- * @package    Expression package is undefined on line 6, column 18 in Templates/Scripting/PHPClass.php.
- * @copyright  Copyright (c) 2011 PayIntelligent GmbH (http://payintelligent.de)
+ * @copyright  Copyright (c) 2013 PayIntelligent GmbH (http://payintelligent.de)
  */
 class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 {
@@ -41,6 +40,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'bridgeurl' => Configuration::get('PIGMBH_PAYMILL_BRIDGEURL'),
             'payment' => Tools::getValue('payment'),
             'paymillShowLabel' => Configuration::get('PIGMBH_PAYMILL_LABEL') == 'on',
+            'paymillDebugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
             'components' => _PS_BASE_URL_ . __PS_BASE_URI__ ."modules/pigmbhpaymill/components/"
         ));
         $this->setTemplate('paymentForm.tpl');

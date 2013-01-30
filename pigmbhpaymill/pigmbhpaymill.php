@@ -27,7 +27,7 @@ class PigmbhPaymill extends PaymentModule
         parent::__construct();
         $this->_loadConfiguration();
         $this->displayName = $this->l('PigmbhPaymill');
-        $this->description = $this->l('Payments via Paymill.');
+        $this->description = $this->l('Payment via Paymill.');
     }
 
     /**
@@ -93,10 +93,10 @@ class PigmbhPaymill extends PaymentModule
 					<tr><td width="130" style="height: 35px;">' . $this->l('Private Key') . '</td><td><input type="text" name="privatekey" value="' . htmlentities(Tools::getValue('privatekey', $this->privatekey), ENT_COMPAT, 'UTF-8') . '" style="width: 300px;" /></td></tr>
 					<tr><td width="130" style="height: 35px;">' . $this->l('Bridge URL') . '</td><td><input type="text" name="bridgeurl" value="' . htmlentities(Tools::getValue('bridgeurl', $this->bridgeurl), ENT_COMPAT, 'UTF-8') . '" style="width: 300px;" /></td></tr>
 					<tr><td width="130" style="height: 35px;">' . $this->l('API URL') . '</td><td><input type="text" name="apiurl" value="' . htmlentities(Tools::getValue('apiurl', $this->apiurl), ENT_COMPAT, 'UTF-8') . '" style="width: 300px;" /></td></tr>
-					<tr><td width="130" style="height: 35px;">' . $this->l('Debugging aktivieren') . '</td><td><input type="checkbox" name="debug" ' . $this->_getCheckboxState(htmlentities(Tools::getValue('debug', $this->debug), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
-					<tr><td width="130" style="height: 35px;">' . $this->l('Logging aktivieren') . '</td><td><input type="checkbox" name="logging" ' . $this->_getCheckboxState(htmlentities(Tools::getValue('logging', $this->logging), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
-					<tr><td width="130" style="height: 35px;">' . $this->l('Paymill Label anzeigen') . '</td><td><input type="checkbox" name="label" ' . $this->_getCheckboxState(htmlentities(Tools::getValue('label', $this->label), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
-                                        <tr><td colspan="2" align="center"><input class="button" name="btnSubmit" value="' . $this->l('Speichern') . '" type="submit" /></td></tr>
+					<tr><td width="130" style="height: 35px;">' . $this->l('Activate debugging') . '</td><td><input type="checkbox" name="debug" ' . $this->_getCheckboxState(htmlentities(Tools::getValue('debug', $this->debug), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
+					<tr><td width="130" style="height: 35px;">' . $this->l('Activate logging') . '</td><td><input type="checkbox" name="logging" ' . $this->_getCheckboxState(htmlentities(Tools::getValue('logging', $this->logging), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
+					<tr><td width="130" style="height: 35px;">' . $this->l('Show Paymill label') . '</td><td><input type="checkbox" name="label" ' . $this->_getCheckboxState(htmlentities(Tools::getValue('label', $this->label), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
+                                        <tr><td colspan="2" align="center"><input class="button" name="btnSubmit" value="' . $this->l('Save') . '" type="submit" /></td></tr>
 				</table>
 			</fieldset>
 		</form>';
