@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * PigmbhPaymill
+ *
+ * @category   PayIntelligent
+ * @copyright  Copyright (c) 2013 PayIntelligent GmbH (http://payintelligent.de)
+ */
 if (!defined('_PS_VERSION_'))
     exit;
 
@@ -31,7 +37,8 @@ class PigmbhPaymill extends PaymentModule
      */
     public function install()
     {
-        return !parent::install() || !$this->registerHook('payment');
+        return parent::install() && $this->registerHook('payment') && $this->registerHook('paymentReturn');
+
     }
 
     /**
@@ -49,6 +56,14 @@ class PigmbhPaymill extends PaymentModule
             'this_path_ssl' => Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->name . '/'
         ));
         return $this->display(__FILE__, 'payment.tpl');
+    }
+
+    public function hookPaymentReturn($params)
+    {
+        if (!$this->active)
+            return;
+
+        return $this->display(__FILE__, 'confirmation.tpl');
     }
 
     /**
@@ -90,7 +105,7 @@ class PigmbhPaymill extends PaymentModule
     private function _getCheckboxState($value)
     {
         $return = '';
-        if (in_array($value, array("on", true))  ) {
+        if (in_array($value, array("on", true))) {
             $return = 'checked';
         }
         return $return;
