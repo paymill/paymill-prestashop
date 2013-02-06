@@ -21,4 +21,6 @@ $_MODULE['<{pigmbhpaymill}prestashop>paymentform_33ea4ddb750d8c6ebc6009e1b1929ca
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_64095b8c3d19ce0404f0c6f0da49437d'] = 'Sichere ELV-Zahlung powered by';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_3adf712b8413a09c3c9de40a5b23fc5d'] = 'Zahlartenauswahl';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_a240fa27925a635b08dc28c9e4f9216d'] = 'Bestellen';
-$_MODULE['<{pigmbhpaymill}prestashop>confirmation_7a223127bd5f4a87a989fb8c560bb15b'] = 'Vielen Danl für ihre Bestellung bei';
+$_MODULE['<{pigmbhpaymill}prestashop>confirmation_7a223127bd5f4a87a989fb8c560bb15b'] = 'Vielen Dank für ihre Bestellung bei';
+$_MODULE['<{pigmbhpaymill}prestashop>payment_9300f4d366a0f5e0b57afef7e8a7474d'] = 'Paymill Kreditkarte';
+$_MODULE['<{pigmbhpaymill}prestashop>payment_89ce55b91d58a25f4271514be6b1146e'] = 'Paymill Lastschrift';
