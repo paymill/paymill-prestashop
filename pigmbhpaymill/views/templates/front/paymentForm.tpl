@@ -77,7 +77,8 @@ $(document).ready(function() {
 function PaymillResponseHandler(error, result) {
     debug("Started Paymill response handler");
     if (error) {
-        debug("API returned error" + error.apierror);
+        debug("API returned error:" + error.apierror);
+        alert("API returned error:" + error.apierror);
     } else {
         debug("Received token from Paymill API: " + result.token);
         var form = $("#submitForm");
