@@ -41,7 +41,8 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'payment' => Tools::getValue('payment'),
             'paymillShowLabel' => Configuration::get('PIGMBH_PAYMILL_LABEL') == 'on',
             'paymillDebugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
-            'components' => _PS_BASE_URL_ . __PS_BASE_URI__ ."modules/pigmbhpaymill/components/"
+            'components' => _PS_BASE_URL_ . __PS_BASE_URI__ ."modules/pigmbhpaymill/components/",
+            'customer' => $this->context->customer->firstname . " " . $this->context->customer->lastname
         ));
         $this->setTemplate('paymentForm.tpl');
     }

@@ -52,7 +52,7 @@ $(document).ready(function() {
                 {if $payment == "creditcard"}
                 paymill.createToken({
                     number: $('#card-number').val(),
-                    cardholder: "Test",
+                    cardholder:  $('#account-holder').val(),
                     exp_month: $('#card-expiry-month').val(),
                     exp_year: $('#card-expiry-year').val(),
                     cvc: $('#card-cvc').val(),
@@ -123,6 +123,10 @@ function debug(message){
             <p>
                 <img src="{$components}icon_mastercard.png" />
                 <img src="{$components}icon_visa.png" />
+            </p>
+            <p class="none">
+                <label>{l s='Accountholder *' mod='pigmbhpaymill'}</label>
+                <input id="account-holder" type="text" size="14" class="text" value="{$customer}"/>
             </p>
             <p class="none">
                 <label>{l s='Creditcard-number *' mod='pigmbhpaymill'}</label>
