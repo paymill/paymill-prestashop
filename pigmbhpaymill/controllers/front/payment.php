@@ -33,7 +33,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'cust_currency' => $cart->id_currency,
             'currencies' => $this->module->getCurrency((int) $cart->id_currency),
             'currency_iso' => $iso_currency,
-            'total' => $cart->getOrderTotal(true, Cart::BOTH),
+            'total' => intval($cart->getOrderTotal(true, Cart::BOTH) * 100),
             'this_path' => $this->module->getPathUri(),
             'this_path_ssl' => Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->module->name . '/',
             'publickey' => Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'),

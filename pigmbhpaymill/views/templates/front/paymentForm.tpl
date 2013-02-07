@@ -56,7 +56,7 @@ $(document).ready(function() {
                     exp_month: $('#card-expiry-month').val(),
                     exp_year: $('#card-expiry-year').val(),
                     cvc: $('#card-cvc').val(),
-                    amount_int: {$total} * 100,
+                    amount_int: {$total},
                     currency: '{$currency_iso}'
                 }, PaymillResponseHandler);
                 {elseif $payment == "debit"}
