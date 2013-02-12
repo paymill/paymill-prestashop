@@ -35,14 +35,14 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'currency_iso' => $iso_currency,
             'total' => intval($cart->getOrderTotal(true, Cart::BOTH) * 100),
             'this_path' => $this->module->getPathUri(),
-            'this_path_ssl' => Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->module->name . '/',
-            'publickey' => Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'),
-            'bridgeurl' => Configuration::get('PIGMBH_PAYMILL_BRIDGEURL'),
+            'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->module->name.'/',
+            'public_key' => Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'),
+            'bridge_url' => Configuration::get('PIGMBH_PAYMILL_BRIDGEURL'),
             'payment' => Tools::getValue('payment'),
-            'paymillShowLabel' => Configuration::get('PIGMBH_PAYMILL_LABEL') == 'on',
-            'paymillDebugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
-            'components' => _PS_BASE_URL_ . __PS_BASE_URI__ ."modules/pigmbhpaymill/components/",
-            'customer' => $this->context->customer->firstname . " " . $this->context->customer->lastname
+            'paymill_show_label' => Configuration::get('PIGMBH_PAYMILL_LABEL') == 'on',
+            'paymill_debugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
+            'components' => _PS_BASE_URL_.__PS_BASE_URI__."modules/pigmbhpaymill/components/",
+            'customer' => $this->context->customer->firstname." ".$this->context->customer->lastname
         ));
         $this->setTemplate('paymentForm.tpl');
     }

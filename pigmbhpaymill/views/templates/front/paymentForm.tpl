@@ -1,8 +1,8 @@
 <link rel="stylesheet" type="text/css" href="{$components}paymill_styles.css" />
 <script type="text/javascript">
-    var PAYMILL_PUBLIC_KEY = '{$publickey}';
+    var PAYMILL_PUBLIC_KEY = '{$public_key}';
 </script>
-<script type="text/javascript" src="{$bridgeurl}"></script>
+<script type="text/javascript" src="{$bridge_url}"></script>
 <script type="text/javascript">
     function validate() {
         debug("Paymill handler triggered");
@@ -88,7 +88,7 @@ function PaymillResponseHandler(error, result) {
     }
 }
 function debug(message){
-{if $paymillDebugging == 'true'}
+{if $paymill_debugging == 'true'}
     {if $payment == "creditcard"}
         console.log("[PaymillCC] " + message);
     {elseif $payment == "debit"}
@@ -143,7 +143,7 @@ function debug(message){
             </p>
             <p class="description">{l s='Fields marked with a * are required' mod='pigmbhpaymill'}
             </p>
-            {if $paymillShowLabel == 'true'}
+            {if $paymill_show_label == 'true'}
                 <p><div class="paymill_powered"><div class="paymill_credits">{l s='Save creditcardpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">Paymill</a></div></div></p>
             {/if}
             {elseif $payment == "debit"}
@@ -162,7 +162,7 @@ function debug(message){
             </p>
             <p class="description">{l s='Fields marked with a * are required' mod='pigmbhpaymill'}
             </p>
-            {if $paymillShowLabel == 'true'}
+            {if $paymill_show_label == 'true'}
                 <p><div class="paymill_powered"><div class="paymill_credits">{l s='Save debitpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">Paymill</a></div></div></p>
             {/if}
             {/if}

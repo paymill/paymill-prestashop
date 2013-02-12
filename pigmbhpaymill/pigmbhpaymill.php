@@ -25,7 +25,7 @@ class PigmbhPaymill extends PaymentModule
         $this->need_instance = 0;
 
         parent::__construct();
-        $this->_loadConfiguration();
+        $this->loadConfiguration();
         $this->displayName = $this->l('PigmbhPaymill');
         $this->description = $this->l('Payment via Paymill.');
     }
@@ -38,7 +38,6 @@ class PigmbhPaymill extends PaymentModule
     public function install()
     {
         return parent::install() && $this->registerHook('payment') && $this->registerHook('paymentReturn');
-
     }
 
     /**
@@ -76,13 +75,13 @@ class PigmbhPaymill extends PaymentModule
     {
         $this->_html = '<h2>' . $this->displayName . '</h2>';
         if (Tools::isSubmit('btnSubmit')) {
-            $this->_updateConfiguration();
+            $this->updateConfiguration();
         }
-        $this->_showConfigurationForm();
+        $this->showConfigurationForm();
         return $this->_html;
     }
 
-    private function _showConfigurationForm()
+    private function showConfigurationForm()
     {
         $this->_html .=
                 '<form action="' . Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']) . '" method="post">
@@ -93,16 +92,16 @@ class PigmbhPaymill extends PaymentModule
 					<tr><td width="130" style="height: 35px;">' . $this->l('Private Key') . '</td><td><input type="text" name="privatekey" value="' . htmlentities(Tools::getValue('privatekey', $this->privatekey), ENT_COMPAT, 'UTF-8') . '" style="width: 300px;" /></td></tr>
 					<tr><td width="130" style="height: 35px;">' . $this->l('Bridge URL') . '</td><td><input type="text" name="bridgeurl" value="' . htmlentities(Tools::getValue('bridgeurl', $this->bridgeurl), ENT_COMPAT, 'UTF-8') . '" style="width: 300px;" /></td></tr>
 					<tr><td width="130" style="height: 35px;">' . $this->l('API URL') . '</td><td><input type="text" name="apiurl" value="' . htmlentities(Tools::getValue('apiurl', $this->apiurl), ENT_COMPAT, 'UTF-8') . '" style="width: 300px;" /></td></tr>
-					<tr><td width="130" style="height: 35px;">' . $this->l('Activate debugging') . '</td><td><input type="checkbox" name="debug" ' . $this->_getCheckboxState(htmlentities(Tools::getValue('debug', $this->debug), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
-					<tr><td width="130" style="height: 35px;">' . $this->l('Activate logging') . '</td><td><input type="checkbox" name="logging" ' . $this->_getCheckboxState(htmlentities(Tools::getValue('logging', $this->logging), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
-					<tr><td width="130" style="height: 35px;">' . $this->l('Show Paymill label') . '</td><td><input type="checkbox" name="label" ' . $this->_getCheckboxState(htmlentities(Tools::getValue('label', $this->label), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
+					<tr><td width="130" style="height: 35px;">' . $this->l('Activate debugging') . '</td><td><input type="checkbox" name="debug" ' . $this->getCheckboxState(htmlentities(Tools::getValue('debug', $this->debug), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
+					<tr><td width="130" style="height: 35px;">' . $this->l('Activate logging') . '</td><td><input type="checkbox" name="logging" ' . $this->getCheckboxState(htmlentities(Tools::getValue('logging', $this->logging), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
+					<tr><td width="130" style="height: 35px;">' . $this->l('Show Paymill label') . '</td><td><input type="checkbox" name="label" ' . $this->getCheckboxState(htmlentities(Tools::getValue('label', $this->label), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
                                         <tr><td colspan="2" align="center"><input class="button" name="btnSubmit" value="' . $this->l('Save') . '" type="submit" /></td></tr>
 				</table>
 			</fieldset>
 		</form>';
     }
 
-    private function _getCheckboxState($value)
+    private function getCheckboxState($value)
     {
         $return = '';
         if (in_array($value, array("on", true))) {
@@ -111,7 +110,7 @@ class PigmbhPaymill extends PaymentModule
         return $return;
     }
 
-    private function _updateConfiguration()
+    private function updateConfiguration()
     {
         if (Tools::isSubmit('btnSubmit')) {
             Configuration::updateValue('PIGMBH_PAYMILL_PUBLICKEY', Tools::getValue('publickey'));
@@ -121,12 +120,12 @@ class PigmbhPaymill extends PaymentModule
             Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', Tools::getValue('debug'));
             Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', Tools::getValue('logging'));
             Configuration::updateValue('PIGMBH_PAYMILL_LABEL', Tools::getValue('label'));
-            $this->_loadConfiguration();
+            $this->loadConfiguration();
             $this->_html .= '<div class="conf confirm"> ' . $this->l('Settings updated') . '</div>';
         }
     }
 
-    private function _loadConfiguration()
+    private function loadConfiguration()
     {
         $config = Configuration::getMultiple(
                         array(
