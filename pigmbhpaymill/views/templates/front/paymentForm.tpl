@@ -10,7 +10,7 @@
         errors.parent().hide();
         errors.html("");
         var result = true;
-        {if $payment == "creditcard"}
+        {if $payment == 'creditcard'}
         if (!paymill.validateCardNumber($('#card-number').val())) {
             errors.append("<p>Bitte geben Sie eine gültige Kartennummer ein</p>");
             result = false;
@@ -23,7 +23,7 @@
             errors.append("<p>Das Ablaufdatum der Karte ist ungültig.</p>");
             result = false;
         }
-        {elseif $payment == "debit"}
+        {elseif $payment == 'debit'}
         if (!$('#paymill_accountholder').val()) {
           errors.append("<p>Bitte geben Sie den Kontoinhaber an.</p>");
           result = false;
@@ -49,7 +49,7 @@ $(document).ready(function() {
     $("#submitButton").click(function(event) {
         if (validate()) {
             try {
-                {if $payment == "creditcard"}
+                {if $payment == 'creditcard'}
                 paymill.createToken({
                     number: $('#card-number').val(),
                     cardholder:  $('#account-holder').val(),
@@ -59,7 +59,7 @@ $(document).ready(function() {
                     amount_int: {$total},
                     currency: '{$currency_iso}'
                 }, PaymillResponseHandler);
-                {elseif $payment == "debit"}
+                {elseif $payment == 'debit'}
                 paymill.createToken({
                     number: $('#paymill_accountnumber').val(),
                     bank: $('#paymill_banknumber').val(),
@@ -89,10 +89,10 @@ function PaymillResponseHandler(error, result) {
 }
 function debug(message){
 {if $paymill_debugging == 'true'}
-    {if $payment == "creditcard"}
-        console.log("[PaymillCC] " + message);
-    {elseif $payment == "debit"}
-        console.log("[PaymillELV] " + message);
+    {if $payment == 'creditcard'}
+        console.log('[PaymillCC] ' + message);
+    {elseif $payment == 'debit'}
+        console.log('[PaymillELV] ' + message);
     {/if}
 {/if}
 }

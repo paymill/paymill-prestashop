@@ -22,8 +22,8 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
         parent::initContent();
         $cart = $this->context->cart;
         foreach ($this->module->getCurrency((int) $cart->id_currency) as $currency) {
-            if ($currency["id_currency"] == $cart->id_currency) {
-                $iso_currency = $currency["iso_code"];
+            if ($currency['id_currency'] == $cart->id_currency) {
+                $iso_currency = $currency['iso_code'];
                 break;
             }
         }
@@ -41,8 +41,8 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'payment' => Tools::getValue('payment'),
             'paymill_show_label' => Configuration::get('PIGMBH_PAYMILL_LABEL') == 'on',
             'paymill_debugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
-            'components' => _PS_BASE_URL_.__PS_BASE_URI__."modules/pigmbhpaymill/components/",
-            'customer' => $this->context->customer->firstname." ".$this->context->customer->lastname
+            'components' => _PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/components/',
+            'customer' => $this->context->customer->firstname.' '.$this->context->customer->lastname
         ));
         $this->setTemplate('paymentForm.tpl');
     }
