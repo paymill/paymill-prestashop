@@ -131,6 +131,11 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
                 $transaction_params['payment'] = $payment['id'];
             }
             $transaction = $transactions_object->create($transaction_params);
+            if(isset($transaction['data']['response_code'])){
+                call_user_func_array($logger, array("An Error occured: " . var_export($transaction, true)));
+                return false;
+            }
+
             if (!isset($transaction['id'])) {
                 call_user_func_array($logger, array('No transaction created'.var_export($transaction, true)));
                 return false;
