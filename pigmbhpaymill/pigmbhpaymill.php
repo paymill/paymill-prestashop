@@ -37,7 +37,7 @@ class PigmbhPaymill extends PaymentModule
      */
     public function install()
     {
-        return parent::install() && $this->registerHook('payment') && $this->registerHook('paymentReturn');
+        return parent::install() && $this->registerHook('payment') && $this->registerHook('paymentReturn') && $this->defaultConfiguration();
     }
 
     /**
@@ -97,7 +97,7 @@ class PigmbhPaymill extends PaymentModule
 					<tr><td width="130" style="height: 35px;">' . $this->l('Show Paymill label') . '</td><td><input type="checkbox" name="label" ' . $this->getCheckboxState(htmlentities(Tools::getValue('label', $this->label), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
                                         <tr><td colspan="2" align="center"><input class="button" name="btnSubmit" value="' . $this->l('Save') . '" type="submit" /></td></tr>
                                         <tr><td colspan="2" style="height: 15px;"></td></tr>
-                                        <tr><td colspan="2" align="center"><textarea style="width:600px;" rows="15" readonly />' . file_get_contents(dirname(__FILE__).'/log.txt') . '</textarea></td></tr>
+                                        <tr><td colspan="2" align="center"><textarea style="width:600px;" rows="15" readonly />' . file_get_contents(dirname(__FILE__) . '/log.txt') . '</textarea></td></tr>
 				</table>
 			</fieldset>
 		</form>';
@@ -125,6 +125,15 @@ class PigmbhPaymill extends PaymentModule
             $this->loadConfiguration();
             $this->_html .= '<div class="conf confirm"> ' . $this->l('Settings updated') . '</div>';
         }
+    }
+
+    private function defaultConfiguration()
+    {
+        Configuration::updateValue('PIGMBH_PAYMILL_BRIDGEURL', 'https://bridge.paymill.com/');
+        Configuration::updateValue('PIGMBH_PAYMILL_APIURL', 'https://api.paymill.com/v2/');
+        Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', 'ON');
+        Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', 'ON');
+        Configuration::updateValue('PIGMBH_PAYMILL_LABEL', 'OFF');
     }
 
     private function loadConfiguration()
