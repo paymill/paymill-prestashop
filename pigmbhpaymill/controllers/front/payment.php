@@ -28,12 +28,13 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             }
         }
 
+        $_SESSION['pigmbhPaymill']['authorizedAmount'] = intval($cart->getOrderTotal(true, Cart::BOTH) * 100);
         $this->context->smarty->assign(array(
             'nbProducts' => $cart->nbProducts(),
             'cust_currency' => $cart->id_currency,
             'currencies' => $this->module->getCurrency((int) $cart->id_currency),
             'currency_iso' => $iso_currency,
-            'total' => intval($cart->getOrderTotal(true, Cart::BOTH) * 100),
+            'total' => $_SESSION['pigmbhPaymill']['authorizedAmount'],
             'this_path' => $this->module->getPathUri(),
             'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->module->name.'/',
             'public_key' => Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'),

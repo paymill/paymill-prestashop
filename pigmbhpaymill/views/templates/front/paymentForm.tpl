@@ -169,7 +169,7 @@ function debug(message){
 
         </div>
         <p class="cart_navigation">
-            <a href="{$link->getPageLink('order', true)}?step=3" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
+            <a href="{$link->getPageLink('order', true, ['step'=> '3'])}" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
             <input type="button" id='submitButton' value="{l s='Order' mod='pigmbhpaymill'}" class="exclusive_large" />
         </p>
     </form>
