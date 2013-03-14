@@ -175,7 +175,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         $log_file = dirname(__FILE__) . '/../../log.txt';
         if (is_writable($log_file) && $logging == 'on') {
             $handle = fopen($log_file, 'a'); //
-            fwrite($handle, '['.date(DATE_RFC822).'] '.$message.'\n');
+            fwrite($handle, '['.date(DATE_RFC822).'] '.$message."\n");
             fclose($handle);
         }
     }

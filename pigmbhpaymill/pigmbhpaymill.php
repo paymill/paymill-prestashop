@@ -20,7 +20,7 @@ class PigmbhPaymill extends PaymentModule
     {
         $this->name = 'pigmbhpaymill';
         $this->tab = 'payments_gateways';
-        $this->version = '1.0';
+        $this->version = '1.0.1';
         $this->author = 'PayIntelligent GmbH';
         $this->need_instance = 0;
 
@@ -96,6 +96,8 @@ class PigmbhPaymill extends PaymentModule
 					<tr><td width="130" style="height: 35px;">' . $this->l('Activate logging') . '</td><td><input type="checkbox" name="logging" ' . $this->getCheckboxState(htmlentities(Tools::getValue('logging', $this->logging), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
 					<tr><td width="130" style="height: 35px;">' . $this->l('Show Paymill label') . '</td><td><input type="checkbox" name="label" ' . $this->getCheckboxState(htmlentities(Tools::getValue('label', $this->label), ENT_COMPAT, 'UTF-8')) . ' style="width: 300px;" /></td></tr>
                                         <tr><td colspan="2" align="center"><input class="button" name="btnSubmit" value="' . $this->l('Save') . '" type="submit" /></td></tr>
+                                        <tr><td colspan="2" style="height: 15px;"></td></tr>
+                                        <tr><td colspan="2" align="center"><textarea style="width:600px;" rows="15" readonly />' . file_get_contents(dirname(__FILE__).'/log.txt') . '</textarea></td></tr>
 				</table>
 			</fieldset>
 		</form>';
