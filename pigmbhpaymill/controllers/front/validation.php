@@ -40,7 +40,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         $result = $this->processPayment(array(
             'authorizedAmount' => $_SESSION['pigmbhPaymill']['authorizedAmount'],
             'token' => $token,
-            'amount' => $cart->getOrderTotal(true, Cart::BOTH) * 100,
+            'amount' => (int) ($cart->getOrderTotal(true, Cart::BOTH) * 100),
             'currency' => $iso_currency,
             'name' => $user->lastname . ', ' . $user->firstname,
             'email' => $user->email,
@@ -78,7 +78,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 
         $refund = false;
         $doubleTransaction = false;
-        if ($params['authorizedAmount'] != $params['amount']) {
+        if ($params['authorizedAmount'] !== $params['amount']) {
             if ($params['authorizedAmount'] > $params['amount']) {
                 // basketamount is lower than the authorized amount
                 $refund = true;
@@ -94,6 +94,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
                     'currency' => $params['currency'],
                     'description' => $params['description']
                 );
+//                $params['amount'];
                 call_user_func_array($logger, array('PaymentMode: double transaction'));
             }
         } else {
@@ -113,7 +114,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         );
         // setup transaction params
         $transactionParams = array(
-            'amount' => $params['amount'],
+            'amount' => $params['authorizedAmount'],
             'currency' => $params['currency'],
             'description' => $params['description']
         );
@@ -144,7 +145,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             $client_params['creditcard'] = $payment['id'];
             $client = $clientsObject->create($client_params);
             if (!isset($client['id'])) {
-                call_user_func_array($logger, array('No client created' . var_export($client, true)));
+                call_user_func_array($logger, array('No client created: ' . var_export($client, true)));
                 return false;
             } else {
                 call_user_func_array($logger, array('Client created: ' . $client['id']));
@@ -169,7 +170,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
                     return false;
                 }
                 if (!isset($transaction['id'])) {
-                    call_user_func_array($logger, array("No transaction created" . var_export($transaction, true)));
+                    call_user_func_array($logger, array("No transaction created: " . var_export($transaction, true)));
                     return false;
                 } else {
                     call_user_func_array($logger, array("Transaction created: " . $transaction['id']));
@@ -202,15 +203,15 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
                     'params' => $refundParams
                         )
                 );
-                if (isset($refundTransaction['data']['response_code'])) {
+                if (isset($refundTransaction['data']['response_code'])&& $refundTransaction['data']['response_code'] !== 20000) {
                     call_user_func_array($logger, array("An Error occured: " . var_export($refundTransaction, true)));
                     return false;
                 }
-                if (!isset($refundTransaction['id'])) {
+                if (!isset($refundTransaction['data']['id'])) {
                     call_user_func_array($logger, array("No Refund created" . var_export($refundTransaction, true)));
                     return false;
                 } else {
-                    call_user_func_array($logger, array("Refund created: " . $refundTransaction['id']));
+                    call_user_func_array($logger, array("Refund created: " . $refundTransaction['data']['id']));
                 }
             }
             return true;
