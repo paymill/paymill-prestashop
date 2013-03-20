@@ -47,8 +47,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             'description' => $shop->name . ' ' . $user->email,
             'libBase' => $libBase,
             'privateKey' => $private_key,
-            'apiUrl' => $api_url,
-            'loggerCallback' => array('PigmbhpaymillValidationModuleFrontController', 'log')
+            'apiUrl' => $api_url
                 ));
 
         $this->log(
@@ -85,7 +84,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
                 $refundParams = array(
                     'amount' => $params['authorizedAmount'] - $params['amount']
                 );
-                call_user_func_array($logger, array('PaymentMode: transaction & refund'));
+                $this->log('PaymentMode: transaction & refund');
             } else {
                 // basketamount is higher than the authorized amount (paymentfee etc.)
                 $doubleTransaction = true;
@@ -94,11 +93,10 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
                     'currency' => $params['currency'],
                     'description' => $params['description']
                 );
-//                $params['amount'];
-                call_user_func_array($logger, array('PaymentMode: double transaction'));
+                $this->log('PaymentMode: double transaction');
             }
         } else {
-            call_user_func_array($logger, array('PaymentMode: normal transaction'));
+            $this->log('PaymentMode: normal transaction');
         }
 
         // reformat paramters
@@ -136,94 +134,78 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         try {
             $payment = $paymentObject->create($payment_params);
             if (!isset($payment['id'])) {
-                call_user_func_array($logger, array('No creditcard created: ' . var_export($payment, true)));
+                $this->log('No Payment created: ' . var_export($payment, true));
                 return false;
             } else {
-                call_user_func_array($logger, array('Creditcard created: ' . $payment['id']));
+                $this->log('Payment created: ' . $payment['id']);
             }
             // create client
             $client_params['creditcard'] = $payment['id'];
             $client = $clientsObject->create($client_params);
             if (!isset($client['id'])) {
-                call_user_func_array($logger, array('No client created: ' . var_export($client, true)));
+                $this->log('No client created: ' . var_export($client, true));
                 return false;
             } else {
-                call_user_func_array($logger, array('Client created: ' . $client['id']));
+                $this->log('Client created: ' . $client['id']);
             }
             // create transaction
             $transactionParams['client'] = $client['id'];
             $transactionParams['payment'] = $payment['id'];
-            $transactionArray[] = $transactionsObject->create($transactionParams);
-
-            // proceed sec transaction
-            if ($doubleTransaction) {
-                $secoundTransactionParams['client'] = $client['id'];
-                $secoundTransactionParams['payment'] = $payment['id'];
-                $transactionArray[] = $transactionsObject->create($secoundTransactionParams);
+            $transaction = $transactionsObject->create($transactionParams);
+            if (!$this->confirmTransaction($transaction)) {
+                return false;
             }
 
-
-
-            foreach ($transactionArray as $transaction) {
-                if (isset($transaction['data']['response_code'])) {
-                    call_user_func_array($logger, array("An Error occured: " . var_export($transaction, true)));
-                    return false;
-                }
-                if (!isset($transaction['id'])) {
-                    call_user_func_array($logger, array("No transaction created: " . var_export($transaction, true)));
-                    return false;
-                } else {
-                    call_user_func_array($logger, array("Transaction created: " . $transaction['id']));
-                }
-
-                // check result
-                if (is_array($transaction) && array_key_exists('status', $transaction)) {
-                    if ($transaction['status'] == "open") {
-                        // transaction was issued but status is open for any reason
-                        call_user_func_array($logger, array("Status is open."));
-                        return false;
-                    } elseif ($transaction['status'] != "closed") {
-                        // another error occured
-                        call_user_func_array($logger, array("Unknown error." . var_export($transaction, true)));
+            if ($params['authorizedAmount'] !== $params['amount']) {
+                if ($params['authorizedAmount'] > $params['amount']) {
+                    require_once $params['libBase'] . 'Services/Paymill/Refunds.php';
+                    // basketamount is lower than the authorized amount
+                    $refundObject = new Services_Paymill_Refunds(
+                                    $params['privateKey'], $params['apiUrl']
+                    );
+                    $refundTransaction = $refundObject->create(
+                            array(
+                                'transactionId' => $transaction['id'],
+                                'params' => array(
+                                    'amount' => $params['authorizedAmount'] - $params['amount']
+                                )
+                            )
+                    );
+                    if (isset($refundTransaction['data']['response_code']) && $refundTransaction['data']['response_code'] !== 20000) {
+                        $this->log("An Error occured: " . var_export($refundTransaction, true));
                         return false;
                     }
+                    if (!isset($refundTransaction['data']['id'])) {
+                        $this->log("No Refund created" . var_export($refundTransaction, true));
+                        return false;
+                    } else {
+                        $this->log("Refund created: " . $refundTransaction['data']['id']);
+                    }
                 } else {
-                    // another error occured
-                    call_user_func_array($logger, array("Transaction could not be issued."));
-                    return false;
-                }
-            }
-            if ($refund) {
-                require_once $params['libBase'] . 'Services/Paymill/Refunds.php';
-                $refundObject = new Services_Paymill_Refunds(
-                                $params['privateKey'], $params['apiUrl']
-                );
-                $refundTransaction = $refundObject->create(array(
-                    'transactionId' => $transactionArray[0]['id'],
-                    'params' => $refundParams
-                        )
-                );
-                if (isset($refundTransaction['data']['response_code'])&& $refundTransaction['data']['response_code'] !== 20000) {
-                    call_user_func_array($logger, array("An Error occured: " . var_export($refundTransaction, true)));
-                    return false;
-                }
-                if (!isset($refundTransaction['data']['id'])) {
-                    call_user_func_array($logger, array("No Refund created" . var_export($refundTransaction, true)));
-                    return false;
-                } else {
-                    call_user_func_array($logger, array("Refund created: " . $refundTransaction['data']['id']));
+                    // basketamount is higher than the authorized amount (paymentfee etc.)
+                    $doubleTransaction = true;
+                    $secoundTransactionParams = array(
+                        'amount' => $params['amount'] - $params['authorizedAmount'],
+                        'currency' => $params['currency'],
+                        'description' => $params['description']
+                    );
+                    $secoundTransactionParams['client'] = $client['id'];
+                    $secoundTransactionParams['payment'] = $payment['id'];
+                    if (!$this->confirmTransaction($transactionsObject->create($secoundTransactionParams))) {
+                        return false;
+                    }
                 }
             }
             return true;
         } catch (Services_Paymill_Exception $ex) {
             // paymill wrapper threw an exception
-            call_user_func_array($logger, array('Exception thrown from paymill wrapper: ' . $ex->getMessage()));
+            $this->log('Exception thrown from paymill wrapper: ' . $ex->getMessage());
             return false;
         }
         return true;
     }
 
-    static private function log($message)
+    private function log($message)
     {
         $logging = Configuration::get('PIGMBH_PAYMILL_LOGGING');
         $log_file = dirname(__FILE__) . '/../../log.txt';
@@ -232,6 +214,38 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             fwrite($handle, '[' . date(DATE_RFC822) . '] ' . $message . "\n");
             fclose($handle);
         }
+    }
+
+    private function confirmTransaction($transaction)
+    {
+        if (isset($transaction['data']['response_code'])) {
+            $this->log("An Error occured: " . var_export($transaction, true));
+            return false;
+        }
+        if (!isset($transaction['id'])) {
+            $this->log("No transaction created: " . var_export($transaction, true));
+            return false;
+        } else {
+            $this->log("Transaction created: " . $transaction['id']);
+        }
+
+        // check result
+        if (is_array($transaction) && array_key_exists('status', $transaction)) {
+            if ($transaction['status'] == "open") {
+                // transaction was issued but status is open for any reason
+                $this->log("Status is open.");
+                return false;
+            } elseif ($transaction['status'] != "closed") {
+                // another error occured
+                $this->log("Unknown error." . var_export($transaction, true));
+                return false;
+            }
+        } else {
+            // another error occured
+            $this->log("Transaction could not be issued.");
+            return false;
+        }
+        return true;
     }
 
 }
