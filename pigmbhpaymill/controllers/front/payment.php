@@ -16,6 +16,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
      */
     public function initContent()
     {
+        session_start();
         $this->display_column_left = false;
         $this->display_column_center = true;
         $this->display_column_right = false;
