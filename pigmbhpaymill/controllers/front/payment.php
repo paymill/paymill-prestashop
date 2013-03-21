@@ -17,6 +17,10 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
     public function initContent()
     {
         session_start();
+        if (!in_array(Tools::getValue('payment'), array('creditcard', 'debit'))) {
+            Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
+        }
+
         $this->display_column_left = false;
         $this->display_column_center = true;
         $this->display_column_right = false;
