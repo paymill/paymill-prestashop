@@ -72,33 +72,6 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
      */
     private function processPayment($params)
     {
-        // setup the logger
-        $logger = $params['loggerCallback'];
-
-        $refund = false;
-        $doubleTransaction = false;
-        if ($params['authorizedAmount'] !== $params['amount']) {
-            if ($params['authorizedAmount'] > $params['amount']) {
-                // basketamount is lower than the authorized amount
-                $refund = true;
-                $refundParams = array(
-                    'amount' => $params['authorizedAmount'] - $params['amount']
-                );
-                $this->log('PaymentMode: transaction & refund');
-            } else {
-                // basketamount is higher than the authorized amount (paymentfee etc.)
-                $doubleTransaction = true;
-                $secoundTransactionParams = array(
-                    'amount' => $params['amount'] - $params['authorizedAmount'],
-                    'currency' => $params['currency'],
-                    'description' => $params['description']
-                );
-                $this->log('PaymentMode: double transaction');
-            }
-        } else {
-            $this->log('PaymentMode: normal transaction');
-        }
-
         // reformat paramters
         $params['currency'] = strtolower($params['currency']);
         // setup client params
