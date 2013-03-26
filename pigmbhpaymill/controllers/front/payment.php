@@ -16,9 +16,23 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
      */
     public function initContent()
     {
+        $db = Db::getInstance();
         session_start();
-        if (!in_array(Tools::getValue('payment'), array('creditcard', 'debit'))) {
+        $validPayments = array('creditcard');
+        if (Configuration::get('PIGMBH_PAYMILL_DEBIT')) {
+            $validPayments[] = 'debit';
+        }
+
+        if (!in_array(Tools::getValue('payment'), $validPayments)) {
             Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
+        }
+        $fastCheckout = false;
+        if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT')) {
+            if (Tools::getValue('payment') == 'creditcard') {
+                $fastCheckout = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
+            } elseif (Tools::getValue('payment') == 'debit') {
+                $fastCheckout = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
+            }
         }
 
         $this->display_column_left = false;
@@ -34,23 +48,29 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
         }
 
         $_SESSION['pigmbhPaymill']['authorizedAmount'] = intval($cart->getOrderTotal(true, Cart::BOTH) * 100);
-        $this->context->smarty->assign(array(
+        $data = array(
             'nbProducts' => $cart->nbProducts(),
             'cust_currency' => $cart->id_currency,
             'currencies' => $this->module->getCurrency((int) $cart->id_currency),
             'currency_iso' => $iso_currency,
             'total' => $_SESSION['pigmbhPaymill']['authorizedAmount'],
             'this_path' => $this->module->getPathUri(),
-            'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->module->name.'/',
+            'this_path_ssl' => Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->module->name . '/',
             'public_key' => Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'),
             'bridge_url' => Configuration::get('PIGMBH_PAYMILL_BRIDGEURL'),
             'payment' => Tools::getValue('payment'),
             'paymill_show_label' => Configuration::get('PIGMBH_PAYMILL_LABEL') == 'on',
             'paymill_debugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
-            'components' => _PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/components/',
-            'customer' => $this->context->customer->firstname.' '.$this->context->customer->lastname
-        ));
-        $this->setTemplate('paymentForm.tpl');
+            'components' => _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/pigmbhpaymill/components/',
+            'customer' => $this->context->customer->firstname . ' ' . $this->context->customer->lastname
+        );
+
+        $this->context->smarty->assign($data);
+        if ($fastCheckout) {
+            $this->setTemplate('fastCheckout.tpl');
+        } else {
+            $this->setTemplate('paymentForm.tpl');
+        }
     }
 
 }

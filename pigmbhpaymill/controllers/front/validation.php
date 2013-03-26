@@ -12,13 +12,17 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
     public function initContent()
     {
         session_start();
+        $db = Db::getInstance();
         $token = Tools::getValue('paymillToken');
         $payment = Tools::getValue('payment');
+
+
 
         if (empty($token)) {
             $this->log('No paymill token was provided. Redirect to payments page.');
             Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
         } elseif (!in_array($payment, array('creditcard', 'debit'))) {
+            $this->log('The selected Paymentmethod is not valid.(' . $payment . ')');
             Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
         }
 
@@ -36,8 +40,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
                 break;
             }
         }
-        // process the payment
-        $result = $this->processPayment(array(
+        $processData = array(
             'authorizedAmount' => $_SESSION['pigmbhPaymill']['authorizedAmount'],
             'token' => $token,
             'amount' => (int) ($cart->getOrderTotal(true, Cart::BOTH) * 100),
@@ -48,7 +51,22 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             'libBase' => $libBase,
             'privateKey' => $private_key,
             'apiUrl' => $api_url
-                ));
+        );
+
+        if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT')) {
+            if ($payment == 'creditcard') {
+                $userData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_creditcard_userdata` WHERE `userId`=' . $this->context->customer->id);
+            } elseif ($payment == 'debit') {
+                $userData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
+            }
+            if (!empty($userData['clientId']) && !empty($userData['paymentId'])) {
+                $processData['clientId'] = $userData['clientId'];
+                $processData['paymentId'] = $userData['paymentId'];
+            }
+        }
+
+        // process the payment
+        $result = $this->processPayment($processData);
 
         $this->log(
                 'Payment processing resulted in: '
@@ -105,22 +123,35 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         );
         // perform conection to the Paymill API and trigger the payment
         try {
-            $payment = $paymentObject->create($payment_params);
-            if (!isset($payment['id'])) {
-                $this->log('No Payment created: ' . var_export($payment, true));
-                return false;
+            if (!array_key_exists('paymentId', $params)) {
+                $payment = $paymentObject->create($payment_params);
+                if (!isset($payment['id'])) {
+                    $this->log('No Payment created: ' . var_export($payment, true));
+                    return false;
+                } else {
+                    $this->log('Payment created: ' . $payment['id']);
+                }
             } else {
-                $this->log('Payment created: ' . $payment['id']);
+                $payment['id'] = $params['paymentId'];
+                $this->log('Saved payment used: ' . $params['paymentId']);
             }
-            // create client
-            $client_params['creditcard'] = $payment['id'];
-            $client = $clientsObject->create($client_params);
-            if (!isset($client['id'])) {
-                $this->log('No client created: ' . var_export($client, true));
-                return false;
+
+
+            if (!array_key_exists('clientId', $params)) {
+                // create client
+                $client_params['creditcard'] = $payment['id'];
+                $client = $clientsObject->create($client_params);
+                if (!isset($client['id'])) {
+                    $this->log('No client created: ' . var_export($client, true));
+                    return false;
+                } else {
+                    $this->log('Client created: ' . $client['id']);
+                }
             } else {
-                $this->log('Client created: ' . $client['id']);
+                $client['id'] = $params['clientId'];
+                $this->log('Saved client used: ' . $params['clientId']);
             }
+
             // create transaction
             $transactionParams['client'] = $client['id'];
             $transactionParams['payment'] = $payment['id'];
@@ -128,7 +159,9 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             if (!$this->confirmTransaction($transaction)) {
                 return false;
             }
-
+            if (!array_key_exists('clientId', $params) && !array_key_exists('paymentId', $params)) {
+                $this->saveUserData($client['id'], $payment['id']);
+            }
             if ($params['authorizedAmount'] !== $params['amount']) {
                 if ($params['authorizedAmount'] > $params['amount']) {
                     require_once $params['libBase'] . 'Services/Paymill/Refunds.php';
@@ -156,7 +189,6 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
                     }
                 } else {
                     // basketamount is higher than the authorized amount (paymentfee etc.)
-                    $doubleTransaction = true;
                     $secoundTransactionParams = array(
                         'amount' => $params['amount'] - $params['authorizedAmount'],
                         'currency' => $params['currency'],
@@ -219,6 +251,31 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             return false;
         }
         return true;
+    }
+
+    private function saveUserData($clientId, $paymentId)
+    {
+        if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT')) {
+            $db = Db::getInstance();
+            $userId = $this->context->customer->id;
+            $payment = Tools::getValue('payment');
+            if ($payment == 'creditcard') {
+                $table = 'pigmbh_paymill_creditcard_userdata';
+            } elseif ($payment == 'debit') {
+                $table = 'pigmbh_paymill_directdebit_userdata';
+            }
+            $data = array(
+                'clientId' => $clientId,
+                'paymentId' => $paymentId,
+                'userId' => $userId
+            );
+            try {
+                $db->insert($table, $data, false, false, Db::REPLACE, false);
+                $this->log("UserData saved." . var_export($data, true));
+            } catch (Exception $exception) {
+                $this->log("Failed saving UserData. " . $exception->getMessage());
+            }
+        }
     }
 
 }
