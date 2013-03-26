@@ -15,13 +15,19 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         $db = Db::getInstance();
         $token = Tools::getValue('paymillToken');
         $payment = Tools::getValue('payment');
-
+        $validPayments = array();
+        if (Configuration::get('PIGMBH_PAYMILL_DEBIT')) {
+            $validPayments[] = 'debit';
+        }
+        if (Configuration::get('PIGMBH_PAYMILL_CREDITCARD')) {
+            $validPayments[] = 'creditcard';
+        }
 
 
         if (empty($token)) {
             $this->log('No paymill token was provided. Redirect to payments page.');
             Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
-        } elseif (!in_array($payment, array('creditcard', 'debit'))) {
+        } elseif (!in_array($payment, array($validPayments))) {
             $this->log('The selected Paymentmethod is not valid.(' . $payment . ')');
             Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
         }

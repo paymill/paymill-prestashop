@@ -18,9 +18,12 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
     {
         $db = Db::getInstance();
         session_start();
-        $validPayments = array('creditcard');
+        $validPayments = array();
         if (Configuration::get('PIGMBH_PAYMILL_DEBIT')) {
             $validPayments[] = 'debit';
+        }
+        if (Configuration::get('PIGMBH_PAYMILL_CREDITCARD')) {
+            $validPayments[] = 'creditcard';
         }
 
         if (!in_array(Tools::getValue('payment'), $validPayments)) {
@@ -29,9 +32,12 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
         $fastCheckout = false;
         if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT')) {
             if (Tools::getValue('payment') == 'creditcard') {
-                $fastCheckout = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
+                $dbData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_creditcard_userdata` WHERE `userId`=' . $this->context->customer->id);
             } elseif (Tools::getValue('payment') == 'debit') {
-                $fastCheckout = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
+                $dbData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
+            }
+            if ($dbData != false && count($dbData) > 0){
+                $fastCheckout = true;
             }
         }
 
