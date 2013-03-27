@@ -23,11 +23,10 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             $validPayments[] = 'creditcard';
         }
 
-
         if (empty($token)) {
             $this->log('No paymill token was provided. Redirect to payments page.');
             Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
-        } elseif (!in_array($payment, array($validPayments))) {
+        } elseif (!in_array($payment, $validPayments)) {
             $this->log('The selected Paymentmethod is not valid.(' . $payment . ')');
             Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
         }
