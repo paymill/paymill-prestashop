@@ -144,7 +144,7 @@ function debug(message){
             <p class="description">{l s='Fields marked with a * are required' mod='pigmbhpaymill'}
             </p>
             {if $paymill_show_label == 'true'}
-                <p><div class="paymill_powered"><div class="paymill_credits">{l s='Save creditcardpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">Paymill</a></div></div></p>
+                <p><div class="paymill_powered"><div class="paymill_credits">{l s='Save creditcardpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">PAYMILL</a></div></div></p>
             {/if}
             {elseif $payment == "debit"}
             <input type="hidden" name="payment" value="debit">
@@ -163,7 +163,7 @@ function debug(message){
             <p class="description">{l s='Fields marked with a * are required' mod='pigmbhpaymill'}
             </p>
             {if $paymill_show_label == 'true'}
-                <p><div class="paymill_powered"><div class="paymill_credits">{l s='Save debitpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">Paymill</a></div></div></p>
+                <p><div class="paymill_powered"><div class="paymill_credits">{l s='debitpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">PAYMILL</a></div></div></p>
             {/if}
             {/if}
 

@@ -2,13 +2,13 @@
 <script type="text/javascript">
     $(document).ready(function() {
     $("#submitButton").click(function(event) {
-        var form = $("#submitForm");
-        form.append("<input type='hidden' name='paymillToken' value='dummyToken'/>");
-        form.append("<input type='hidden' name='payment' value='{$payment}' />");
-        form.submit();
-    });
+    var form = $("#submitForm");
+    form.append("<input type='hidden' name='paymillToken' value='dummyToken'/>");
+    form.append("<input type='hidden' name='payment' value='{$payment}' />");
+    form.submit();
+});
 
-    function debug(message){
+function debug(message){
     {if $paymill_debugging == 'true'}
         {if $payment == 'creditcard'}
         console.log('[PaymillCC] ' + message);
@@ -38,11 +38,19 @@
             <ul id="errors">
             </ul>
         </div>
-        <div class="debit">
-            {if $paymill_show_label == 'true'}
-                <p><div class="paymill_powered"><div class="paymill_credits">{l s='Save creditcardpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">Paymill</a></div></div></p>
-            {/if}
-        </div>
+        {if $payment == "creditcard"}
+            <div class="debit">
+                {if $paymill_show_label == 'true'}
+                    <p><div class="paymill_powered"><div class="paymill_credits">{l s='Save creditcardpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">PAYMILL</a></div></div></p>
+                {/if}
+            </div>
+        {elseif $payment == "debit"}
+            <div class="debit">
+                {if $paymill_show_label == 'true'}
+                    <p><div class="paymill_powered"><div class="paymill_credits">{l s='debitpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">PAYMILL</a></div></div></p>
+                {/if}
+            </div>
+        {/if}
         <p class="cart_navigation">
             <a href="{$link->getPageLink('order', true, ['step'=> '3'])}" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
             <input type="button" id='submitButton' value="{l s='Order' mod='pigmbhpaymill'}" class="exclusive_large" />
