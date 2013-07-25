@@ -12,7 +12,7 @@
         var result = true;
         {if $payment == 'creditcard'}
         if (!paymill.validateCardNumber($('#card-number').val())) {
-            errors.append("<p>Please enter a valid credit card number</p>");
+            errors.append("<p>Please enter a valid credit card number.</p>");
             result = false;
         }
         if (!paymill. validateCvc($('#card-cvc').val())) {
