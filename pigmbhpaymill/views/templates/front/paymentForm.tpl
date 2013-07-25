@@ -12,28 +12,28 @@
         var result = true;
         {if $payment == 'creditcard'}
         if (!paymill.validateCardNumber($('#card-number').val())) {
-            errors.append("<p>Bitte geben Sie eine gültige Kartennummer ein</p>");
+            errors.append("<p>Please enter a valid credit card number.</p>");
             result = false;
         }
         if (!paymill. validateCvc($('#card-cvc').val())) {
-            errors.append("<p>Bitte geben sie einen gültigen Sicherheitscode ein (Rückseite der Karte).</p>");
+            errors.append("<p>Please enter a valid credit card Security Code.</p>");
             result = false;
         }
         if (!paymill.validateExpiry($('#card-expiry-month').val(), $('#card-expiry-year').val())) {
-            errors.append("<p>Das Ablaufdatum der Karte ist ungültig.</p>");
+            errors.append("<p>Your credit card expiration date is not valid.</p>");
             result = false;
         }
         {elseif $payment == 'debit'}
         if (!$('#paymill_accountholder').val()) {
-          errors.append("<p>Bitte geben Sie den Kontoinhaber an.</p>");
+          errors.append("<p>Please enter the full name of the credit card's owner.</p>");
           result = false;
         }
         if (!paymill.validateAccountNumber($('#paymill_accountnumber').val())) {
-          errors.append("<p>Bitte geben Sie eine g&uuml;ltige Kontonummer ein.</p>");
+          errors.append("<p>Please enter a valid bank account number.</p>");
           result = false;
         }
         if (!paymill.validateBankCode($('#paymill_banknumber').val())) {
-          errors.append("<p>Bitte geben Sie eine g&uuml;ltige BLZ ein.</p>");
+          errors.append("<p>Please enter a valid sort code.</p>");
           result = false;
         }
         {/if}
@@ -169,8 +169,13 @@ function debug(message){
 
         </div>
         <p class="cart_navigation">
-            <a href="{$link->getPageLink('order', true, ['step'=> '3'])}" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
-            <input type="button" id='submitButton' value="{l s='Order' mod='pigmbhpaymill'}" class="exclusive_large" />
+        	{if $opc}
+                <a href="{$link->getPageLink('order', true)}" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
+    		{/if}
+    		{if !$opc}
+    			<a href="{$link->getPageLink('order', true)}?step=3" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
+    		{/if}
+    		 <input type="button" id='submitButton' value="{l s='Order' mod='pigmbhpaymill'}" class="exclusive_large" />
         </p>
     </form>
 {/if}
