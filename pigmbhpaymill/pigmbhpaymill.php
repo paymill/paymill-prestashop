@@ -20,11 +20,11 @@ class PigmbhPaymill extends PaymentModule
     {
         $this->name = 'pigmbhpaymill';
         $this->tab = 'payments_gateways';
-        $this->version = '1.0.4';
+        $this->version = "1.1.0";
         $this->author = 'PayIntelligent GmbH';
         $this->need_instance = 0;
         $this->currencies = true;
-	$this->currencies_mode = 'checkbox';
+        $this->currencies_mode = 'checkbox';
 
         parent::__construct();
         $this->loadConfiguration();
@@ -39,11 +39,7 @@ class PigmbhPaymill extends PaymentModule
      */
     public function install()
     {
-        return parent::install()
-                && $this->registerHook('payment')
-                && $this->registerHook('paymentReturn')
-                && $this->defaultConfiguration()
-                && $this->createDatabaseTables();
+        return parent::install() && $this->registerHook('payment') && $this->registerHook('paymentReturn') && $this->defaultConfiguration() && $this->createDatabaseTables();
     }
 
     /**
@@ -53,9 +49,7 @@ class PigmbhPaymill extends PaymentModule
      */
     public function uninstall()
     {
-        return $this->unregisterHook('payment')
-                && $this->unregisterHook('paymentReturn')
-                && parent::uninstall();
+        return $this->unregisterHook('payment') && $this->unregisterHook('paymentReturn') && parent::uninstall();
     }
 
     /**
@@ -88,17 +82,17 @@ class PigmbhPaymill extends PaymentModule
     public function createDatabaseTables()
     {
         $sqlDebit = "CREATE TABLE IF NOT EXISTS `pigmbh_paymill_directdebit_userdata` ( "
-                . "`userId` int(11) NOT NULL, "
-                . "`clientId` text NOT NULL, "
-                . "`paymentId` text NOT NULL, "
-                . "PRIMARY KEY (`userId`) "
-                . ");";
+            . "`userId` int(11) NOT NULL, "
+            . "`clientId` text NOT NULL, "
+            . "`paymentId` text NOT NULL, "
+            . "PRIMARY KEY (`userId`) "
+            . ");";
         $sqlCreditCard = "CREATE TABLE IF NOT EXISTS `pigmbh_paymill_creditcard_userdata` ( "
-                . "`userId` int(11) NOT NULL, "
-                . "`clientId` text NOT NULL, "
-                . "`paymentId` text NOT NULL, "
-                . "PRIMARY KEY (`userId`) "
-                . ");";
+            . "`userId` int(11) NOT NULL, "
+            . "`clientId` text NOT NULL, "
+            . "`paymentId` text NOT NULL, "
+            . "PRIMARY KEY (`userId`) "
+            . ");";
         $db = Db::getInstance();
         try {
             $db->query($sqlCreditCard);
@@ -128,7 +122,7 @@ class PigmbhPaymill extends PaymentModule
     private function showConfigurationForm()
     {
         $this->_html .=
-                '<form action="' . Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']) . '" method="post">
+            '<form action="' . Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']) . '" method="post">
 			<fieldset>
 			<legend>' . 'Konfiguration' . '</legend>
 				<table border="0" width="500" cellpadding="0" cellspacing="0" id="form">
@@ -193,18 +187,18 @@ class PigmbhPaymill extends PaymentModule
     private function loadConfiguration()
     {
         $config = Configuration::getMultiple(
-                        array(
-                            'PIGMBH_PAYMILL_PUBLICKEY',
-                            'PIGMBH_PAYMILL_PRIVATEKEY',
-                            'PIGMBH_PAYMILL_BRIDGEURL',
-                            'PIGMBH_PAYMILL_APIURL',
-                            'PIGMBH_PAYMILL_DEBUG',
-                            'PIGMBH_PAYMILL_LOGGING',
-                            'PIGMBH_PAYMILL_LABEL',
-                            'PIGMBH_PAYMILL_DEBIT',
-                            'PIGMBH_PAYMILL_CREDITCARD',
-                            'PIGMBH_PAYMILL_FASTCHECKOUT'
-                        )
+                array(
+                    'PIGMBH_PAYMILL_PUBLICKEY',
+                    'PIGMBH_PAYMILL_PRIVATEKEY',
+                    'PIGMBH_PAYMILL_BRIDGEURL',
+                    'PIGMBH_PAYMILL_APIURL',
+                    'PIGMBH_PAYMILL_DEBUG',
+                    'PIGMBH_PAYMILL_LOGGING',
+                    'PIGMBH_PAYMILL_LABEL',
+                    'PIGMBH_PAYMILL_DEBIT',
+                    'PIGMBH_PAYMILL_CREDITCARD',
+                    'PIGMBH_PAYMILL_FASTCHECKOUT'
+                )
         );
         if (isset($config['PIGMBH_PAYMILL_PUBLICKEY'])) {
             $this->publickey = $config['PIGMBH_PAYMILL_PUBLICKEY'];
