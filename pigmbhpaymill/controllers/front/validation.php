@@ -37,7 +37,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         $this->log('Start processing payment with token ' . $token);
 
 
-        $paymentProcessor = new Services_Paymill_PaymentProcessor(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'));
+        $paymentProcessor = new Services_Paymill_PaymentProcessor(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
 
         $cart = $this->context->cart;
         $user = $this->context->customer;
