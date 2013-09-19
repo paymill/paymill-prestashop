@@ -120,7 +120,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             );
             try {
                 $db->insert($table, $data, false, false, Db::REPLACE, false);
-                $this->log("UserData saved." . var_export($data, true));
+                $this->log("UserData saved." , var_export($data, true));
             } catch (Exception $exception) {
                 $this->log("Failed saving UserData. " . $exception->getMessage());
             }
