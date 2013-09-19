@@ -39,7 +39,7 @@ class configurationHandler
         $configModel->setDirectdebit(isset($config['PIGMBH_PAYMILL_DEBIT']) ? $config['PIGMBH_PAYMILL_DEBIT'] : false);
         $configModel->setCreditcard(isset($config['PIGMBH_PAYMILL_CREDITCARD']) ? $config['PIGMBH_PAYMILL_CREDITCARD'] : false);
         $configModel->setFastcheckout(isset($config['PIGMBH_PAYMILL_FASTCHECKOUT']) ? $config['PIGMBH_PAYMILL_FASTCHECKOUT'] : false);
-        $configModel->setDifferentAmount(isset($config['PIGMBH_PAYMILL_DIFFERENTAMOUNT']) ? $config['PIGMBH_PAYMILL_DIFFERENTAMOUNT'] : 0);
+        $configModel->setDifferentAmount(isset($config['PIGMBH_PAYMILL_DIFFERENTAMOUNT']) ? $config['PIGMBH_PAYMILL_DIFFERENTAMOUNT'] : "0");
         return $configModel;
     }
 

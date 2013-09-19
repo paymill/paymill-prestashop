@@ -123,13 +123,13 @@ class PigmbhPaymill extends PaymentModule
         if (Tools::isSubmit('btnSubmit')) {
             $oldConfig = $this->_configurationHandler->loadConfiguration();
             $newConfig = new configurationModel();
-            $newConfig->setCreditcard(Tools::getValue('creditcard', $oldConfig->getCreditcard()));
-            $newConfig->setDirectdebit(Tools::getValue('debit', $oldConfig->getDirectdebit()));
-            $newConfig->setDebug(Tools::getValue('debug', $oldConfig->getDebug()));
-            $newConfig->setDifferentAmount(Tools::getValue('differnetamount', $oldConfig->getDifferentAmount()));
-            $newConfig->setFastcheckout(Tools::getValue('fastcheckout', $oldConfig->getFastcheckout()));
-            $newConfig->setLabel(Tools::getValue('label', $oldConfig->getLabel()));
-            $newConfig->setLogging(Tools::getValue('logging', $oldConfig->getLogging()));
+            $newConfig->setCreditcard(Tools::getValue('creditcard', 'OFF'));
+            $newConfig->setDirectdebit(Tools::getValue('debit', 'OFF'));
+            $newConfig->setDebug(Tools::getValue('debug', 'OFF'));
+            $newConfig->setDifferentAmount(Tools::getValue('differentamount',$oldConfig->getDifferentAmount()));
+            $newConfig->setFastcheckout(Tools::getValue('fastcheckout', 'OFF'));
+            $newConfig->setLabel(Tools::getValue('label', 'OFF'));
+            $newConfig->setLogging(Tools::getValue('logging', 'OFF'));
             $newConfig->setPrivateKey(Tools::getValue('privatekey', $oldConfig->getPrivateKey()));
             $newConfig->setPublicKey(Tools::getValue('publickey', $oldConfig->getPublicKey()));
             $this->_configurationHandler->updateConfiguration($newConfig);
@@ -147,14 +147,14 @@ class PigmbhPaymill extends PaymentModule
 			<fieldset class="paymill_center">
 			<legend>' . $this->displayName . '</legend>
 				<table cellpadding="0" cellspacing="0">
-                    <tr><td colspan="2" class="paymill_config_header">'. $this->l('config_payments').'</td></tr>
+                    <tr><td colspan="2" class="paymill_config_header">' . $this->l('config_payments') . '</td></tr>
                     <tr><td class="paymill_config_label">' . $this->l('Activate creditcard-payment') . '</td><td class="paymill_config_value"><input type="checkbox" name="creditcard" ' . $this->getCheckboxState($configurationModel->getCreditcard()) . ' /></td></tr>
                     <tr><td class="paymill_config_label">' . $this->l('Activate debit-payment') . '</td><td class="paymill_config_value"><input type="checkbox" name="debit" ' . $this->getCheckboxState($configurationModel->getDirectdebit()) . ' /></td></tr>
                     <tr><td colspan="2" style="height: 15px;"></td></tr>
-                    <tr><td colspan="2" class="paymill_config_header">'. $this->l('config_main').'</td></tr>
+                    <tr><td colspan="2" class="paymill_config_header">' . $this->l('config_main') . '</td></tr>
                     <tr><td class="paymill_config_label">' . $this->l('Public Key') . '</td><td class="paymill_config_value"><input type="text" class="paymill_config_text" name="publickey" value="' . $configurationModel->getPublicKey() . '" /></td></tr>
 					<tr><td class="paymill_config_label">' . $this->l('Private Key') . '</td><td class="paymill_config_value"><input type="text" class="paymill_config_text" name="privatekey" value="' . $configurationModel->getPrivateKey() . '" /></td></tr>
-					<tr><td class="paymill_config_label">' . $this->l('differentAmount') . '</td><td class="paymill_config_value"><input type="checkbox" name="differnetamount" ' . $this->getCheckboxState($configurationModel->getDifferentAmount()) . ' /></td></tr>
+					<tr><td class="paymill_config_label">' . $this->l('differentAmount') . '</td><td class="paymill_config_value"><input type="text" class="paymill_config_text" name="differentamount" value="' . $configurationModel->getDifferentAmount() . '" /></td></tr>
 					<tr><td class="paymill_config_label">' . $this->l('Activate debugging') . '</td><td class="paymill_config_value"><input type="checkbox" name="debug" ' . $this->getCheckboxState($configurationModel->getDebug()) . ' /></td></tr>
 					<tr><td class="paymill_config_label">' . $this->l('Activate logging') . '</td><td class="paymill_config_value"><input type="checkbox" name="logging" ' . $this->getCheckboxState($configurationModel->getLogging()) . ' /></td></tr>
 					<tr><td class="paymill_config_label">' . $this->l('Show Paymill label') . '</td><td class="paymill_config_value"><input type="checkbox" name="label" ' . $this->getCheckboxState($configurationModel->getLabel()) . ' /></td></tr>
@@ -168,7 +168,7 @@ class PigmbhPaymill extends PaymentModule
     private function getCheckboxState($value)
     {
         $return = '';
-        if (in_array($value, array("on", true))) {
+        if (in_array(strtolower($value), array("on"))) {
             $return = 'checked';
         }
         return $return;
