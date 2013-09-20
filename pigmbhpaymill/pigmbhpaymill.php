@@ -123,10 +123,17 @@ class PigmbhPaymill extends PaymentModule
         if (Tools::isSubmit('btnSubmit')) {
             $oldConfig = $this->_configurationHandler->loadConfiguration();
             $newConfig = new configurationModel();
+            $toleranz = Tools::getValue('differentamount');
+            var_dump($toleranz);
+            if(is_numeric($toleranz)){
+                $toleranz = number_format($toleranz,2,'.','');
+            }else{
+                $toleranz = number_format(0,2,'.','');
+            }
             $newConfig->setCreditcard(Tools::getValue('creditcard', 'OFF'));
             $newConfig->setDirectdebit(Tools::getValue('debit', 'OFF'));
             $newConfig->setDebug(Tools::getValue('debug', 'OFF'));
-            $newConfig->setDifferentAmount(Tools::getValue('differentamount',$oldConfig->getDifferentAmount()));
+            $newConfig->setDifferentAmount($toleranz);
             $newConfig->setFastcheckout(Tools::getValue('fastcheckout', 'OFF'));
             $newConfig->setLabel(Tools::getValue('label', 'OFF'));
             $newConfig->setLogging(Tools::getValue('logging', 'OFF'));

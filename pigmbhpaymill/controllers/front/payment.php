@@ -53,7 +53,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             }
         }
 
-        $_SESSION['pigmbhPaymill']['authorizedAmount'] = intval($cart->getOrderTotal(true, Cart::BOTH) * 100);
+        $_SESSION['pigmbhPaymill']['authorizedAmount'] = intval((Configuration::get('PIGMBH_PAYMILL_DIFFERENTAMOUNT') + $cart->getOrderTotal(true, Cart::BOTH)) * 100);
         $data = array(
             'nbProducts' => $cart->nbProducts(),
             'cust_currency' => $cart->id_currency,
