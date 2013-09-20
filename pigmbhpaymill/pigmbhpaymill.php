@@ -130,8 +130,8 @@ class PigmbhPaymill extends PaymentModule
             $newConfig->setFastcheckout(Tools::getValue('fastcheckout', 'OFF'));
             $newConfig->setLabel(Tools::getValue('label', 'OFF'));
             $newConfig->setLogging(Tools::getValue('logging', 'OFF'));
-            $newConfig->setPrivateKey(Tools::getValue('privatekey', $oldConfig->getPrivateKey()));
-            $newConfig->setPublicKey(Tools::getValue('publickey', $oldConfig->getPublicKey()));
+            $newConfig->setPrivateKey(trim(Tools::getValue('privatekey', $oldConfig->getPrivateKey())));
+            $newConfig->setPublicKey(trim(Tools::getValue('publickey', $oldConfig->getPublicKey())));
             $this->_configurationHandler->updateConfiguration($newConfig);
         }
         $this->showConfigurationForm();
