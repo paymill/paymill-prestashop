@@ -30,7 +30,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
         }
         $fastCheckout = false;
-        if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT')) {
+        if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on') {
             if (Tools::getValue('payment') == 'creditcard') {
                 $dbData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_creditcard_userdata` WHERE `userId`=' . $this->context->customer->id);
             } elseif (Tools::getValue('payment') == 'debit') {
@@ -53,6 +53,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             }
         }
 
+
         $_SESSION['pigmbhPaymill']['authorizedAmount'] = intval((Configuration::get('PIGMBH_PAYMILL_DIFFERENTAMOUNT') + $cart->getOrderTotal(true, Cart::BOTH)) * 100);
         $data = array(
             'nbProducts' => $cart->nbProducts(),
@@ -63,7 +64,6 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'this_path' => $this->module->getPathUri(),
             'this_path_ssl' => Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->module->name . '/',
             'public_key' => Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'),
-            'bridge_url' => Configuration::get('PIGMBH_PAYMILL_BRIDGEURL'),
             'payment' => Tools::getValue('payment'),
             'paymill_show_label' => Configuration::get('PIGMBH_PAYMILL_LABEL') == 'on',
             'paymill_debugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',

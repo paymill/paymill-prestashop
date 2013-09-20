@@ -1,4 +1,3 @@
-{$valid_key}
 {if $creditcard && $valid_key}
 <p class="payment_module">
     <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'creditcard'])}" title="{l s='Paymill Creditcard' mod='pigmbhpaymill'}">
