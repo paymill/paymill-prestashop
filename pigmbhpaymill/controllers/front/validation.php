@@ -57,8 +57,8 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         $paymentProcessor->setEmail($user->email);
         $paymentProcessor->setDescription($shop->name . ' ' . $user->email);
         $paymentProcessor->setLogger($this);
-        $paymentProcessor->setSource('test');
-        if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT')) {
+        $paymentProcessor->setSource(Configuration::get('PIGMBH_PAYMILL_VERSION') . "_prestashop_" . _PS_VERSION_);
+        if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on') {
             if ($payment == 'creditcard') {
                 $userData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_creditcard_userdata` WHERE `userId`=' . $this->context->customer->id);
             } elseif ($payment == 'debit') {
@@ -120,7 +120,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             );
             try {
                 $db->insert($table, $data, false, false, Db::REPLACE, false);
-                $this->log("UserData saved." , var_export($data, true));
+                $this->log("UserData saved.", var_export($data, true));
             } catch (Exception $exception) {
                 $this->log("Failed saving UserData. " . $exception->getMessage());
             }
