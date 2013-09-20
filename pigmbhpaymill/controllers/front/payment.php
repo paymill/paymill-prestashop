@@ -36,7 +36,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             } elseif (Tools::getValue('payment') == 'debit') {
                 $dbData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
             }
-            if ($dbData != false && count($dbData) > 0){
+            if ($dbData != false && count($dbData) > 0) {
                 $fastCheckout = true;
             }
         }
@@ -68,7 +68,9 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'paymill_show_label' => Configuration::get('PIGMBH_PAYMILL_LABEL') == 'on',
             'paymill_debugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
             'components' => _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/pigmbhpaymill/components/',
-            'customer' => $this->context->customer->firstname . ' ' . $this->context->customer->lastname
+            'customer' => $this->context->customer->firstname . ' ' . $this->context->customer->lastname,
+            'paymill_form_year' => range(date('Y', time('now')), date('Y', time('now')) + 10),
+            'paymill_form_month' => range(1, 12)
         );
 
         $this->context->smarty->assign($data);

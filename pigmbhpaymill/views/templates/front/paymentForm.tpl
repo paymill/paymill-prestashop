@@ -110,7 +110,7 @@
                     break;
             }
             $('#paymill_card_icon').children().next("img").css({
-                "float":"right"
+                "float": "right"
             });
         });
     });
@@ -174,8 +174,16 @@
                 </p>
                 <p class="none">
                     <label>{l s='Valid until (MM/YYYY) *' mod='pigmbhpaymill'}</label>
-                    <input id="card-expiry-year" type="text" style="width: 60px; display: inline-block;" class="text" />
-                    <input id="card-expiry-month" type="text" style="width: 30px; display: inline-block;" class="text" />
+                    <select id="card-expiry-year" style="width: 55px; display: inline-block;" class="text">
+                        {foreach from=$paymill_form_year item=year}
+                            <option value="{$year}">{$year}</option>
+                        {/foreach}
+                    </select>
+                    <select id="card-expiry-month" style="width: 40px; display: inline-block;" class="text">
+                        {foreach from=$paymill_form_month item=month}
+                            <option value="{$month}">{$month}</option>
+                        {/foreach}
+                    </select>
                 </p>
                 <p class="description">{l s='Fields marked with a * are required' mod='pigmbhpaymill'}
                 </p>
