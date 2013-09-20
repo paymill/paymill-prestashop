@@ -69,12 +69,12 @@ class PigmbhPaymill extends PaymentModule
             return;
         }
 
-
         $this->smarty->assign(array(
             'this_path' => $this->_path,
             'this_path_ssl' => Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->name . '/',
             'debit' => Configuration::get('PIGMBH_PAYMILL_DEBIT'),
-            'creditcard' => Configuration::get('PIGMBH_PAYMILL_CREDITCARD')
+            'creditcard' => Configuration::get('PIGMBH_PAYMILL_CREDITCARD'),
+            'valid_key' => !in_array(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), array('',null)) && !in_array(Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'), array('',null))
         ));
         return $this->display(__FILE__, 'payment.tpl');
     }
