@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../../paymill/v2/lib/Services/Paymill/Clients.php';
+require_once dirname(__FILE__) . '/../../paymill/v2/lib/Services/Paymill/Payments.php';
 
 /**
  * PaymentController
@@ -41,9 +42,8 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             }
         }
 
-        $fastCheckout = $dbData != false && $dbData['paymentId'] !== '' && Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on';
-        $clientObject = new Services_Paymill_Clients(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
         if (isset($dbData['clientId'])) {
+            $clientObject = new Services_Paymill_Clients(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
             $oldClient = $clientObject->getOne($dbData['clientId']);
             if ($this->context->customer->email !== $oldClient['email']) {
                 $clientObject->update(array(
@@ -53,6 +53,15 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
                 );
             }
         }
+
+        $payment = false;
+        if (isset($dbData['paymentId'])) {
+            $paymentObject = new Services_Paymill_Payments(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
+            $payment = $dbData['paymentId'] !== '' ? $paymentObject->getOne($dbData['paymentId']) : false;
+        }
+
+        $fastCheckout = $dbData != false && $dbData['paymentId'] !== '' && Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on';
+
         $this->display_column_left = false;
         $this->display_column_center = true;
         $this->display_column_right = false;
@@ -81,6 +90,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'paymill_debugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
             'components' => _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/pigmbhpaymill/components/',
             'customer' => $this->context->customer->firstname . ' ' . $this->context->customer->lastname,
+            'prefilledFormData' => $payment,
             'paymill_form_year' => range(date('Y', time('now')), date('Y', time('now')) + 10),
             'paymill_form_month' => range(1, 12)
         );
@@ -92,5 +102,4 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             $this->setTemplate('paymentForm.tpl');
         }
     }
-
 }

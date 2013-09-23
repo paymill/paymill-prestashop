@@ -58,17 +58,13 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         $paymentProcessor->setDescription($shop->name . ' ' . $user->email);
         $paymentProcessor->setLogger($this);
         $paymentProcessor->setSource(Configuration::get('PIGMBH_PAYMILL_VERSION') . "_prestashop_" . _PS_VERSION_);
-        if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on') {
-            if ($payment == 'creditcard') {
-                $userData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_creditcard_userdata` WHERE `userId`=' . $this->context->customer->id);
-            } elseif ($payment == 'debit') {
-                $userData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
-            }
-            if (!empty($userData['clientId']) && !empty($userData['paymentId'])) {
-                $paymentProcessor->setClientId($userData['clientId']);
-                $paymentProcessor->setPaymentId($userData['paymentId']);
-            }
+        if ($payment == 'creditcard') {
+            $userData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_creditcard_userdata` WHERE `userId`=' . $this->context->customer->id);
+        } elseif ($payment == 'debit') {
+            $userData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
         }
+        $paymentProcessor->setClientId(!empty($userData['clientId']) ? $userData['clientId'] : null);
+        $paymentProcessor->setPaymentId(!empty($userData['paymentId']) && Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on' ? $userData['paymentId'] : null);
 
         $result = $paymentProcessor->processPayment();
         $this->log(
@@ -90,6 +86,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 
     public function log($message, $debugInfo)
     {
+        $debugInfo = isset($debugInfo) ? $debugInfo : null;
         $logging = Configuration::get('PIGMBH_PAYMILL_LOGGING');
         $log_file = dirname(__FILE__) . '/../../log.txt';
         if (is_writable($log_file) && $logging == 'on') {
@@ -112,19 +109,18 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         }
 
         try {
-            $count = $db->query(sprintf("SELECT COUNT(*) FROM %s WHERE ´clientId´=%s;", array(
-                $table, $clientId
-            )));
-            $this->log("Count:", var_export($count, true));
-            if (count($count) !== 0 || !$count) {
+            $query = "SELECT COUNT(*) FROM $table WHERE clientId='$clientId';";
+            $count = $db->execute($query);
+            $this->log("Count:", var_export(array($count, $query), true));
+            if (!$count) {
                 //insert
                 $this->log("Insert new data.", null);
                 $data['userId'] = $userId;
-                $db->insert($table, $data, true, false, DB::INSERT, false);
+                $db->insert($table, $data, false, false, DB::INSERT, false);
             } else {
                 //update
                 $this->log("Update data.", null);
-                $db->update($table, $data, '´userId´=' . $userId);
+                $db->update($table, $data, 'userId="' . $userId . '"', 0, false, false, false);
             }
             $this->log("UserData saved.", var_export($data, true));
         } catch (Exception $exception) {
