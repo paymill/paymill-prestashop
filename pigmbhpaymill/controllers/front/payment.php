@@ -40,7 +40,8 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
                 $dbData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
             }
         }
-        $fastCheckout = $dbData != false && count($dbData) > 0 && Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on';
+
+        $fastCheckout = $dbData != false && $dbData['paymentId'] !== '' && Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on';
         $clientObject = new Services_Paymill_Clients(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
         if (isset($dbData['clientId'])) {
             $oldClient = $clientObject->getOne($dbData['clientId']);

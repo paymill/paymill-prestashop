@@ -124,7 +124,6 @@ class PigmbhPaymill extends PaymentModule
             $oldConfig = $this->_configurationHandler->loadConfiguration();
             $newConfig = new configurationModel();
             $toleranz = Tools::getValue('differentamount');
-            var_dump($toleranz);
             if(is_numeric($toleranz)){
                 $toleranz = number_format($toleranz,2,'.','');
             }else{

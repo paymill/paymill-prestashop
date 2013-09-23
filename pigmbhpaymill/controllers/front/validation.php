@@ -79,10 +79,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         // finish the order if payment was sucessfully processed
         if ($result === true) {
             $this->log('Finish order.');
-            if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT')) {
-                $this->saveUserData($paymentProcessor->getClientId(), $paymentProcessor->getPaymentId());
-            }
-
+            $this->saveUserData($paymentProcessor->getClientId(), $paymentProcessor->getPaymentId());
             $this->module->validateOrder(
                 (int) $this->context->cart->id, Configuration::get('PS_OS_PREPARATION'), $cart->getOrderTotal(true, Cart::BOTH), $this->module->displayName, null, array(), null, false, $user->secure_key);
             Tools::redirectLink(__PS_BASE_URI__ . 'order-confirmation.php?key=' . $user->secure_key . '&id_cart=' . (int) $cart->id . '&id_module=' . (int) $this->module->id . '&id_order=' . (int) $this->module->currentOrder);
@@ -104,26 +101,34 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 
     private function saveUserData($clientId, $paymentId)
     {
-        if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT')) {
-            $db = Db::getInstance();
-            $userId = $this->context->customer->id;
-            $payment = Tools::getValue('payment');
-            if ($payment == 'creditcard') {
-                $table = 'pigmbh_paymill_creditcard_userdata';
-            } elseif ($payment == 'debit') {
-                $table = 'pigmbh_paymill_directdebit_userdata';
+        $db = Db::getInstance();
+        $userId = $this->context->customer->id;
+        $table = Tools::getValue('payment') == 'creditcard' ? 'pigmbh_paymill_creditcard_userdata' : 'pigmbh_paymill_directdebit_userdata';
+        $data['clientId'] = $clientId;
+
+        //change payment only when fastchekout is active
+        if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on') {
+            $data['paymentId'] = $paymentId;
+        }
+
+        try {
+            $count = $db->query(sprintf("SELECT COUNT(*) FROM %s WHERE ´clientId´=%s;", array(
+                $table, $clientId
+            )));
+            $this->log("Count:", var_export($count, true));
+            if (count($count) !== 0 || !$count) {
+                //insert
+                $this->log("Insert new data.", null);
+                $data['userId'] = $userId;
+                $db->insert($table, $data, true, false, DB::INSERT, false);
+            } else {
+                //update
+                $this->log("Update data.", null);
+                $db->update($table, $data, '´userId´=' . $userId);
             }
-            $data = array(
-                'clientId' => $clientId,
-                'paymentId' => $paymentId,
-                'userId' => $userId
-            );
-            try {
-                $db->insert($table, $data, false, false, Db::REPLACE, false);
-                $this->log("UserData saved.", var_export($data, true));
-            } catch (Exception $exception) {
-                $this->log("Failed saving UserData. " . $exception->getMessage());
-            }
+            $this->log("UserData saved.", var_export($data, true));
+        } catch (Exception $exception) {
+            $this->log("Failed saving UserData. " . $exception->getMessage());
         }
     }
 
