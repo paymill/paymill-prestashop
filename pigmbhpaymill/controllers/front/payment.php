@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__) . '/../../paymill/v2/lib/Services/Paymill/Clients.php';
+
 /**
  * PaymentController
  *
@@ -29,18 +31,27 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
         if (!in_array(Tools::getValue('payment'), $validPayments)) {
             Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
         }
-        $fastCheckout = false;
-        if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on') {
+
+        $dbData = array();
+        if (isset($this->context->customer->id)) {
             if (Tools::getValue('payment') == 'creditcard') {
                 $dbData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_creditcard_userdata` WHERE `userId`=' . $this->context->customer->id);
             } elseif (Tools::getValue('payment') == 'debit') {
                 $dbData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
             }
-            if ($dbData != false && count($dbData) > 0) {
-                $fastCheckout = true;
+        }
+        $fastCheckout = $dbData != false && count($dbData) > 0 && Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on';
+        $clientObject = new Services_Paymill_Clients(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
+        if (isset($dbData['clientId'])) {
+            $oldClient = $clientObject->getOne($dbData['clientId']);
+            if ($this->context->customer->email !== $oldClient['email']) {
+                $clientObject->update(array(
+                    'id' => $dbData['clientId'],
+                    'email' => $this->context->customer->email
+                    )
+                );
             }
         }
-
         $this->display_column_left = false;
         $this->display_column_center = true;
         $this->display_column_right = false;
