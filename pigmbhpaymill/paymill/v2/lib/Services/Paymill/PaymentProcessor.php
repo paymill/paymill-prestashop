@@ -219,17 +219,20 @@ class Services_Paymill_PaymentProcessor
         foreach ($arrayMask as $mask => $type) {
             if (is_null($parameter[$mask])) {
                 $validation = false;
+                $this->_logger->paramName = $mask;
                 $this->_log("The Parameter $mask is missing.", var_export($parameter, true));
             } else {
                 switch ($type) {
                     case 'string':
                         if (!is_string($parameter[$mask])) {
+                            $this->_logger->paramName = $mask;
                             $this->_log("The Parameter $mask is not a string.", var_export($parameter, true));
                             $validation = false;
                         }
                         break;
                     case 'integer':
                         if (!is_integer($parameter[$mask])) {
+                            $this->_logger->paramName = $mask;
                             $this->_log("The Parameter $mask is not an integer.", var_export($parameter, true));
                             $validation = false;
                         }
@@ -255,14 +258,17 @@ class Services_Paymill_PaymentProcessor
     {
         $this->_lastResponse = $transaction;
         if (isset($transaction['data']['response_code']) && $transaction['data']['response_code'] !== 20000) {
+            $this->_logger->paramName = 'response_error';
             $this->_log("An Error occured: " . $transaction['data']['response_code'], var_export($transaction, true));
             throw new Exception("Invalid Result Exception: Invalid ResponseCode");
         }
 
         if (!isset($transaction['id']) && !isset($transaction['data']['id'])) {
+            $this->_logger->paramName = $type . '_error';
             $this->_log("No $type created.", var_export($transaction, true));
             throw new Exception("Invalid Result Exception: Invalid Id");
         } else {
+            $this->_logger->paramName = $type . '_success';
             $this->_log("$type created.", isset($transaction['id']) ? $transaction['id'] : $transaction['data']['id']);
         }
 
@@ -274,15 +280,18 @@ class Services_Paymill_PaymentProcessor
                     return true;
                 } elseif ($transaction['status'] == "open") {
                     // transaction was issued but status is open for any reason
+                    $this->_logger->paramName = 'transaction_success';
                     $this->_log("Status is open.", var_export($transaction, true));
                     throw new Exception("Invalid Result Exception: Invalid Orderstate");
                 } else {
                     // another error occured
+                    $this->_logger->paramName = 'unknown_error';
                     $this->_log("Unknown error." . var_export($transaction, true));
                     throw new Exception("Invalid Result Exception: Unknown Error");
                 }
             } else {
                 // another error occured
+                $this->_logger->paramName = $type . '_error';
                 $this->_log("$type could not be issued.", var_export($transaction, true));
                 throw new Exception("Invalid Result Exception: $type could not be issued.");
             }
@@ -311,29 +320,34 @@ class Services_Paymill_PaymentProcessor
         if (!$this->_validateParameter()) {
             return false;
         }
+        
+        $this->_logger->paramName = 'process_payment_data';
+        $this->_log('Process payment with following data', print_r($this->toArray(), true));
 
         try {
-            $this->_log('Create client with following data', print_r($this->toArray(), true));
+            
             $this->_createClient();
+            $this->_logger->paramName = 'client_api_response';
             $this->_log('Client API Response', print_r($this->_clientsObject->getResponse(), true));
-            $this->_log('Create payment with following data', print_r($this->toArray(), true));
             $this->_createPayment();
+            $this->_logger->paramName = 'payment_api_response';
             $this->_log('Payment API Response', print_r($this->_paymentsObject->getResponse(), true));
 
             //creates a transaction if there is no difference between the amount
             if ($this->_preAuthAmount === $this->_amount && $captureNow) {
-                $this->_log('Create transaction with following data', print_r($this->toArray(), true));
                 $this->_createTransaction();
+                $this->_logger->paramName = 'transaction_api_response';
                 $this->_log('Transaction API Response', print_r($this->getLastResponse(), true));
             } else {
-                $this->_log('Create pre-auth with following data', print_r($this->toArray(), true));
                 $this->_processPreAuthCapture($captureNow);
+                $this->_logger->paramName = 'pre_auth_api_response';
                 $this->_log('Pre-Auth API Response', print_r($this->getLastResponse(), true));
             }
-
+            
             return true;
         } catch (Exception $ex) {
             // paymill wrapper threw an exception
+            $this->_logger->paramName = 'exception_response';
             $this->_log("Exception thrown from paymill wrapper.", $ex->getMessage());
             return false;
         }
