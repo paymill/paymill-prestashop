@@ -60,7 +60,6 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             $payment = $dbData['paymentId'] !== '' ? $paymentObject->getOne($dbData['paymentId']) : false;
         }
 
-        $fastCheckout = $dbData != false && $dbData['paymentId'] !== '' && Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on';
 
         $this->display_column_left = false;
         $this->display_column_center = true;
@@ -96,10 +95,8 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
         );
 
         $this->context->smarty->assign($data);
-        if ($fastCheckout) {
-            $this->setTemplate('fastCheckout.tpl');
-        } else {
-            $this->setTemplate('paymentForm.tpl');
-        }
+
+        $this->setTemplate('paymentForm.tpl');
     }
+
 }

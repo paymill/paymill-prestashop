@@ -2,6 +2,8 @@
 <script type="text/javascript">
     var PAYMILL_PUBLIC_KEY = '{$public_key}';
     var PAYMILL_IMAGE = '{$components}/images';
+    var prefilled = new Array();
+    var submitted = false;
 </script>
 <script type="text/javascript" src="https://bridge.paymill.com/"></script>
 <script type="text/javascript">
@@ -39,6 +41,7 @@
         }
     {/if}
         if (!result) {
+            $("#submitButton").removeAttr('disabled');
             errors.parent().show();
         } else {
             debug("Validations successful");
@@ -47,32 +50,45 @@
         return result;
     }
     $(document).ready(function() {
-        $("#submitButton").click(function(event) {
-            if (validate()) {
-                try {
+        prefilled = getFormData(prefilled, true);
+        $("#submitForm").submit(function(event) {
+            if (!submitted) {
+                $("#submitButton").attr('disabled', true);
+                var formdata = new Array();
+                formdata = getFormData(formdata, false);
+
+                if (prefilled.toString() === formdata.toString()) {
+                    result = new Object();
+                    result.token = 'dummyToken';
+                    PaymillResponseHandler(null, result);
+                } else {
+                    if (validate()) {
+                        try {
     {if $payment == 'creditcard'}
-                    paymill.createToken({
-                        number: $('#card-number').val(),
-                        cardholder: $('#account-holder').val(),
-                        exp_month: $('#card-expiry-month').val(),
-                        exp_year: $('#card-expiry-year').val(),
-                        cvc: $('#card-cvc').val(),
-                        amount_int: {$total},
-                        currency: '{$currency_iso}'
-                    }, PaymillResponseHandler);
+                            paymill.createToken({
+                                number: $('#card-number').val(),
+                                cardholder: $('#account-holder').val(),
+                                exp_month: $('#card-expiry-month').val(),
+                                exp_year: $('#card-expiry-year').val(),
+                                cvc: $('#card-cvc').val(),
+                                amount_int: {$total},
+                                currency: '{$currency_iso}'
+                            }, PaymillResponseHandler);
     {elseif $payment == 'debit'}
-                    paymill.createToken({
-                        number: $('#paymill_accountnumber').val(),
-                        bank: $('#paymill_banknumber').val(),
-                        accountholder: $('#paymill_accountholder').val()
-                    }, PaymillResponseHandler);
+                            paymill.createToken({
+                                number: $('#paymill_accountnumber').val(),
+                                bank: $('#paymill_banknumber').val(),
+                                accountholder: $('#paymill_accountholder').val()
+                            }, PaymillResponseHandler);
 
     {/if}
-                } catch (e) {
-                    alert("Ein Fehler ist aufgetreten: " + e);
+                        } catch (e) {
+                            alert("Ein Fehler ist aufgetreten: " + e);
+                        }
+                    }
                 }
             }
-            return false;
+            return submitted;
         });
 
         $('#card-number').keyup(function() {
@@ -114,15 +130,27 @@
             });
         });
     });
+    function getFormData(array, ignoreEmptyValues) {
+        $('#submitForm :input').not(':[type=hidden]').each(function() {
+            if ($(this).val() === "" && ignoreEmptyValues) {
+                return;
+            }
+            array.push($(this).val());
+        });
+        return array;
+    }
     function PaymillResponseHandler(error, result) {
         debug("Started Paymill response handler");
         if (error) {
+            $("#submitButton").removeAttr('disabled');
             debug("API returned error:" + error.apierror);
             alert("API returned error:" + error.apierror);
+            submitted = false;
         } else {
             debug("Received token from Paymill API: " + result.token);
             var form = $("#submitForm");
             var token = result.token;
+            submitted = true;
             form.append("<input type='hidden' name='paymillToken' value='" + token + "'/>");
             form.submit();
         }
@@ -162,26 +190,34 @@
                 <input type="hidden" name="payment" value="creditcard">
                 <p class="none">
                     <label>{l s='Accountholder *' mod='pigmbhpaymill'}</label>
-                    <input id="account-holder" type="text" size="14" class="text" value="{$customer}"/>
+                    <input id="account-holder" type="text" size="14" class="text" value="{if $prefilledFormData['card_holder']}{$prefilledFormData['card_holder']}{else}{$customer}{/if}"/>
                 </p>
                 <p class="none" id="paymill_card_icon">
                     <label>{l s='Creditcard-number *' mod='pigmbhpaymill'}</label>
-                    <input id="card-number" type="text" size="14" class="text" />
+                    <input id="card-number" type="text" size="14" class="text" value="{if $prefilledFormData['last4']}****************{$prefilledFormData['last4']}{/if}" />
                 </p>
                 <p class="none">
-                    <label>{l s='CVC *' mod='pigmbhpaymill'}*</label>
-                    <input id="card-cvc" type="text" size="4" class="text" />
+                    <label>{l s='CVC *' mod='pigmbhpaymill'}</label>
+                    <input id="card-cvc" type="text" size="4" class="text" value="{if $prefilledFormData['last4']}***{/if}" />
                 </p>
                 <p class="none">
                     <label>{l s='Valid until (MM/YYYY) *' mod='pigmbhpaymill'}</label>
                     <select id="card-expiry-year" style="width: 55px; display: inline-block;" class="text">
                         {foreach from=$paymill_form_year item=year}
-                            <option value="{$year}">{$year}</option>
+                            {if $prefilledFormData['expire_year'] == $year}
+                                <option value="{$year}" selected>{$year}</option>
+                            {else}
+                                <option value="{$year}">{$year}</option>
+                            {/if}
                         {/foreach}
                     </select>
                     <select id="card-expiry-month" style="width: 40px; display: inline-block;" class="text">
                         {foreach from=$paymill_form_month item=month}
-                            <option value="{$month}">{$month}</option>
+                            {if $prefilledFormData['expire_month']}
+                                <option value="{$month}" {if $prefilledFormData['expire_month'] == $month}selected{/if}>{$month}</option>
+                            {else}
+                                <option value="{$month}">{$month}</option>
+                            {/if}
                         {/foreach}
                     </select>
                 </p>
@@ -194,15 +230,15 @@
                 <input type="hidden" name="payment" value="debit">
                 <p class="none">
                     <label>{l s='Accountholder *' mod='pigmbhpaymill'}</label>
-                    <input id="paymill_accountholder" type="text" size="15" class="text" />
+                    <input id="paymill_accountholder" type="text" size="15" class="text" value="{if $prefilledFormData['holder']}{$prefilledFormData['holder']}{else}{$customer}{/if}"/>
                 </p>
                 <p class="none">
                     <label>{l s='Accountnumber *' mod='pigmbhpaymill'}</label>
-                    <input id="paymill_accountnumber" type="text" size="15" class="text" />
+                    <input id="paymill_accountnumber" type="text" size="15" class="text" value="{if $prefilledFormData['account']}{$prefilledFormData['account']}{/if}" />
                 </p>
                 <p class="none">
                     <label>{l s='Banknumber *' mod='pigmbhpaymill'}</label>
-                    <input id="paymill_banknumber" type="text" size="15" class="text" />
+                    <input id="paymill_banknumber" type="text" size="15" class="text" value="{if $prefilledFormData['code']}{$prefilledFormData['code']}{/if}" />
                 </p>
                 <p class="description">{l s='Fields marked with a * are required' mod='pigmbhpaymill'}
                 </p>
@@ -219,7 +255,7 @@
             {if !$opc}
                 <a href="{$link->getPageLink('order', true)}?step=3" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
             {/if}
-            <input type="button" id='submitButton' value="{l s='Order' mod='pigmbhpaymill'}" class="exclusive_large" />
+            <input type="submit" id='submitButton' value="{l s='Order' mod='pigmbhpaymill'}" class="exclusive_large" />
         </p>
     </form>
 {/if}

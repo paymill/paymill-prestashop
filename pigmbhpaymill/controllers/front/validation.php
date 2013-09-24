@@ -109,7 +109,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         }
 
         try {
-            $query = "SELECT COUNT(*) FROM $table WHERE clientId='$clientId';";
+            $query = "SELECT COUNT(*) FROM $table WHERE clientId=\'$clientId\';";
             $count = $db->execute($query);
             $this->log("Count:", var_export(array($count, $query), true));
             if (!$count) {
