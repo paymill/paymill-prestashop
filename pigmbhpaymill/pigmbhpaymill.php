@@ -2,6 +2,7 @@
 
 require_once 'components/configurationHandler.php';
 require_once 'components/models/configurationModel.php';
+require_once 'paymill/v2/lib/Services/Paymill/Log.php';
 
 /**
  * PigmbhPaymill
@@ -74,7 +75,7 @@ class PigmbhPaymill extends PaymentModule
             'this_path_ssl' => Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->name . '/',
             'debit' => Configuration::get('PIGMBH_PAYMILL_DEBIT'),
             'creditcard' => Configuration::get('PIGMBH_PAYMILL_CREDITCARD'),
-            'valid_key' => !in_array(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), array('',null)) && !in_array(Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'), array('',null))
+            'valid_key' => !in_array(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), array('', null)) && !in_array(Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'), array('', null))
         ));
         return $this->display(__FILE__, 'payment.tpl');
     }
@@ -90,6 +91,13 @@ class PigmbhPaymill extends PaymentModule
 
     public function createDatabaseTables()
     {
+        $sqlLog = "CREATE TABLE IF NOT EXISTS `pigmbh_paymill_logging` ("
+            . "`id` int(11) NOT NULL AUTO_INCREMENT,"
+            . "`debug` text NOT NULL,"
+            . "`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+            . "PRIMARY KEY (`id`)"
+            . ") AUTO_INCREMENT=1";
+
         $sqlDebit = "CREATE TABLE IF NOT EXISTS `pigmbh_paymill_directdebit_userdata` ( "
             . "`userId` int(11) NOT NULL, "
             . "`clientId` text NOT NULL, "
@@ -104,6 +112,7 @@ class PigmbhPaymill extends PaymentModule
             . ");";
         $db = Db::getInstance();
         try {
+            $db->query($sqlLog);
             $db->query($sqlCreditCard);
             $db->query($sqlDebit);
             return true;
@@ -124,10 +133,10 @@ class PigmbhPaymill extends PaymentModule
             $oldConfig = $this->_configurationHandler->loadConfiguration();
             $newConfig = new configurationModel();
             $toleranz = Tools::getValue('differentamount');
-            if(is_numeric($toleranz)){
-                $toleranz = number_format($toleranz,2,'.','');
-            }else{
-                $toleranz = number_format(0,2,'.','');
+            if (is_numeric($toleranz)) {
+                $toleranz = number_format($toleranz, 2, '.', '');
+            } else {
+                $toleranz = number_format(0, 2, '.', '');
             }
             $newConfig->setCreditcard(Tools::getValue('creditcard', 'OFF'));
             $newConfig->setDirectdebit(Tools::getValue('debit', 'OFF'));
@@ -140,14 +149,27 @@ class PigmbhPaymill extends PaymentModule
             $newConfig->setPublicKey(trim(Tools::getValue('publickey', $oldConfig->getPublicKey())));
             $this->_configurationHandler->updateConfiguration($newConfig);
         }
-        $this->showConfigurationForm();
-        return $this->_html;
+
+        $db = Db::getInstance();
+        $log = new Services_Paymill_Log();
+        $data = array();
+        foreach($db->executeS("SELECT * FROM `pigmbh_paymill_logging`", true) as $row){
+            $log->fill($row['debug']);
+            $data[] = $log->toArray();
+        }
+
+        $this->smarty->assign(array(
+            'config' => $this->showConfigurationForm(),
+            'data' => $data
+        ));
+
+        return $this->display(__FILE__, 'views/templates/admin/logging.tpl');
     }
 
     private function showConfigurationForm()
     {
         $configurationModel = $this->_configurationHandler->loadConfiguration();
-        $this->_html .=
+        return
             '<link rel="stylesheet" type="text/css" href="' . _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/pigmbhpaymill/components/paymill_styles.css">
             <form action="' . Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']) . '" method="post">
 			<fieldset class="paymill_center">
