@@ -129,6 +129,7 @@ class PigmbhPaymill extends PaymentModule
      */
     public function getContent()
     {
+        //configuration
         if (Tools::isSubmit('btnSubmit')) {
             $oldConfig = $this->_configurationHandler->loadConfiguration();
             $newConfig = new configurationModel();
@@ -150,17 +151,56 @@ class PigmbhPaymill extends PaymentModule
             $this->_configurationHandler->updateConfiguration($newConfig);
         }
 
+        //logging
         $db = Db::getInstance();
         $log = new Services_Paymill_Log();
         $data = array();
-        foreach($db->executeS("SELECT * FROM `pigmbh_paymill_logging`", true) as $row){
-            $log->fill($row['debug']);
-            $data[] = $log->toArray();
+        $detailData = array();
+        $showDetail = false;
+        $page = Tools::getValue('paymillpage', 1);
+        $limit = 10;
+        $start = $page * $limit - $limit;
+        $db->execute("SELECT * FROM `pigmbh_paymill_logging`", true);
+        $maxPage = range(1,ceil($db->numRows() / $limit));
+
+//        var_dump($maxPage);
+
+        //Details
+        if (Tools::getValue('paymillid') && Tools::getValue('paymillkey')) {
+            $showDetail = true;
+            $row = $db->executeS("SELECT * FROM `pigmbh_paymill_logging` WHERE id='" . Tools::getValue('paymillid') . "';", true);
+            $log->fill($row[0]['debug']);
+            $unsortedData = $log->toArray();
+            foreach ($unsortedData as $key => $value) {
+                if ($key === Tools::getValue('paymillkey')) {
+                    $detailData['title'] = str_replace("_", " ", $key);
+                    $detailData['data'] = is_array($value) ? $value[1] . "<br><br>" . $value[0] : $value;
+                    break;
+                }
+            }
         }
+
+        //getAll Data
+        foreach ($db->executeS("SELECT * FROM `pigmbh_paymill_logging` LIMIT $start, $limit", true) as $row) {
+            $log->fill($row['debug']);
+            $unsortedData = $log->toArray();
+            $unsortedData['Date'] = $row['date'];
+            foreach ($unsortedData as $key => $value) {
+                $value = is_array($value) ? $value[1] . "<br><br>" . $value[0] : $value;
+                $unsortedData[$key] = strlen($value) >= 300 ? "<a href='" . $_SERVER['REQUEST_URI'] . "&paymillid=" . $row['id'] . "&paymillkey=" . $key . "'>" . $this->l('see more') . "</a>" : $value;
+            }
+            $data[] = array_reverse($unsortedData);
+        }
+
+
 
         $this->smarty->assign(array(
             'config' => $this->showConfigurationForm(),
-            'data' => $data
+            'data' => $data,
+            'detailData' => $detailData,
+            'showDetail' => $showDetail,
+            'paymillMaxPage' => $maxPage,
+            'paymillCurrentPage' => $page
         ));
 
         return $this->display(__FILE__, 'views/templates/admin/logging.tpl');

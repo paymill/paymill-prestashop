@@ -16,6 +16,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
     public function initContent()
     {
         session_start();
+        unset($_SESSION['log_id']);
         $db = Db::getInstance();
         $token = Tools::getValue('paymillToken');
         $payment = Tools::getValue('payment');
@@ -65,7 +66,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             $userData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
         }
         $paymentProcessor->setClientId(!empty($userData['clientId']) ? $userData['clientId'] : null);
-        $paymentProcessor->setPaymentId(!empty($userData['paymentId']) && Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on' ? $userData['paymentId'] : null);
+        $paymentProcessor->setPaymentId(!empty($userData['paymentId']) ? $userData['paymentId'] : null);
 
         $result = $paymentProcessor->processPayment();
         $this->paramName = "result";
@@ -73,7 +74,6 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             'Payment processing resulted in'
             , ($result ? 'Success' : 'Fail')
         );
-
         // finish the order if payment was sucessfully processed
         if ($result === true) {
             $this->saveUserData($paymentProcessor->getClientId(), $paymentProcessor->getPaymentId());
@@ -92,18 +92,18 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             $this->paramName = "default";
         }
         $param = $this->paramName;
-        $log->$param = $debugInfo;
+        $log->$param = array($debugInfo, $message);
         $log->message = $message;
         $db = Db::getInstance();
         if (Configuration::get('PIGMBH_PAYMILL_LOGGING') === 'on') {
             if (array_key_exists('log_id', $_SESSION)) {
-                $data = $db->execute($db->escape('SELECT debug from `pigmbh_paymill_logging` WHERE ' . $_SESSION['log_id']));
-                $log->fill($data['debug']);
+                $data = $db->executeS($db->escape('SELECT debug from `pigmbh_paymill_logging` WHERE ' . $_SESSION['log_id']),true);
+                $log->fill($data[0]['debug']);
                 $db->execute("UPDATE `pigmbh_paymill_logging` SET debug = '" . $db->escape($log->toJson()) . "' WHERE id = " . $_SESSION['log_id']);
             } else {
                 $db->execute("INSERT INTO `pigmbh_paymill_logging` (debug) VALUES('" . $db->escape($log->toJson()) . "')");
-                $data = $db->execute($db->escape("SELECT LAST_INSERT_ID();"));
-                $_SESSION['log_id'] = $data['LAST_INSERT_ID()'];
+                $data = $db->executeS($db->escape("SELECT LAST_INSERT_ID();"),true);
+                $_SESSION['log_id'] = $data[0]['LAST_INSERT_ID()'];
             }
         }
     }
@@ -123,18 +123,17 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         try {
             $query = "SELECT COUNT(*) FROM $table WHERE clientId=\'$clientId\';";
             $count = $db->execute($query);
-            $this->log("Count:", var_export(array($count, $query), true));
+            $this->paramName = "save_user_data";
             if (!$count) {
                 //insert
-                $this->log("Insert new data.", null);
+                $this->log("Inserted new data.", var_export($data, true));
                 $data['userId'] = $userId;
                 $db->insert($table, $data, false, false, DB::INSERT, false);
             } else {
                 //update
-                $this->log("Update data.", null);
+                $this->log("Updated data.", var_export($data, true));
                 $db->update($table, $data, 'userId="' . $userId . '"', 0, false, false, false);
             }
-            $this->log("UserData saved.", var_export($data, true));
         } catch (Exception $exception) {
             $this->log("Failed saving UserData. " . $exception->getMessage());
         }

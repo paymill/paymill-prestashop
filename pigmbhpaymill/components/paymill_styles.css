@@ -1,3 +1,19 @@
+.dataTableHeadingContent {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 5px;
+    background-color: #f1f1f1;
+    border: 1px solid #CCCCCC;
+}
+.dataTableContent {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 10px;
+    color: #000000;
+    vertical-align: middle;
+    border-bottom: 1px dashed #cccccc;
+}
+
 .paymill_config_header {
     font-weight: bold;
 }
