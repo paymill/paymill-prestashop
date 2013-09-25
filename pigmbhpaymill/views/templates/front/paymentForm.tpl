@@ -9,40 +9,41 @@
 <script type="text/javascript">
     function validate() {
         debug("Paymill handler triggered");
-        var errors = $("#errors");
-        errors.parent().hide();
-        errors.html("");
         var result = true;
+        $('.error').remove();
     {if $payment == 'creditcard'}
+        if ($('#account-holder').val() === "") {
+            $('#account-holder').after("<p class='error paymillerror'>{l s='Please enter the creditcardholders name.' mod='pigmbhpaymill'}</p>");
+            result = false;
+        }
         if (!paymill.validateCardNumber($('#card-number').val())) {
-            errors.append("<p>Bitte geben Sie eine gültige Kartennummer ein</p>");
+            $('#card-number').after("<p class='error paymillerror'>{l s='Please enter your creditcardnumber.' mod='pigmbhpaymill'}</p>");
             result = false;
         }
         if (!paymill.validateCvc($('#card-cvc').val())) {
-            errors.append("<p>Bitte geben sie einen gültigen Sicherheitscode ein (Rückseite der Karte).</p>");
+            $('#card-cvc').after("<p class='error paymillerror'>{l s='Please enter your CVC-code(back of card).' mod='pigmbhpaymill'}</p>");
             result = false;
         }
         if (!paymill.validateExpiry($('#card-expiry-month').val(), $('#card-expiry-year').val())) {
-            errors.append("<p>Das Ablaufdatum der Karte ist ungültig.</p>");
+            $('#card-expiry-year').after("<p class='error paymillerror'>{l s='Please enter a valid date.' mod='pigmbhpaymill'}</p>");
             result = false;
         }
     {elseif $payment == 'debit'}
         if (!$('#paymill_accountholder').val()) {
-            errors.append("<p>Bitte geben Sie den Kontoinhaber an.</p>");
+            $('#paymill_accountholder').after("<p class='error paymillerror'>{l s='Please enter the accountholder' mod='pigmbhpaymill'}</p>");
             result = false;
         }
         if (!paymill.validateAccountNumber($('#paymill_accountnumber').val())) {
-            errors.append("<p>Bitte geben Sie eine g&uuml;ltige Kontonummer ein.</p>");
+            $('#paymill_accountnumber').after("<p class='error paymillerror'>{l s='Please enter your accountnumber.' mod='pigmbhpaymill'}</p>");
             result = false;
         }
         if (!paymill.validateBankCode($('#paymill_banknumber').val())) {
-            errors.append("<p>Bitte geben Sie eine g&uuml;ltige BLZ ein.</p>");
+            $('#paymill_banknumber').after("<p class='error paymillerror'>{l s='Please enter your bankcode.' mod='pigmbhpaymill'}</p>");
             result = false;
         }
     {/if}
         if (!result) {
             $("#submitButton").removeAttr('disabled');
-            errors.parent().show();
         } else {
             debug("Validations successful");
         }
@@ -94,40 +95,10 @@
         $('#card-number').keyup(function() {
             var brand = paymill.cardType($('#card-number').val());
             brand = brand.toLowerCase();
-            $('#card-number').prev("img").remove();
-            switch (brand) {
-                case 'visa':
-                    $('#card-number').after('<img src="' + PAYMILL_IMAGE + '/32x20_visa.png" >');
-                    break;
-                case 'mastercard':
-                    $('#card-number').after('<img src="' + PAYMILL_IMAGE + '/32x20_mastercard.png" >');
-                    break;
-                case 'american express':
-                    $('#card-number').after('<img src="' + PAYMILL_IMAGE + '/32x20_amex.png" >');
-                    break;
-                case 'jcb':
-                    $('#card-number').after('<img src="' + PAYMILL_IMAGE + '/32x20_jcb.png" >');
-                    break;
-                case 'maestro':
-                    $('#card-number').after('<img src="' + PAYMILL_IMAGE + '/32x20_maestro.png" >');
-                    break;
-                case 'diners club':
-                    $('#card-number').after('<img src="' + PAYMILL_IMAGE + '/32x20_dinersclub.png" >');
-                    break;
-                case 'discover':
-                    $('#card-number').after('<img src="' + PAYMILL_IMAGE + '/32x20_discover.png" >');
-                    break;
-                case 'unionpay':
-                    $('#card-number').after('<img src="' + PAYMILL_IMAGE + '/32x20_unionpay.png" >');
-                    break;
-                case 'unknown':
-                default:
-                    $('#card-number').next("img").remove();
-                    break;
+            $("#card-number")[0].className = $("#card-number")[0].className.replace(/paymill-card-number-.*/g, '');
+            if(brand !== 'unknown'){
+                $('#card-number').addClass("paymill-card-number-" + brand);
             }
-            $('#paymill_card_icon').children().next("img").css({
-                "float": "right"
-            });
         });
     });
     function getFormData(array, ignoreEmptyValues) {
@@ -181,42 +152,43 @@
 
     <h3>{l s='Paymill payment' mod='pigmbhpaymill'}</h3>
     <form id='submitForm' action="{$link->getModuleLink('pigmbhpaymill', 'validation', [], true)}" method="post">
-        <div class="error" style="display: none">
-            <ul id="errors">
-            </ul>
-        </div>
         <div class="debit">
             {if $payment == "creditcard"}
                 <input type="hidden" name="payment" value="creditcard">
                 <p class="none">
-                    <label>{l s='Accountholder *' mod='pigmbhpaymill'}</label>
+                    <label>{l s='Accountholder *' mod='pigmbhpaymill'}</label><br>
                     <input id="account-holder" type="text" size="14" class="text" value="{if $prefilledFormData['card_holder']}{$prefilledFormData['card_holder']}{else}{$customer}{/if}"/>
                 </p>
                 <p class="none" id="paymill_card_icon">
-                    <label>{l s='Creditcard-number *' mod='pigmbhpaymill'}</label>
+                    <label>{l s='Creditcard-number *' mod='pigmbhpaymill'}</label><br>
                     <input id="card-number" type="text" size="14" class="text" value="{if $prefilledFormData['last4']}****************{$prefilledFormData['last4']}{/if}" />
                 </p>
                 <p class="none">
-                    <label>{l s='CVC *' mod='pigmbhpaymill'}</label>
+                    <label>{l s='CVC *' mod='pigmbhpaymill'}</label><br>
                     <input id="card-cvc" type="text" size="4" class="text" value="{if $prefilledFormData['last4']}***{/if}" />
                 </p>
                 <p class="none">
-                    <label>{l s='Valid until (MM/YYYY) *' mod='pigmbhpaymill'}</label>
-                    <select id="card-expiry-year" style="width: 55px; display: inline-block;" class="text">
+                    <label>{l s='Valid until (MM/YYYY) *' mod='pigmbhpaymill'}</label><br>
+                    <select id="card-expiry-month" class="Paymillselect">
+                        <option value="1" {if $prefilledFormData['expire_month'] == 1}selected{/if}>{l s='January' mod='pigmbhpaymill'}</option>
+                        <option value="2" {if $prefilledFormData['expire_month'] == 2}selected{/if}>{l s='February' mod='pigmbhpaymill'}</option>
+                        <option value="3" {if $prefilledFormData['expire_month'] == 3}selected{/if}>{l s='March' mod='pigmbhpaymill'}</option>
+                        <option value="4" {if $prefilledFormData['expire_month'] == 4}selected{/if}>{l s='April' mod='pigmbhpaymill'}</option>
+                        <option value="5" {if $prefilledFormData['expire_month'] == 5}selected{/if}>{l s='May' mod='pigmbhpaymill'}</option>
+                        <option value="6" {if $prefilledFormData['expire_month'] == 6}selected{/if}>{l s='June' mod='pigmbhpaymill'}</option>
+                        <option value="7" {if $prefilledFormData['expire_month'] == 7}selected{/if}>{l s='July' mod='pigmbhpaymill'}</option>
+                        <option value="8" {if $prefilledFormData['expire_month'] == 8}selected{/if}>{l s='August' mod='pigmbhpaymill'}</option>
+                        <option value="9" {if $prefilledFormData['expire_month'] == 9}selected{/if}>{l s='September' mod='pigmbhpaymill'}</option>
+                        <option value="10" {if $prefilledFormData['expire_month'] == 10}selected{/if}>{l s='October' mod='pigmbhpaymill'}</option>
+                        <option value="11" {if $prefilledFormData['expire_month'] == 11}selected{/if}>{l s='November' mod='pigmbhpaymill'}</option>
+                        <option value="12" {if $prefilledFormData['expire_month'] == 12}selected{/if}>{l s='December' mod='pigmbhpaymill'}</option>
+                    </select>
+                    <select id="card-expiry-year" class="Paymillselect">
                         {foreach from=$paymill_form_year item=year}
                             {if $prefilledFormData['expire_year'] == $year}
                                 <option value="{$year}" selected>{$year}</option>
                             {else}
                                 <option value="{$year}">{$year}</option>
-                            {/if}
-                        {/foreach}
-                    </select>
-                    <select id="card-expiry-month" style="width: 40px; display: inline-block;" class="text">
-                        {foreach from=$paymill_form_month item=month}
-                            {if $prefilledFormData['expire_month']}
-                                <option value="{$month}" {if $prefilledFormData['expire_month'] == $month}selected{/if}>{$month}</option>
-                            {else}
-                                <option value="{$month}">{$month}</option>
                             {/if}
                         {/foreach}
                     </select>

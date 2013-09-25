@@ -55,8 +55,57 @@
 }
 
 .text{
-    float:right;
+    width: 150px;
 }
+.Paymillselect{
+    width: 75px;
+}
+
+.paymillerror{
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 9px;
+}
+
 .none{
     width: 300px;
+}
+
+.paymill-card-number-visa
+{
+    background: url('images/32x20_visa.png') no-repeat center right !important;
+}
+
+.paymill-card-number-mastercard
+{
+    background: url('images/32x20_mastercard.png') no-repeat center right !important;
+}
+
+.paymill-card-number-amex
+{
+    background: url('images/32x20_amex.png') no-repeat center right !important;
+}
+
+.paymill-card-number-jcb
+{
+    background: url('images/32x20_jcb.png') no-repeat center right !important;
+}
+
+.paymill-card-number-maestro
+{
+    background: url('images/32x20_maestro.png') no-repeat center right !important;
+}
+
+.paymill-card-number-carte-bleue
+{
+    background: url('images/32x20_unionpay.png') no-repeat center right !important;
+}
+
+.paymill-card-number-diners
+{
+    background: url('images/32x20_dinersclub.png') no-repeat center right !important;
+}
+
+.paymill-card-number-discover
+{
+    background: url('images/32x20_discover.png') no-repeat center right !important;
 }

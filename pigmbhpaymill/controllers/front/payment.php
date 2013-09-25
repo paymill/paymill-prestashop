@@ -91,7 +91,20 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'customer' => $this->context->customer->firstname . ' ' . $this->context->customer->lastname,
             'prefilledFormData' => $payment,
             'paymill_form_year' => range(date('Y', time('now')), date('Y', time('now')) + 10),
-            'paymill_form_month' => range(1, 12)
+            'paymill_form_month' => array(
+                1 => date('F', mktime(0,0,0,1)),
+                2 => date('F', mktime(0,0,0,2)),
+                3 => date('F', mktime(0,0,0,3)),
+                4 => date('F', mktime(0,0,0,4)),
+                5 => date('F', mktime(0,0,0,5)),
+                6 => date('F', mktime(0,0,0,6)),
+                7 => date('F', mktime(0,0,0,7)),
+                8 => date('F', mktime(0,0,0,8)),
+                9 => date('F', mktime(0,0,0,9)),
+                10 => date('F', mktime(0,0,0,10)),
+                11 => date('F', mktime(0,0,0,11)),
+                12 => date('F', mktime(0,0,0,12))
+                )
         );
 
         $this->context->smarty->assign($data);
