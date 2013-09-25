@@ -65,8 +65,9 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         } elseif ($payment == 'debit') {
             $userData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
         }
-        $paymentProcessor->setClientId(!empty($userData['clientId']) ? $userData['clientId'] : null);
-        $paymentProcessor->setPaymentId(!empty($userData['paymentId']) ? $userData['paymentId'] : null);
+
+        $paymentProcessor->setClientId($token === 'dummyToken' && !empty($userData['clientId']) ? $userData['clientId'] : null);
+        $paymentProcessor->setPaymentId($token === 'dummyToken' && !empty($userData['paymentId']) ? $userData['paymentId'] : null);
 
         $result = $paymentProcessor->processPayment();
         $this->paramName = "result";
@@ -121,15 +122,17 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         }
 
         try {
-            $query = "SELECT COUNT(*) FROM $table WHERE clientId=\'$clientId\';";
-            $count = $db->execute($query);
+            $query = "SELECT COUNT(*) FROM $table WHERE clientId='$clientId';";
+            $db->execute($query);
+            $count = $db->numRows();
+
             $this->paramName = "save_user_data";
-            if (!$count) {
+            if ($count === 0) {
                 //insert
                 $this->log("Inserted new data.", var_export($data, true));
                 $data['userId'] = $userId;
                 $db->insert($table, $data, false, false, DB::INSERT, false);
-            } else {
+            } elseif($count === 1) {
                 //update
                 $this->log("Updated data.", var_export($data, true));
                 $db->update($table, $data, 'userId="' . $userId . '"', 0, false, false, false);
