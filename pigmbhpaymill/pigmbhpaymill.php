@@ -160,10 +160,11 @@ class PigmbhPaymill extends PaymentModule
         $page = Tools::getValue('paymillpage', 1);
         $limit = 10;
         $start = $page * $limit - $limit;
-        $db->execute("SELECT * FROM `pigmbh_paymill_logging`", true);
-        $maxPage = range(1,ceil($db->numRows() / $limit));
+        $search = Tools::getValue('searchvalue', false);
 
-//        var_dump($maxPage);
+        $where = $search && !empty($search) ? " WHERE `debug` LIKE '%" . $search . "%'" : null;
+        $db->execute("SELECT * FROM `pigmbh_paymill_logging`". $where, true);
+        $maxPage = ceil($db->numRows() / $limit) == 0 ? 1: range(1, ceil($db->numRows() / $limit));
 
         //Details
         if (Tools::getValue('paymillid') && Tools::getValue('paymillkey')) {
@@ -181,13 +182,13 @@ class PigmbhPaymill extends PaymentModule
         }
 
         //getAll Data
-        foreach ($db->executeS("SELECT * FROM `pigmbh_paymill_logging` LIMIT $start, $limit", true) as $row) {
+        foreach ($db->executeS("SELECT * FROM `pigmbh_paymill_logging` $where LIMIT $start, $limit", true) as $row) {
             $log->fill($row['debug']);
             $unsortedData = $log->toArray();
             $unsortedData['Date'] = $row['date'];
             foreach ($unsortedData as $key => $value) {
                 $value = is_array($value) ? $value[1] . "<br><br>" . $value[0] : $value;
-                $unsortedData[$key] = strlen($value) >= 300 ? "<a href='" . $_SERVER['REQUEST_URI'] . "&paymillid=" . $row['id'] . "&paymillkey=" . $key . "'>" . $this->l('see more') . "</a>" : $value;
+                $unsortedData[$key] = strlen($value) >= 300 ? "<a href='" . $_SERVER['REQUEST_URI'] . "&paymillid=" . $row['id'] . "&paymillkey=" . $key . "&searchvalue=".$search."'>" . $this->l('see more') . "</a>" : $value;
             }
             $data[] = array_reverse($unsortedData);
         }
@@ -200,7 +201,8 @@ class PigmbhPaymill extends PaymentModule
             'detailData' => $detailData,
             'showDetail' => $showDetail,
             'paymillMaxPage' => $maxPage,
-            'paymillCurrentPage' => $page
+            'paymillCurrentPage' => $page,
+            'paymillSearchValue' => $search
         ));
 
         return $this->display(__FILE__, 'views/templates/admin/logging.tpl');

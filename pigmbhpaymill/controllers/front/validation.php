@@ -97,7 +97,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         $db = Db::getInstance();
         if (Configuration::get('PIGMBH_PAYMILL_LOGGING') === 'on') {
             if (array_key_exists('log_id', $_SESSION)) {
-                $data = $db->executeS($db->escape('SELECT debug from `pigmbh_paymill_logging` WHERE ' . $_SESSION['log_id']),true);
+                $data = $db->executeS($db->escape('SELECT debug from `pigmbh_paymill_logging` WHERE id=' . $_SESSION['log_id']),true);
                 $log->fill($data[0]['debug']);
                 $db->execute("UPDATE `pigmbh_paymill_logging` SET debug = '" . $db->escape($log->toJson()) . "' WHERE id = " . $_SESSION['log_id']);
             } else {
