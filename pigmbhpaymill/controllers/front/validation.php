@@ -2,7 +2,6 @@
 
 require_once dirname(__FILE__) . '/../../paymill/v2/lib/Services/Paymill/PaymentProcessor.php';
 require_once dirname(__FILE__) . '/../../paymill/v2/lib/Services/Paymill/LoggingInterface.php';
-require_once dirname(__FILE__) . '/../../paymill/v2/lib/Services/Paymill/Log.php';
 
 /**
  * validation
@@ -17,6 +16,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
     {
         session_start();
         unset($_SESSION['log_id']);
+        $_SESSION['log_id'] = time();
         $db = Db::getInstance();
         $token = Tools::getValue('paymillToken');
         $payment = Tools::getValue('payment');
@@ -88,24 +88,14 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 
     public function log($message, $debugInfo)
     {
-        $log = new Services_Paymill_Log();
-        if(is_null($this->paramName)){
-            $this->paramName = "default";
-        }
-        $param = $this->paramName;
-        $log->$param = array($debugInfo, $message);
-        $log->message = $message;
         $db = Db::getInstance();
         if (Configuration::get('PIGMBH_PAYMILL_LOGGING') === 'on') {
-            if (array_key_exists('log_id', $_SESSION)) {
-                $data = $db->executeS($db->escape('SELECT debug from `pigmbh_paymill_logging` WHERE id=' . $_SESSION['log_id']),true);
-                $log->fill($data[0]['debug']);
-                $db->execute("UPDATE `pigmbh_paymill_logging` SET debug = '" . $db->escape($log->toJson()) . "' WHERE id = " . $_SESSION['log_id']);
-            } else {
-                $db->execute("INSERT INTO `pigmbh_paymill_logging` (debug) VALUES('" . $db->escape($log->toJson()) . "')");
-                $data = $db->executeS($db->escape("SELECT LAST_INSERT_ID();"),true);
-                $_SESSION['log_id'] = $data[0]['LAST_INSERT_ID()'];
-            }
+            $data = array(
+                'identifier' => $_SESSION['log_id'],
+                'debug' => $debugInfo,
+                'message' => $message
+            );
+            $db->insert('pigmbh_paymill_logging', $data, false, false, DB::INSERT, false);
         }
     }
 

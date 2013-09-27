@@ -2,7 +2,6 @@
 
 require_once 'components/configurationHandler.php';
 require_once 'components/models/configurationModel.php';
-require_once 'paymill/v2/lib/Services/Paymill/Log.php';
 
 /**
  * PigmbhPaymill
@@ -93,7 +92,9 @@ class PigmbhPaymill extends PaymentModule
     {
         $sqlLog = "CREATE TABLE IF NOT EXISTS `pigmbh_paymill_logging` ("
             . "`id` int(11) NOT NULL AUTO_INCREMENT,"
+            . "`identifier` text NOT NULL,"
             . "`debug` text NOT NULL,"
+            . "`message` text NOT NULL,"
             . "`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,"
             . "PRIMARY KEY (`id`)"
             . ") AUTO_INCREMENT=1";
@@ -153,47 +154,38 @@ class PigmbhPaymill extends PaymentModule
 
         //logging
         $db = Db::getInstance();
-        $log = new Services_Paymill_Log();
         $data = array();
         $detailData = array();
         $showDetail = false;
-        $page = Tools::getValue('paymillpage', 1);
-        $limit = 10;
-        $start = $page * $limit - $limit;
         $search = Tools::getValue('searchvalue', false);
-
-        $where = $search && !empty($search) ? " WHERE `debug` LIKE '%" . $search . "%'" : null;
-        $db->execute("SELECT * FROM `pigmbh_paymill_logging`". $where, true);
-        $maxPage = ceil($db->numRows() / $limit) == 0 ? 1: range(1, ceil($db->numRows() / $limit));
+        $connectedSearch = Tools::getValue('connectedsearch', "off");
+        $limit = 10;
+        $where = $search && !empty($search) ? " WHERE `debug` LIKE '%" . $search . "%' OR `message` LIKE '%" . $search . "%'" : null;
+        $db->execute("SELECT * FROM `pigmbh_paymill_logging`" . $where, true);
+        $maxPage = ceil($db->numRows() / $limit) == 0 ? 1 : range(1, ceil($db->numRows() / $limit));
+        $page = $maxPage < Tools::getValue('paymillpage', 1) ? $maxPage:Tools::getValue('paymillpage', 1);
+        $start = $page * $limit - $limit;
 
         //Details
         if (Tools::getValue('paymillid') && Tools::getValue('paymillkey')) {
             $showDetail = true;
             $row = $db->executeS("SELECT * FROM `pigmbh_paymill_logging` WHERE id='" . Tools::getValue('paymillid') . "';", true);
-            $log->fill($row[0]['debug']);
-            $unsortedData = $log->toArray();
-            foreach ($unsortedData as $key => $value) {
-                if ($key === Tools::getValue('paymillkey')) {
-                    $detailData['title'] = str_replace("_", " ", $key);
-                    $detailData['data'] = is_array($value) ? $value[1] . "<br><br>" . $value[0] : $value;
-                    break;
-                }
-            }
+            $detailData['title'] = 'DEBUG';
+            $detailData['data'] = $row[0]['debug'];
         }
 
         //getAll Data
-        foreach ($db->executeS("SELECT * FROM `pigmbh_paymill_logging` $where LIMIT $start, $limit", true) as $row) {
-            $log->fill($row['debug']);
-            $unsortedData = $log->toArray();
-            $unsortedData['Date'] = $row['date'];
-            foreach ($unsortedData as $key => $value) {
-                $value = is_array($value) ? $value[1] . "<br><br>" . $value[0] : $value;
-                $unsortedData[$key] = strlen($value) >= 300 ? "<a href='" . $_SERVER['REQUEST_URI'] . "&paymillid=" . $row['id'] . "&paymillkey=" . $key . "&searchvalue=".$search."'>" . $this->l('see more') . "</a>" : $value;
-            }
-            $data[] = array_reverse($unsortedData);
+        if($connectedSearch === "on"){
+            $where = "WHERE `identifier` in(SELECT `identifier` FROM `pigmbh_paymill_logging` $where)";
         }
-
-
+        $sql = "SELECT `id`,`identifier`,`date`,`message`,`debug` FROM `pigmbh_paymill_logging` $where LIMIT $start, $limit";
+        foreach ($db->executeS($sql, true) as $row) {
+            foreach ($row as $key => $value) {
+                $value = is_array($value) ? $value[1] . "<br><br>" . $value[0] : $value;
+                $unsortedPrintData[$key] = strlen($value) >= 300 ? "<a href='" . $_SERVER['REQUEST_URI'] . "&paymillid=" . $row['id'] . "&paymillkey=" . $key . "&searchvalue=" . $search . "'>" . $this->l('see more') . "</a>" : $value;
+            }
+            $data[] = $unsortedPrintData;
+        }
 
         $this->smarty->assign(array(
             'config' => $this->showConfigurationForm(),
@@ -202,7 +194,8 @@ class PigmbhPaymill extends PaymentModule
             'showDetail' => $showDetail,
             'paymillMaxPage' => $maxPage,
             'paymillCurrentPage' => $page,
-            'paymillSearchValue' => $search
+            'paymillSearchValue' => $search,
+            'paymillConnectedSearch' => $connectedSearch
         ));
 
         return $this->display(__FILE__, 'views/templates/admin/logging.tpl');
