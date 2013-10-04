@@ -76,14 +76,14 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             , ($result ? 'Success' : 'Fail')
         );
         // finish the order if payment was sucessfully processed
-        if ($result === true) {
-            $this->saveUserData($paymentProcessor->getClientId(), $paymentProcessor->getPaymentId());
-            $this->module->validateOrder(
-                (int) $this->context->cart->id, Configuration::get('PS_OS_PREPARATION'), $cart->getOrderTotal(true, Cart::BOTH), $this->module->displayName, null, array(), null, false, $user->secure_key);
-            Tools::redirectLink(__PS_BASE_URI__ . 'order-confirmation.php?key=' . $user->secure_key . '&id_cart=' . (int) $cart->id . '&id_module=' . (int) $this->module->id . '&id_order=' . (int) $this->module->currentOrder);
-        } else {
-            Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
-        }
+//        if ($result === true) {
+//            $this->saveUserData($paymentProcessor->getClientId(), $paymentProcessor->getPaymentId());
+//            $this->module->validateOrder(
+//                (int) $this->context->cart->id, Configuration::get('PS_OS_PREPARATION'), $cart->getOrderTotal(true, Cart::BOTH), $this->module->displayName, null, array(), null, false, $user->secure_key);
+//            Tools::redirectLink(__PS_BASE_URI__ . 'order-confirmation.php?key=' . $user->secure_key . '&id_cart=' . (int) $cart->id . '&id_module=' . (int) $this->module->id . '&id_order=' . (int) $this->module->currentOrder);
+//        } else {
+            Tools::redirectLink(__PS_BASE_URI__ . 'order.php&step=3&paymillerror=1&paymillpayment='.$payment);
+//        }
     }
 
     public function log($message, $debugInfo)

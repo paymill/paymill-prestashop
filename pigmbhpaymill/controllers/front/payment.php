@@ -30,7 +30,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
         }
 
         if (!in_array(Tools::getValue('payment'), $validPayments)) {
-            Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
+            Tools::redirectLink(__PS_BASE_URI__ . 'order.php&step=3');
         }
 
         $dbData = array();
