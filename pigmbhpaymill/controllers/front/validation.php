@@ -66,7 +66,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
             $userData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
         }
 
-        $paymentProcessor->setClientId($token === 'dummyToken' && !empty($userData['clientId']) ? $userData['clientId'] : null);
+        $paymentProcessor->setClientId(!empty($userData['clientId']) ? $userData['clientId'] : null);
         $paymentProcessor->setPaymentId($token === 'dummyToken' && !empty($userData['paymentId']) ? $userData['paymentId'] : null);
 
         $result = $paymentProcessor->processPayment();
@@ -104,6 +104,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         $db = Db::getInstance();
         $userId = $this->context->customer->id;
         $table = Tools::getValue('payment') == 'creditcard' ? 'pigmbh_paymill_creditcard_userdata' : 'pigmbh_paymill_directdebit_userdata';
+        $data = array();
         $data['clientId'] = $clientId;
 
         //change payment only when fastchekout is active
@@ -113,10 +114,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 
         try {
             $query = "SELECT COUNT(*) FROM $table WHERE clientId='$clientId';";
-            $db->execute($query);
-            $count = $db->numRows();
-
-            $this->paramName = "save_user_data";
+            $count = (int)$db->getValue($query);
             if ($count === 0) {
                 //insert
                 $this->log("Inserted new data.", var_export($data, true));
