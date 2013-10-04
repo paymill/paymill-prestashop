@@ -97,6 +97,9 @@
             brand = brand.toLowerCase();
             $("#card-number")[0].className = $("#card-number")[0].className.replace(/paymill-card-number-.*/g, '');
             if(brand !== 'unknown'){
+                if(brand === 'american express'){
+                    brand = 'amex';
+                }
                 $('#card-number').addClass("paymill-card-number-" + brand);
             }
         });
@@ -201,15 +204,15 @@
             {elseif $payment == "debit"}
                 <input type="hidden" name="payment" value="debit">
                 <p class="none">
-                    <label>{l s='Accountholder *' mod='pigmbhpaymill'}</label>
+                    <label>{l s='Accountholder *' mod='pigmbhpaymill'}</label><br>
                     <input id="paymill_accountholder" type="text" size="15" class="text" value="{if $prefilledFormData['holder']}{$prefilledFormData['holder']}{else}{$customer}{/if}"/>
                 </p>
                 <p class="none">
-                    <label>{l s='Accountnumber *' mod='pigmbhpaymill'}</label>
+                    <label>{l s='Accountnumber *' mod='pigmbhpaymill'}</label><br>
                     <input id="paymill_accountnumber" type="text" size="15" class="text" value="{if $prefilledFormData['account']}{$prefilledFormData['account']}{/if}" />
                 </p>
                 <p class="none">
-                    <label>{l s='Banknumber *' mod='pigmbhpaymill'}</label>
+                    <label>{l s='Banknumber *' mod='pigmbhpaymill'}</label><br>
                     <input id="paymill_banknumber" type="text" size="15" class="text" value="{if $prefilledFormData['code']}{$prefilledFormData['code']}{/if}" />
                 </p>
                 <p class="description">{l s='Fields marked with a * are required' mod='pigmbhpaymill'}
