@@ -75,7 +75,7 @@ class PigmbhPaymill extends PaymentModule
             'debit' => Configuration::get('PIGMBH_PAYMILL_DEBIT'),
             'creditcard' => Configuration::get('PIGMBH_PAYMILL_CREDITCARD'),
             'valid_key' => !in_array(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), array('', null)) && !in_array(Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'), array('', null)),
-            'paymillerror' => Tools::getValue('paymillerror') ? 'Payment could not be processed.' : null,
+            'paymillerror' => Tools::getValue('paymillerror') == 1 ? $this->l('Payment could not be processed.') : null,
             'paymillpayment' => Tools::getValue('paymillpayment')
         ));
         return $this->display(__FILE__, 'payment.tpl');

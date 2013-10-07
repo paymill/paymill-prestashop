@@ -196,7 +196,9 @@
                         {/foreach}
                     </select>
                 </p>
-                <p class="description">{l s='Fields marked with a * are required' mod='pigmbhpaymill'}
+                <p class="description">
+                    {l s='The following Amount will be charged' mod='pigmbhpaymill'}: <b>{displayPrice price=$displayTotal}</b><br>
+                    {l s='Fields marked with a * are required' mod='pigmbhpaymill'}
                 </p>
                 {if $paymill_show_label == 'true'}
                     <p><div class="paymill_powered"><div class="paymill_credits">{l s='Save creditcardpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">PAYMILL</a></div></div></p>
@@ -215,7 +217,9 @@
                     <label>{l s='Banknumber *' mod='pigmbhpaymill'}</label><br>
                     <input id="paymill_banknumber" type="text" size="15" class="text" value="{if $prefilledFormData['code']}{$prefilledFormData['code']}{/if}" />
                 </p>
-                <p class="description">{l s='Fields marked with a * are required' mod='pigmbhpaymill'}
+                <p class="description">
+                    {l s='The following Amount will be charged' mod='pigmbhpaymill'}: <b>{displayPrice price=$displayTotal}</b><br>
+                    {l s='Fields marked with a * are required' mod='pigmbhpaymill'}
                 </p>
                 {if $paymill_show_label == 'true'}
                     <p><div class="paymill_powered"><div class="paymill_credits">{l s='debitpayment powered by' mod='pigmbhpaymill'} <a href="http://www.paymill.de" target="_blank">PAYMILL</a></div></div></p>
