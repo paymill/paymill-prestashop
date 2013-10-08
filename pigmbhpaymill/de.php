@@ -3,6 +3,7 @@
 global $_MODULE;
 $_MODULE = array();
 $_MODULE['<{pigmbhpaymill}prestashop>pigmbhpaymill_1ef3e269a9500231415bd231bb29ecf6'] = 'Zahlungsabwicklung über Paymill';
+$_MODULE['<{pigmbhpaymill}prestashop>pigmbhpaymill_8e40c7d5748c55e0f5f034dd566493de'] = 'Die Bestellung konnte nicht erfolgreich durchgeführt werden.';
 $_MODULE['<{pigmbhpaymill}prestashop>pigmbhpaymill_14a327b10605f16f336e285a50fc471b'] = 'Zeige Details';
 $_MODULE['<{pigmbhpaymill}prestashop>pigmbhpaymill_565a30e7a71104fee1947d5a61ce05df'] = 'Zahlartenkonfiguration';
 $_MODULE['<{pigmbhpaymill}prestashop>pigmbhpaymill_25640062516acc81cd2220f3f02ee6a5'] = 'Kreditkartenzahlung aktivieren';
@@ -18,13 +19,6 @@ $_MODULE['<{pigmbhpaymill}prestashop>pigmbhpaymill_db5acc95be6e6b2a02e5bf3516387
 $_MODULE['<{pigmbhpaymill}prestashop>pigmbhpaymill_c9cc8cce247e49bae79f15173ce97354'] = 'Speichern';
 $_MODULE['<{pigmbhpaymill}prestashop>logging_6c7794632edc21ff452a3abed8adb2f8'] = 'Zusammenhängende Daten anzeigen';
 $_MODULE['<{pigmbhpaymill}prestashop>logging_dcafb98d01cdeea2ff573f2a06c48b58'] = 'Suche und wechsle Seite';
-$_MODULE['<{pigmbhpaymill}prestashop>fastcheckout_f1d3b424cd68795ecaa552883759aceb'] = 'Bestellübersicht';
-$_MODULE['<{pigmbhpaymill}prestashop>fastcheckout_572da7ef1411f2a12409e752f3eb2f7a'] = 'Ihr Warenkorb ist leer.';
-$_MODULE['<{pigmbhpaymill}prestashop>fastcheckout_653e2da2dcd4d6ca1f5e67f5f6621840'] = 'Paymill Zahlung';
-$_MODULE['<{pigmbhpaymill}prestashop>fastcheckout_54c07dbb4cfefaa2888bb66b11bcd643'] = 'Sichere Kreditkartenzahlung powered by';
-$_MODULE['<{pigmbhpaymill}prestashop>fastcheckout_86cf3dec769ae532f59e7a80aa3c5aa8'] = 'Lastschrift powered by';
-$_MODULE['<{pigmbhpaymill}prestashop>fastcheckout_3adf712b8413a09c3c9de40a5b23fc5d'] = 'Zahlartenauswahl';
-$_MODULE['<{pigmbhpaymill}prestashop>fastcheckout_a240fa27925a635b08dc28c9e4f9216d'] = 'Bestellen';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_196a5aa05f160321a32eef428d2cea89'] = 'Bitte geben Sie den Kreditkarteninhaber an.';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_b6aea06643321d8ca987415b272529a5'] = 'Bitte geben Sie die Kreditkartennummer ein.';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_295f491189901501cb93ddd02b0a2250'] = 'Bitte geben Sie den CVC-Sicherheitscode ein.';
@@ -50,6 +44,7 @@ $_MODULE['<{pigmbhpaymill}prestashop>paymentform_cc5d90569e1c8313c2b1c2aab140117
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_eca60ae8611369fe28a02e2ab8c5d12e'] = 'Oktober';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_7e823b37564da492ca1629b4732289a8'] = 'November';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_82331503174acbae012b2004f6431fa5'] = 'Dezember';
+$_MODULE['<{pigmbhpaymill}prestashop>paymentform_db4d7b1139c5f5887821a54d8ef27c71'] = 'Folgender Betrag wird belastet';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_9fa45a4dfd768b1faa4d245792fbd185'] = 'Felder die mit * markiert sind, sind Pflichtfelder';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_54c07dbb4cfefaa2888bb66b11bcd643'] = 'Sichere Kreditkartenzahlung powered by';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_06645a8f7aaec4892ad56518bd8e4a67'] = 'Kontonummer *';
