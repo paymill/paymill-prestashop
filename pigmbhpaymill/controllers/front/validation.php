@@ -12,6 +12,9 @@ require_once dirname(__FILE__) . '/../../paymill/v2/lib/Services/Paymill/Logging
 class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController implements Services_Paymill_LoggingInterface
 {
 
+    private $_orderStatusSuccess = 2;
+
+
     public function initContent()
     {
         session_start();
@@ -31,10 +34,10 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         $this->paramName = "start_process";
         if (empty($token)) {
             $this->log('No paymill token was provided. Redirect to payments page.', null);
-            Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
+            Tools::redirect('index.php?controller=order&step=1&paymillerror=1&paymillpayment='.$payment);
         } elseif (!in_array($payment, $validPayments)) {
             $this->log('The selected Paymentmethod is not valid.', $payment);
-            Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
+            Tools::redirect('index.php?controller=order&step=1&paymillerror=1&paymillpayment='.$payment);
         }
         $this->log('Start processing payment with token', $token);
 
@@ -79,10 +82,11 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         if ($result === true) {
             $this->saveUserData($paymentProcessor->getClientId(), $paymentProcessor->getPaymentId());
             $this->module->validateOrder(
-                (int) $this->context->cart->id, Configuration::get('PS_OS_PREPARATION'), $cart->getOrderTotal(true, Cart::BOTH), $this->module->displayName, null, array(), null, false, $user->secure_key);
-            Tools::redirectLink(__PS_BASE_URI__ . 'order-confirmation.php?key=' . $user->secure_key . '&id_cart=' . (int) $cart->id . '&id_module=' . (int) $this->module->id . '&id_order=' . (int) $this->module->currentOrder);
+                (int) $this->context->cart->id, $this->_orderStatusSuccess, $cart->getOrderTotal(true, Cart::BOTH), $this->module->displayName, null, array(), null, false, $user->secure_key);
+            var_dump(__PS_BASE_URI__ . 'order-confirmation.php?key=' . $user->secure_key . '&id_cart=' . (int) $cart->id . '&id_module=' . (int) $this->module->id . '&id_order=' . (int) $this->module->currentOrder);
+            Tools::redirect('index.php?controller=order-confirmation?key=' . $user->secure_key . '&id_cart=' . (int) $cart->id . '&id_module=' . (int) $this->module->id . '&id_order=' . (int) $this->module->currentOrder);
         } else {
-            Tools::redirectLink(__PS_BASE_URI__ . 'order.php&step=3&paymillerror=1&paymillpayment='.$payment);
+            Tools::redirect('index.php?controller=order&step=3&paymillerror=1&paymillpayment='.$payment);
         }
     }
 
