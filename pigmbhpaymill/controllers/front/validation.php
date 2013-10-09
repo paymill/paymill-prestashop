@@ -12,13 +12,16 @@ require_once dirname(__FILE__) . '/../../paymill/v2/lib/Services/Paymill/Logging
 class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController implements Services_Paymill_LoggingInterface
 {
 
-    private $_orderStatusSuccess = 2;
+    private $_orderStatusSuccess;
 
 
     public function initContent()
     {
         session_start();
         unset($_SESSION['log_id']);
+
+
+
         $_SESSION['log_id'] = time();
         $db = Db::getInstance();
         $token = Tools::getValue('paymillToken');
@@ -82,8 +85,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         if ($result === true) {
             $this->saveUserData($paymentProcessor->getClientId(), $paymentProcessor->getPaymentId());
             $this->module->validateOrder(
-                (int) $this->context->cart->id, $this->_orderStatusSuccess, $cart->getOrderTotal(true, Cart::BOTH), $this->module->displayName, null, array(), null, false, $user->secure_key);
-            var_dump(__PS_BASE_URI__ . 'order-confirmation.php?key=' . $user->secure_key . '&id_cart=' . (int) $cart->id . '&id_module=' . (int) $this->module->id . '&id_order=' . (int) $this->module->currentOrder);
+                (int) $this->context->cart->id, Configuration::get('PIGMBH_PAYMILL_ORDERSTATE'), $cart->getOrderTotal(true, Cart::BOTH), $this->module->displayName, null, array(), null, false, $user->secure_key);
             Tools::redirect('index.php?controller=order-confirmation?key=' . $user->secure_key . '&id_cart=' . (int) $cart->id . '&id_module=' . (int) $this->module->id . '&id_order=' . (int) $this->module->currentOrder);
         } else {
             Tools::redirect('index.php?controller=order&step=3&paymillerror=1&paymillpayment='.$payment);

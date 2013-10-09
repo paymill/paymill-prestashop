@@ -45,7 +45,7 @@ class PigmbhPaymill extends PaymentModule
      */
     public function install()
     {
-        return parent::install() && $this->registerHook('payment') && $this->registerHook('paymentReturn') && $this->_configurationHandler->setDefaultConfiguration() && $this->createDatabaseTables();
+        return parent::install() && $this->registerHook('payment') && $this->registerHook('paymentReturn') && $this->_configurationHandler->setDefaultConfiguration() && $this->createDatabaseTables() && $this->_addPaymillOrderState();
     }
 
     /**
@@ -55,6 +55,7 @@ class PigmbhPaymill extends PaymentModule
      */
     public function uninstall()
     {
+        Configuration::deleteByName('PIGMBH_PAYMILL_ORDERSTATE', null);
         return $this->unregisterHook('payment') && $this->unregisterHook('paymentReturn') && parent::uninstall();
     }
 
@@ -165,7 +166,7 @@ class PigmbhPaymill extends PaymentModule
         $where = $search && !empty($search) ? " WHERE `debug` LIKE '%" . $search . "%' OR `message` LIKE '%" . $search . "%'" : null;
         $db->execute("SELECT * FROM `pigmbh_paymill_logging`" . $where, true);
         $maxPage = ceil($db->numRows() / $limit) == 0 ? 1 : range(1, ceil($db->numRows() / $limit));
-        $page = $maxPage < Tools::getValue('paymillpage', 1) ? $maxPage:Tools::getValue('paymillpage', 1);
+        $page = $maxPage < Tools::getValue('paymillpage', 1) ? $maxPage : Tools::getValue('paymillpage', 1);
         $start = $page * $limit - $limit;
 
         //Details
@@ -177,7 +178,7 @@ class PigmbhPaymill extends PaymentModule
         }
 
         //getAll Data
-        if($connectedSearch === "on"){
+        if ($connectedSearch === "on") {
             $where = "WHERE `identifier` in(SELECT `identifier` FROM `pigmbh_paymill_logging` $where)";
         }
         $sql = "SELECT `id`,`identifier`,`date`,`message`,`debug` FROM `pigmbh_paymill_logging` $where LIMIT $start, $limit";
@@ -237,6 +238,37 @@ class PigmbhPaymill extends PaymentModule
             $return = 'checked';
         }
         return $return;
+    }
+
+    private function _addPaymillOrderState()
+    {
+        if (!Configuration::get('PIGMBH_PAYMILL_ORDERSTATE')) {
+            $newOrderState = new OrderState();
+            $newOrderState->name = array();
+            $newOrderState->module_name = $this->name;
+            $newOrderState->send_email = false;
+            $newOrderState->color = '#73E650';
+            $newOrderState->hidden = false;
+            $newOrderState->delivery = true;
+            $newOrderState->logable = true;
+            $newOrderState->invoice = true;
+            $newOrderState->paid = true;
+            foreach (Language::getLanguages() as $language) {
+                if (strtolower($language['iso_code']) == 'de'){
+                    $newOrderState->name[$language['id_lang']] = 'Bezahlung via PAYMILL erfolgreich';
+                }else{
+                    $newOrderState->name[$language['id_lang']] = 'Payment via PAYMILL successfully';
+                }
+            }
+
+            if ($newOrderState->add()) {
+                $paymillIcon = dirname(__FILE__) . '/logo.gif';
+                $newStateIcon = dirname(__FILE__) . '/../../img/os/' . (int) $newOrderState->id . '.gif';
+                copy($paymillIcon, $newStateIcon);
+            }
+            Configuration::updateValue('PIGMBH_PAYMILL_ORDERSTATE', (int) $newOrderState->id);
+        }
+        return true;
     }
 
 }
