@@ -31,6 +31,7 @@ $_MODULE['<{pigmbhpaymill}prestashop>paymentform_572da7ef1411f2a12409e752f3eb2f7
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_653e2da2dcd4d6ca1f5e67f5f6621840'] = 'Paymill Zahlung';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_05f30a0060489c197215d9aa20469538'] = 'Kontoinhaber *';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_a6dde5d3b89c913d277444e3a108bc4e'] = 'Kreditkarten-nummer *';
+$_MODULE['<{pigmbhpaymill}prestashop>paymentform_1c456c8aa0e37e68a9caabc09b39be9f'] = 'Hinter dem CVV-Code bzw. CVC verbirgt sich ein Sicherheitsmerkmal von Kreditkarten, üblicherweise handelt es sich dabei um eine drei- bis vierstelligen Nummer. Der CVV-Code befindet sich auf VISA-Kreditkarten. Der gleiche Code ist auch auf MasterCard-Kreditkarten zu finden, hier allerdings unter dem Namen CVC. Die Abkürzung CVC steht dabei für Card Validation Code. Bei VISA wird der Code als Card Verification Value-Code bezeichnet. Ähnlich wie bei Mastercard und VISA gibt es auch bei Diners Club, Discover und JCB eine dreistellige  Nummer, die meist auf der Rückseite der Karte zu finden ist. Bei Maestro-Karten gibt es mit und ohne dreistelligen CVV. Wird eine Maestro-Karte ohne CVV verwendet kann einfach 000 eingetragen werden. American Express verwendet die CID (Card Identification Number). Dabei handelt es sich um eine vierstellige Nummer, die meist auf der Vorderseite der Karte, rechts oberhalb der Kartennummer zu finden ist.';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_9de63102d179a89177e49aaea8d8115c'] = 'Gültig bis (MM/YYYY) *';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_86f5978d9b80124f509bdb71786e929e'] = 'Januar';
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_659e59f062c75f81259d22786d6c44aa'] = 'Februar';
@@ -54,4 +55,4 @@ $_MODULE['<{pigmbhpaymill}prestashop>paymentform_3adf712b8413a09c3c9de40a5b23fc5
 $_MODULE['<{pigmbhpaymill}prestashop>paymentform_a240fa27925a635b08dc28c9e4f9216d'] = 'Bestellen';
 $_MODULE['<{pigmbhpaymill}prestashop>confirmation_7a223127bd5f4a87a989fb8c560bb15b'] = 'Vielen Dank für ihre Bestellung bei';
 $_MODULE['<{pigmbhpaymill}prestashop>payment_9300f4d366a0f5e0b57afef7e8a7474d'] = 'Paymill Kreditkarte';
-$_MODULE['<{pigmbhpaymill}prestashop>payment_89ce55b91d58a25f4271514be6b1146e'] = 'Paymill Lastschrift';
+$_MODULE['<{pigmbhpaymill}prestashop>payment_89ce55b91d58a25f4271514be6b1146e'] = 'Paymill ELV';

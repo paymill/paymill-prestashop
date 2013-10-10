@@ -20,7 +20,9 @@
             $('#card-number').after("<p class='error paymillerror'>{l s='Please enter your creditcardnumber.' mod='pigmbhpaymill'}</p>");
             result = false;
         }
-        if (!paymill.validateCvc($('#card-cvc').val())) {
+        if (paymill.cardType($('#card-number').val()).toLowerCase() === 'maestro' && (!$('#card-cvc').val() || $('#card-cvc').val() === "000")) {
+            $('#card-cvc').val('000');
+        } else if (!paymill.validateCvc($('#card-cvc').val())) {
             $('#card-cvc').after("<p class='error paymillerror'>{l s='Please enter your CVC-code(back of card).' mod='pigmbhpaymill'}</p>");
             result = false;
         }
@@ -81,7 +83,6 @@
                                 bank: $('#paymill_banknumber').val(),
                                 accountholder: $('#paymill_accountholder').val()
                             }, PaymillResponseHandler);
-
     {/if}
                         } catch (e) {
                             alert("Ein Fehler ist aufgetreten: " + e);
@@ -96,8 +97,8 @@
             var brand = paymill.cardType($('#card-number').val());
             brand = brand.toLowerCase();
             $("#card-number")[0].className = $("#card-number")[0].className.replace(/paymill-card-number-.*/g, '');
-            if(brand !== 'unknown'){
-                if(brand === 'american express'){
+            if (brand !== 'unknown') {
+                if (brand === 'american express') {
                     brand = 'amex';
                 }
                 $('#card-number').addClass("paymill-card-number-" + brand);
@@ -167,8 +168,9 @@
                     <input id="card-number" type="text" size="14" class="text" value="{if $prefilledFormData['last4']}****************{$prefilledFormData['last4']}{/if}" />
                 </p>
                 <p class="none">
-                    <label>{l s='CVC *' mod='pigmbhpaymill'}</label><br>
+                    <label>{l s='CVC' mod='pigmbhpaymill'}</label><br>
                     <input id="card-cvc" type="text" size="4" class="text" value="{if $prefilledFormData['last4']}***{/if}" />
+                    <span class="tooltip" title="{l s='What is a CVV/CVC number? Prospective credit cards will have a 3 to 4-digit number, usually on the back of the card. It ascertains that the payment is carried out by the credit card holder and the card account is legitimate. On Visa the CVV (Card Verification Value) appears after and to the right of your card number. Same goes for Mastercard’s CVC (Card Verfication Code), which also appears after and to the right of  your card number, and has 3-digits. Diners Club, Discover, and JCB credit and debit cards have a three-digit card security code which also appears after and to the right of your card number. The American Express CID (Card Identification Number) is a 4-digit number printed on the front of your card. It appears above and to the right of your card number. On Maestro the CVV appears after and to the right of your number. If you don’t have a CVV for your Maestro card you can use 000.' mod='pigmbhpaymill'}">?</span>
                 </p>
                 <p class="none">
                     <label>{l s='Valid until (MM/YYYY) *' mod='pigmbhpaymill'}</label><br>
