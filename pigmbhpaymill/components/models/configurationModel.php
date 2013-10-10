@@ -40,11 +40,6 @@ class configurationModel
     private $_fastcheckout;
 
     /**
-     * @var integer
-     */
-    private $_differentAmount;
-
-    /**
      * @var boolean
      */
     private $_creditcard;
@@ -145,22 +140,6 @@ class configurationModel
     public function setFastcheckout($fastcheckout)
     {
         $this->_fastcheckout = $fastcheckout;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getDifferentAmount()
-    {
-        return $this->_differentAmount;
-    }
-
-    /**
-     * @param integer $differentAmount
-     */
-    public function setDifferentAmount($differentAmount)
-    {
-        $this->_differentAmount = $differentAmount;
     }
 
     /**

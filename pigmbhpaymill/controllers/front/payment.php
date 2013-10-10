@@ -75,11 +75,6 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 
 
         $_SESSION['pigmbhPaymill']['authorizedAmount'] = intval($cart->getOrderTotal(true, Cart::BOTH) * 100);
-        if (Tools::getValue('payment') == "creditcard") {
-            // add differentAmount only for CC
-            $_SESSION['pigmbhPaymill']['authorizedAmount'] = intval($_SESSION['pigmbhPaymill']['authorizedAmount'] + (Configuration::get('PIGMBH_PAYMILL_DIFFERENTAMOUNT') * 100));
-        }
-
 
         $data = array(
             'nbProducts' => $cart->nbProducts(),

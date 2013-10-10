@@ -27,8 +27,7 @@ class configurationHandler
                     'PIGMBH_PAYMILL_LABEL',
                     'PIGMBH_PAYMILL_DEBIT',
                     'PIGMBH_PAYMILL_CREDITCARD',
-                    'PIGMBH_PAYMILL_FASTCHECKOUT',
-                    'PIGMBH_PAYMILL_DIFFERENTAMOUNT'
+                    'PIGMBH_PAYMILL_FASTCHECKOUT'
                 )
         );
         $configModel->setPublicKey(isset($config['PIGMBH_PAYMILL_PUBLICKEY']) ? $config['PIGMBH_PAYMILL_PUBLICKEY'] : '');
@@ -39,7 +38,6 @@ class configurationHandler
         $configModel->setDirectdebit(isset($config['PIGMBH_PAYMILL_DEBIT']) ? $config['PIGMBH_PAYMILL_DEBIT'] : false);
         $configModel->setCreditcard(isset($config['PIGMBH_PAYMILL_CREDITCARD']) ? $config['PIGMBH_PAYMILL_CREDITCARD'] : false);
         $configModel->setFastcheckout(isset($config['PIGMBH_PAYMILL_FASTCHECKOUT']) ? $config['PIGMBH_PAYMILL_FASTCHECKOUT'] : false);
-        $configModel->setDifferentAmount(isset($config['PIGMBH_PAYMILL_DIFFERENTAMOUNT']) ? $config['PIGMBH_PAYMILL_DIFFERENTAMOUNT'] : "0");
         return $configModel;
     }
 
@@ -53,7 +51,6 @@ class configurationHandler
         Configuration::updateValue('PIGMBH_PAYMILL_CREDITCARD', $model->getCreditcard());
         Configuration::updateValue('PIGMBH_PAYMILL_PUBLICKEY', $model->getPublicKey());
         Configuration::updateValue('PIGMBH_PAYMILL_PRIVATEKEY', $model->getPrivateKey());
-        Configuration::updateValue('PIGMBH_PAYMILL_DIFFERENTAMOUNT', $model->getDifferentAmount());
         Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', $model->getDebug());
         Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', $model->getLogging());
         Configuration::updateValue('PIGMBH_PAYMILL_LABEL', $model->getLabel());
@@ -69,7 +66,6 @@ class configurationHandler
         Configuration::updateValue('PIGMBH_PAYMILL_CREDITCARD', 'OFF');
         Configuration::updateValue('PIGMBH_PAYMILL_PUBLICKEY', '');
         Configuration::updateValue('PIGMBH_PAYMILL_PRIVATEKEY', '');
-        Configuration::updateValue('PIGMBH_PAYMILL_DIFFERENTAMOUNT', '');
         Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', 'OFF');
         Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', 'ON');
         Configuration::updateValue('PIGMBH_PAYMILL_LABEL', 'OFF');
