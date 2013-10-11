@@ -73,7 +73,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         }
 
         $paymentProcessor->setClientId(!empty($userData['clientId']) ? $userData['clientId'] : null);
-        $paymentProcessor->setPaymentId($token === 'dummyToken' && !empty($userData['paymentId']) ? $userData['paymentId'] : null);
+        $paymentProcessor->setPaymentId(!empty($userData['paymentId']) ? $userData['paymentId'] : null);
 
         $result = $paymentProcessor->processPayment();
         $this->paramName = "result";
