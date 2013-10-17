@@ -15,8 +15,11 @@ PAYMILL extension for Prestashop compatible with: 1.5+ (tested for 1.5.5.0). Thi
 
 Download the complete module by using the link below:
 
-[Latest Version](https://github.com/Paymill/Paymill-Magento/archive/master.zip)
-
+[Latest Version](https://github.com/paymill/paymill-prestashop-1.5/archive/master.zip)
+```
+Please note that Github will add an additional folder, so you cannot upload the zipfile direktly with your shop.
+If you want to upload it with your shop you have to unzip the archive and rezip the 'pigmbhpaymill' folder within.
+```
 - Merge the content of the Paymill-Prestashop-Module directory with your Prestashop installation.
 - In your administration backend install the PigmbhPaymill plugin and go to the configuration section where you can insert your private and public key (that you can find in your Paymill cockpit [https://app.paymill.de/](https://app.paymill.de/ "Paymill cockpit")).
 - Finally activate the plugin and customize it to your needs under Module > Module > PigmbhPaymill.
