@@ -13,12 +13,16 @@
                 <th class="dataTableHeadingContent">MESSAGE</th>
                 <th class="dataTableHeadingContent">DEBUG</th>
             </tr>
-            {foreach from=$data item=row }
+            {foreach from=$data item=row}
             <tr>
-                <td class="dataTableContent">{$row['identifier']}</td>
-                <td class="dataTableContent">{$row['date']}</td>
-                <td class="dataTableContent">{$row['message']}</td>
-                <td class="dataTableContent">{$row['debug']}</td>
+                <td class="dataTableContent">{$row.identifier}</td>
+                <td class="dataTableContent">{$row.date}</td>
+                <td class="dataTableContent">{$row.message}</td>
+                <td class="dataTableContent">{$row.debug}</td>
+            </tr>
+            {foreachelse}
+            <tr>
+                <td colspan="4" class="dataTableContent">-</td>
             </tr>
             {/foreach}
         </table>
@@ -37,7 +41,7 @@
 
 {if $showDetail}
     <fieldset class="paymill_center">
-        <legend>{$detailData['title']|upper}</legend>
-        <pre>{$detailData['data']}</pre>
+        <legend>{$detailData.title|upper}</legend>
+        <pre>{$detailData.data}</pre>
     </fieldset>
 {/if}

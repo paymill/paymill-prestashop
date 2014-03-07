@@ -19,6 +19,9 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
      */
     public function initContent()
     {
+        $this->display_column_left = false;
+        $this->display_column_center = true;
+        $this->display_column_right = false;
         $db = Db::getInstance();
         session_start();
         $validPayments = array();
@@ -30,19 +33,23 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
         }
 
         if (!in_array(Tools::getValue('payment'), $validPayments)) {
-            Tools::redirectLink(__PS_BASE_URI__ . 'order.php&step=3');
+            Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
         }
 
         $dbData = array();
         if (isset($this->context->customer->id)) {
             if (Tools::getValue('payment') == 'creditcard') {
-                $dbData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_creditcard_userdata` WHERE `userId`=' . $this->context->customer->id);
+                $sql = 'SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_creditcard_userdata` WHERE `userId`=' . $this->context->customer->id;
             } elseif (Tools::getValue('payment') == 'debit') {
-                $dbData = $db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id);
+                $sql = 'SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`=' . $this->context->customer->id;
+            }
+            try {
+                $dbData = $db->getRow($sql);
+            } catch (Exception $exception) {
+                $dbData = false;
             }
         }
-
-        if (isset($dbData['clientId'])) {
+        if ($dbData && $this->validateClient($dbData['clientId'])) {
             $clientObject = new Services_Paymill_Clients(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
             $oldClient = $clientObject->getOne($dbData['clientId']);
             if ($this->context->customer->email !== $oldClient['email']) {
@@ -55,16 +62,18 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
         }
 
         $payment = false;
-        if (isset($dbData['paymentId'])) {
+        if ($dbData && $this->validatePayment($dbData['paymentId'])) {
             $paymentObject = new Services_Paymill_Payments(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
-            $payment = $dbData['paymentId'] !== '' ? $paymentObject->getOne($dbData['paymentId']) : false;
+            $paymentResponse = $paymentObject->getOne($dbData['paymentId']);
+            if ($paymentResponse['id'] === $dbData['paymentId']) {
+                $payment = $dbData['paymentId'] !== '' ? $paymentResponse : false;
+            }
+            $payment['expire_date'] = null;
+            if (isset($payment['expire_month'])) {
+                $payment['expire_month'] = $payment['expire_month'] <= 9 ? '0' . $payment['expire_month'] : $payment['expire_month'];
+                $payment['expire_date'] = $payment['expire_month'] . "/" . $payment['expire_year'];
+            }
         }
-
-
-        $this->display_column_left = false;
-        $this->display_column_center = true;
-        $this->display_column_right = false;
-        parent::initContent();
         $cart = $this->context->cart;
         foreach ($this->module->getCurrency((int) $cart->id_currency) as $currency) {
             if ($currency['id_currency'] == $cart->id_currency) {
@@ -73,8 +82,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             }
         }
 
-
-        $_SESSION['pigmbhPaymill']['authorizedAmount'] = intval($cart->getOrderTotal(true, Cart::BOTH) * 100);
+        $_SESSION['pigmbhPaymill']['authorizedAmount'] = (int) round($cart->getOrderTotal(true, Cart::BOTH) * 100);
 
         $data = array(
             'nbProducts' => $cart->nbProducts(),
@@ -86,32 +94,39 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'this_path' => $this->module->getPathUri(),
             'this_path_ssl' => Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->module->name . '/',
             'public_key' => Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'),
+            'paymill_sepa' => Configuration::get('PIGMBH_PAYMILL_SEPA') == 'on',
             'payment' => Tools::getValue('payment'),
-            'paymill_show_label' => Configuration::get('PIGMBH_PAYMILL_LABEL') == 'on',
             'paymill_debugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
             'components' => _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/pigmbhpaymill/components/',
             'customer' => $this->context->customer->firstname . ' ' . $this->context->customer->lastname,
             'prefilledFormData' => $payment,
-            'paymill_form_year' => range(date('Y', time('now')), date('Y', time('now')) + 10),
-            'paymill_form_month' => array(
-                1 => date('F', mktime(0, 0, 0, 1)),
-                2 => date('F', mktime(0, 0, 0, 2)),
-                3 => date('F', mktime(0, 0, 0, 3)),
-                4 => date('F', mktime(0, 0, 0, 4)),
-                5 => date('F', mktime(0, 0, 0, 5)),
-                6 => date('F', mktime(0, 0, 0, 6)),
-                7 => date('F', mktime(0, 0, 0, 7)),
-                8 => date('F', mktime(0, 0, 0, 8)),
-                9 => date('F', mktime(0, 0, 0, 9)),
-                10 => date('F', mktime(0, 0, 0, 10)),
-                11 => date('F', mktime(0, 0, 0, 11)),
-                12 => date('F', mktime(0, 0, 0, 12))
-            )
         );
 
         $this->context->smarty->assign($data);
-
+        parent::initContent();
         $this->setTemplate('paymentForm.tpl');
+    }
+
+    private function validateClient($clientId)
+    {
+        $clientObject = new Services_Paymill_Clients(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
+        return $this->validatePaymillId($clientObject, $clientId);
+    }
+
+    private function validatePayment($paymentId)
+    {
+        $paymentObject = new Services_Paymill_Payments(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
+        return $this->validatePaymillId($paymentObject, $paymentId);
+    }
+
+    private function validatePaymillId($object, $id)
+    {
+        $isValid = false;
+        $objectResult = $object->getOne($id);
+        if (array_key_exists('id', $objectResult)) {
+            $isValid = $id === $objectResult['id'];
+        }
+        return $isValid;
     }
 
 }
