@@ -2,7 +2,7 @@
 global $_MODULE;
 $_MODULE = array();
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_1ef3e269a9500231415bd231bb29ecf6"] = "Addebito diretto e pagamenti con carta di credito PAYMILL";
-$_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_8e40c7d5748c55e0f5f034dd566493de"] = "Si &Atilde;&uml; verificato un errore durante l'elaborazione del pagamento.";
+$_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_8e40c7d5748c55e0f5f034dd566493de"] = "Si è verificato un errore durante l\'elaborazione del pagamento.";
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_14a327b10605f16f336e285a50fc471b"] = "Mostra dettagli";
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_565a30e7a71104fee1947d5a61ce05df"] = "Configurazione di pagamento";
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_25640062516acc81cd2220f3f02ee6a5"] = "Attiva carta di credito";
@@ -44,12 +44,12 @@ $_MODULE["<{pigmbhpaymill}prestashop>paymentform_5d634cf37a5af374207cbbb5839f9da
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_9663f7ffe12ce54f0e5f1d88e88870eb"] = "Invalid country for sepa transactions";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_f20244939fb834096e7a3a5373cb124e"] = "Invalid bank data";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_f1d3b424cd68795ecaa552883759aceb"] = "Sintesi ordine";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_572da7ef1411f2a12409e752f3eb2f7a"] = "Il carrello &Atilde;&uml; vuoto";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_572da7ef1411f2a12409e752f3eb2f7a"] = "Il carrello è vuoto";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_3448ea8312665651913759d18a33a766"] = "Numero carta";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_b2844b8e17ecaaeae68d018fe9418af0"] = "Valida fino al";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_459637c303466a9edd49d831d0b70c9e"] = "Titolare carta";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_5ea7f231296949070013bc43715aae01"] = "CVC";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_1c456c8aa0e37e68a9caabc09b39be9f"] = "Il codice CVV o CVC &Atilde;&uml; una funzione di sicurezza delle carte di credito. Di solito, &Atilde;&uml; un numero composto da tre o quattro cifre. Sulle carte di credito VISA, &Atilde;&uml; indicato come codice CVV. Lo stesso codice pu&Atilde;&sup2; essere trovato sulle carte di credito MasterCard, dove per&Atilde;&sup2; &Atilde;&uml; denominato CVC. CVC &Atilde;&uml; l'abbreviazione di  &quot;Card Validation Code&quot; (Codice di validazione della carta). Il codice CVV, invece, &Atilde;&uml; l'abbreviazione di &quot;Card Validation Value code&quot; (Codice del valore di verifica della carta). Similmente alla MasterCard e alla Visa, altre marche come la Diners Club, la Discover e la JCB contengono un numero a tre cifre che di solito pu&Atilde;&sup2; essere trovato sul retro della carta di credito. Esistono carte MAESTRO con o senza un codice CVV a tre cifre. Nel caso in cui venga utilizzata una carta MAESTRO priva di CVV, &Atilde;&uml; possibile inserire 000 nel modulo. L'American Express utilizza il CID (Numero di identificazione della carta). Il CID &Atilde;&uml; un numero a quattro cifre che di solito si trova sulla parte anteriore della carta, in alto a destra dal numero della carta di credito.";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_1c456c8aa0e37e68a9caabc09b39be9f"] = "Il codice CVV o CVC è una funzione di sicurezza delle carte di credito. Di solito, è un numero composto da tre o quattro cifre. Sulle carte di credito VISA, è indicato come codice CVV. Lo stesso codice può essere trovato sulle carte di credito MasterCard, dove però è denominato CVC. CVC è l\'abbreviazione di  \"Card Validation Code\" (Codice di validazione della carta). Il codice CVV, invece, è l\'abbreviazione di \"Card Validation Value code\" (Codice del valore di verifica della carta). Similmente alla MasterCard e alla Visa, altre marche come la Diners Club, la Discover e la JCB contengono un numero a tre cifre che di solito può essere trovato sul retro della carta di credito. Esistono carte MAESTRO con o senza un codice CVV a tre cifre. Nel caso in cui venga utilizzata una carta MAESTRO priva di CVV, è possibile inserire 000 nel modulo. L\'American Express utilizza il CID (Numero di identificazione della carta). Il CID è un numero a quattro cifre che di solito si trova sulla parte anteriore della carta, in alto a destra dal numero della carta di credito.";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_0e7c2b864af10317bf7ca889a31f863f"] = "Numero conto";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_fbc4693ad8cd8fd628848fcfc2378f13"] = "Codice bancario";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_82130ba6c49d07bc4ebda5a45a871b90"] = "Titolare conto";

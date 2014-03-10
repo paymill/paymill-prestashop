@@ -1,7 +1,7 @@
 <?php
 global $_MODULE;
 $_MODULE = array();
-$_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_1ef3e269a9500231415bd231bb29ecf6"] = "PAYMILL credit card payments &amp; direct debit";
+$_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_1ef3e269a9500231415bd231bb29ecf6"] = "PAYMILL credit card payments & direct debit";
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_8e40c7d5748c55e0f5f034dd566493de"] = "An error has occurred while processing your payment.";
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_14a327b10605f16f336e285a50fc471b"] = "Show Details";
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_565a30e7a71104fee1947d5a61ce05df"] = "Payment configuration";
@@ -17,7 +17,7 @@ $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_c9cc8cce247e49bae79f15173ce97
 $_MODULE["<{pigmbhpaymill}prestashop>logging_6c7794632edc21ff452a3abed8adb2f8"] = "Connected search";
 $_MODULE["<{pigmbhpaymill}prestashop>logging_dcafb98d01cdeea2ff573f2a06c48b58"] = "Search";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_295f491189901501cb93ddd02b0a2250"] = "Invalid CVC";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_196a5aa05f160321a32eef428d2cea89"] = "Please enter the card holder's name.";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_196a5aa05f160321a32eef428d2cea89"] = "Please enter the card holder\'s name.";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_773fcd7a2070fcf96c72ea6540c77eb8"] = "Please enter a valid credit card number.";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_b6aea06643321d8ca987415b272529a5"] = "Please enter your credit card data. Due to privacy reasons, we will NOT store your data on our servers.";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_02c1ceb76211fab1438280f0e7566163"] = "Please enter the name of the direct debit account holder";
@@ -49,7 +49,7 @@ $_MODULE["<{pigmbhpaymill}prestashop>paymentform_3448ea8312665651913759d18a33a76
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_b2844b8e17ecaaeae68d018fe9418af0"] = "Valid until";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_459637c303466a9edd49d831d0b70c9e"] = "Card holder";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_5ea7f231296949070013bc43715aae01"] = "CVC";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_1c456c8aa0e37e68a9caabc09b39be9f"] = "The CVV code or CVC is a security feature of credit cards. It usually is a  three to four digit long number. On VISA credit cards, it is called CVV code. The same code can be found on MasterCard credit cards - where however it is called CVC. CVC is an abbreviation for &quot;Card Validation Code&quot;. CVV code on the other hand is an abbreviation for &quot;Card Validation Value code&quot;. Similar to MasterCard and Visa, other brands such as Diners Club, Discover and JCB contain a three digit number that can usually be found on the back of the credit card. MAESTRO cards exist with and without a three digit CVV. In case a MAESTRO card without a CVV will be used, it is possible to enter 000 to the form instead. American Express uses the CID (card identification number). The CID is a four digit number that can usually be found on the front of the card, top right from the credit card number. ";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_1c456c8aa0e37e68a9caabc09b39be9f"] = "The CVV code or CVC is a security feature of credit cards. It usually is a  three to four digit long number. On VISA credit cards, it is called CVV code. The same code can be found on MasterCard credit cards - where however it is called CVC. CVC is an abbreviation for \"Card Validation Code\". CVV code on the other hand is an abbreviation for \"Card Validation Value code\". Similar to MasterCard and Visa, other brands such as Diners Club, Discover and JCB contain a three digit number that can usually be found on the back of the credit card. MAESTRO cards exist with and without a three digit CVV. In case a MAESTRO card without a CVV will be used, it is possible to enter 000 to the form instead. American Express uses the CID (card identification number). The CID is a four digit number that can usually be found on the front of the card, top right from the credit card number. ";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_0e7c2b864af10317bf7ca889a31f863f"] = "Account number";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_fbc4693ad8cd8fd628848fcfc2378f13"] = "Bank code";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_82130ba6c49d07bc4ebda5a45a871b90"] = "Account holder";
