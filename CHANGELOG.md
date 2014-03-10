@@ -1,3 +1,8 @@
+## 1.2.0
+* added iban validation
+* added creditcard predetection and improved validation
+* added webhook
+
 ## 1.1.0
 * Fixed Redirect on error
 

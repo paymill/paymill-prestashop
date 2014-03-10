@@ -129,7 +129,7 @@
     background: url('images/32x20_unionpay.png') no-repeat center right !important;
 }
 
-.paymill-card-number-diners
+.paymill-card-number-diners-club
 {
     background: url('images/32x20_dinersclub.png') no-repeat center right !important;
 }
@@ -154,7 +154,7 @@
     background: url('images/32x20_dankort.png') no-repeat center right !important;
 }
 
-.paymill-card-number-unionpay
+.paymill-card-number-china-unionpay
 {
     background: url('images/32x20_unionpay.png') no-repeat center right !important;
 }
