@@ -6,8 +6,8 @@
     var submitted = false;
 </script>
 <script type="text/javascript" src="https://bridge.paymill.com/"></script>
-<script type="text/javascript" src="modules/pigmbhpaymill/views/templates/front/Iban.js"></script>
-<script type="text/javascript" src="views/templates/front/BrandDetection.js"></script>
+<script type="text/javascript" src="{$components}/javascript/Iban.js"></script>
+<script type="text/javascript" src="{$components}/javascript/BrandDetection.js"></script>
 <script type="text/javascript">
     function validate() {
         debug("Paymill handler triggered");
