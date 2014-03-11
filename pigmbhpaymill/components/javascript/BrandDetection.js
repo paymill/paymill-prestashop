@@ -38,7 +38,7 @@ BrandDetection.prototype.creditcard =
         'cvc': [3]
     },
     'diners-club' : {
-        'pattern': /^6(011|5)/,
+        'pattern': /^3(0[0-5]|[68])/,
         'cardlength': [14],
         'luhn': false,
         'cvc': [3]
@@ -82,6 +82,7 @@ BrandDetection.prototype.detect = function(cardnumber)
         for (var cardinfo in this.creditcard) {
             if (this.creditcard[cardinfo].pattern.test(cardnumber)) {
                 brand = cardinfo;
+                break;
             }
         }
     }
