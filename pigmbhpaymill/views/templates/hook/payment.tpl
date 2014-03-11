@@ -4,6 +4,9 @@
             <img src="{$this_path_ssl}/../logo.gif">
             {l s='Paymill Creditcard' mod='pigmbhpaymill'}
         </a>
+        {if $paymillerror && $paymillpayment === "creditcard"}
+        <p class="error">{$paymillerror}</p>
+        {/if}
     </p>
 {/if}
 {if $debit === 'on' && $valid_key}
@@ -12,5 +15,8 @@
             <img src="{$this_path_ssl}/../logo.gif">
             {l s='Paymill Directdebit' mod='pigmbhpaymill'}
         </a>
+        {if $paymillerror && $paymillpayment === "debit"}
+        <p class="error">{$paymillerror}</p>
+        {/if}
     </p>
 {/if}
