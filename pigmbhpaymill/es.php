@@ -18,8 +18,8 @@ $_MODULE["<{pigmbhpaymill}prestashop>logging_6c7794632edc21ff452a3abed8adb2f8"] 
 $_MODULE["<{pigmbhpaymill}prestashop>logging_dcafb98d01cdeea2ff573f2a06c48b58"] = "Buscar";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_295f491189901501cb93ddd02b0a2250"] = "CVC inválido";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_196a5aa05f160321a32eef428d2cea89"] = "Por favor, introduce el nombre del titular de la tarjeta";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_773fcd7a2070fcf96c72ea6540c77eb8"] = "Por favor, introduce un número válido de tarjeta de crédito.";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_b6aea06643321d8ca987415b272529a5"] = "Por favor, introduce los datos de tu tarjeta de crédito. Por razones de seguridad, NO almacenaremos tus datos en nuestros servidores.";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_773fcd7a2070fcf96c72ea6540c77eb8"] = "Fecha de expiración inválida";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_b6aea06643321d8ca987415b272529a5"] = "Por favor, introduce un número válido de tarjeta de crédito.";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_02c1ceb76211fab1438280f0e7566163"] = "Por favor, introduce el nombre del titular de la cuenta para la domiciliación bancaria.";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_60f59fa92ef774c868b7f6c3809faae3"] = "Por favor, introduce un número válido de la cuenta para la domiciliación bancaria.";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_d9c3a431f3d766dd8e73bae03e1fca73"] = "Por favor, introduce un código bancario válido de domiciliación bancaria.";

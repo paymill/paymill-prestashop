@@ -18,8 +18,8 @@ $_MODULE["<{pigmbhpaymill}prestashop>logging_6c7794632edc21ff452a3abed8adb2f8"] 
 $_MODULE["<{pigmbhpaymill}prestashop>logging_dcafb98d01cdeea2ff573f2a06c48b58"] = "Suchen";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_295f491189901501cb93ddd02b0a2250"] = "Ungültige CVC";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_196a5aa05f160321a32eef428d2cea89"] = "Bitte geben Sie einen Inhabernamen an.";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_773fcd7a2070fcf96c72ea6540c77eb8"] = "Bitte geben Sie eine gültige Kreditkartennummer ein.";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_b6aea06643321d8ca987415b272529a5"] = "Bitte geben Sie Ihre Kreditkartendaten ein. Aus Sicherheitsgründen speichern wir diese NICHT auf unserem Server.";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_773fcd7a2070fcf96c72ea6540c77eb8"] = "Ungültiges Ablaufdatum";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_b6aea06643321d8ca987415b272529a5"] = "Bitte geben Sie eine gültige Kreditkartennummer ein.";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_02c1ceb76211fab1438280f0e7566163"] = "Bitte geben Sie den Namen des Kontoinhabers an";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_60f59fa92ef774c868b7f6c3809faae3"] = "Bitte geben Sie eine gültige Kontonummer ein";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_d9c3a431f3d766dd8e73bae03e1fca73"] = "Bitte geben Sie eine gültige Bankleitzahl an";

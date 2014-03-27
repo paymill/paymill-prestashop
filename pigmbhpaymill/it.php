@@ -18,8 +18,8 @@ $_MODULE["<{pigmbhpaymill}prestashop>logging_6c7794632edc21ff452a3abed8adb2f8"] 
 $_MODULE["<{pigmbhpaymill}prestashop>logging_dcafb98d01cdeea2ff573f2a06c48b58"] = "Ricerca";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_295f491189901501cb93ddd02b0a2250"] = "CVC non valido";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_196a5aa05f160321a32eef428d2cea89"] = "Inserire il nome del titolare della carta.";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_773fcd7a2070fcf96c72ea6540c77eb8"] = "Inserire un numero di carta di credito valido.";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_b6aea06643321d8ca987415b272529a5"] = "Inserire i dati della carta di credito. Per motivi di privacy, NON memorizzeremo i dati sui nostri server.";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_773fcd7a2070fcf96c72ea6540c77eb8"] = "Data scadenza non valida";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_b6aea06643321d8ca987415b272529a5"] = "Inserire un numero di carta di credito valido.";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_02c1ceb76211fab1438280f0e7566163"] = "Inserire il nome del titolare del conto di addebito diretto";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_60f59fa92ef774c868b7f6c3809faae3"] = "Inserire un numero di conto di addebito diretto valido";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_d9c3a431f3d766dd8e73bae03e1fca73"] = "Inserire un codice di addebito bancario diretto valido.";

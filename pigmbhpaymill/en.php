@@ -18,8 +18,8 @@ $_MODULE["<{pigmbhpaymill}prestashop>logging_6c7794632edc21ff452a3abed8adb2f8"] 
 $_MODULE["<{pigmbhpaymill}prestashop>logging_dcafb98d01cdeea2ff573f2a06c48b58"] = "Search";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_295f491189901501cb93ddd02b0a2250"] = "Invalid CVC";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_196a5aa05f160321a32eef428d2cea89"] = "Please enter the card holder\'s name.";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_773fcd7a2070fcf96c72ea6540c77eb8"] = "Please enter a valid credit card number.";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_b6aea06643321d8ca987415b272529a5"] = "Please enter your credit card data. Due to privacy reasons, we will NOT store your data on our servers.";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_773fcd7a2070fcf96c72ea6540c77eb8"] = "Invalid expiration date";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_b6aea06643321d8ca987415b272529a5"] = "Please enter a valid credit card number.";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_02c1ceb76211fab1438280f0e7566163"] = "Please enter the name of the direct debit account holder";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_60f59fa92ef774c868b7f6c3809faae3"] = "Please enter a valid direct debit account number";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_d9c3a431f3d766dd8e73bae03e1fca73"] = "Please enter a valid direct debit bank code.";
