@@ -2,6 +2,12 @@
     float: right;
     width: 100%;
 }
+
+#paymill_form div{
+    /* clean up mobile design*/
+    border: none !important;
+}
+
 #paymill_form input[type="text"] {
     position: absolute;
     padding: 7px;
