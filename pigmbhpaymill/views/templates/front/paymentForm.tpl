@@ -185,6 +185,9 @@
             debug("API returned error: " + getErrorMessage(error.apierror));
             alert("API returned error: " + getErrorMessage(error.apierror));
             submitted = false;
+            if(error.apierror === 'invalid_public_key'){
+                location.href = 'index.php?controller=order&step=3&paymillerror=1&errorCode=10001';
+            }
         } else {
             debug("Received token from Paymill API: " + result.token);
             var form = $("#paymill_form");
