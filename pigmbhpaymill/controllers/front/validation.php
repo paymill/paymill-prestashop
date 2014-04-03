@@ -94,12 +94,12 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
     {
         $db = Db::getInstance();
         if (Configuration::get('PIGMBH_PAYMILL_LOGGING') === 'on') {
-            $identifier = mysql_real_escape_string($_SESSION["log_id"]);
-            $debugInfo = mysql_real_escape_string($debugInfo);
-            $message = mysql_real_escape_string($message);
-            $sql = "INSERT INTO `pigmbh_paymill_logging` (`identifier`,`debug`, `message`) VALUES('$identifier', '$debugInfo','$message')";
             try {
-                $db->execute($sql);
+                $db->insert('pigmbh_paymill_logging', array(
+                 'identifier'=>$_SESSION["log_id"],
+                 'debug'=>$debugInfo,
+                 'message'=>$message,
+                ), false, false, Db::INSERT, false);
             } catch (exception $e) {
                 print_r($e);
                 exit;
