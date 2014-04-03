@@ -19,51 +19,51 @@
         if (paymill.cardType($('#paymill-card-number').val()).toLowerCase() === 'maestro' && (!$('#paymill-card-cvc').val() || $('#paymill-card-cvc').val() === "000")) {
             $('#paymill-card-cvc').val('000');
         } else if (!paymill.validateCvc($('#paymill-card-cvc').val())) {
-            errorMessage = '{l s='Please enter your CVC-code(back of card).' mod='pigmbhpaymill'}';
+            errorMessage = "{l s='Please enter your CVC-code(back of card).' mod='pigmbhpaymill'}";
             field.push($('#paymill-card-cvc'));
             result = false;
         }
         if (!paymill.validateHolder($('#paymill-card-holder').val())) {
-            errorMessage = '{l s='Please enter the creditcardholders name.' mod='pigmbhpaymill'}';
+            errorMessage = "{l s='Please enter the creditcardholders name.' mod='pigmbhpaymill'}";
             field.push($('#paymill-card-holder'));
             result = false;
         }
         if (!paymill.validateExpiry($('#paymill-card-expirydate').val().split('/')[0], $('#paymill-card-expirydate').val().split('/')[1])) {
-            errorMessage = '{l s='Please enter a valid date.' mod='pigmbhpaymill'}';
+            errorMessage = "{l s='Please enter a valid date.' mod='pigmbhpaymill'}";
             field.push($('#paymill-card-expirydate'));
             result = false;
         }
         if (!paymill.validateCardNumber($('#paymill-card-number').val())) {
-            errorMessage = '{l s='Please enter your creditcardnumber.' mod='pigmbhpaymill'}';
+            errorMessage = "{l s='Please enter your creditcardnumber.' mod='pigmbhpaymill'}";
             field.push($('#paymill-card-number'));
             result = false;
         }
     {elseif $payment == 'debit'}
         if (!paymill.validateHolder($('#paymill_accountholder').val())) {
-            errorMessage = '{l s='Please enter the accountholder' mod='pigmbhpaymill'}';
+            errorMessage = "{l s='Please enter the accountholder' mod='pigmbhpaymill'}";
             field.push($('#paymill_accountholder'));
             result = false;
         }
         {if !$paymill_sepa}
         if (!paymill.validateAccountNumber($('#paymill_accountnumber').val())) {
-            errorMessage = '{l s='Please enter your accountnumber.' mod='pigmbhpaymill'}';
+            errorMessage = "{l s='Please enter your accountnumber.' mod='pigmbhpaymill'}";
             field.push($('#paymill_accountnumber'));
             result = false;
         }
         if (!paymill.validateBankCode($('#paymill_banknumber').val())) {
-            errorMessage = '{l s='Please enter your bankcode.' mod='pigmbhpaymill'}';
+            errorMessage = "{l s='Please enter your bankcode.' mod='pigmbhpaymill'}";
             field.push($('#paymill_banknumber'));
             result = false;
         }
         {else}
         var iban = new Iban();
         if (!iban.validate($('#paymill_iban').val())) {
-            errorMessage = '{l s='Please enter your iban.' mod='pigmbhpaymill'}';
+            errorMessage = "{l s='Please enter your iban.' mod='pigmbhpaymill'}";
             field.push($('#paymill_iban'));
             result = false;
         }
         if ($('#paymill_bic').val() === "") {
-            errorMessage = '{l s='Please enter your bic.' mod='pigmbhpaymill'}';
+            errorMessage = "{l s='Please enter your bic.' mod='pigmbhpaymill'}";
             field.push($('#paymill_bic'));
             result = false;
         }
