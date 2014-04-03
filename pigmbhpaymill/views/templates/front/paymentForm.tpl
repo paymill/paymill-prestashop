@@ -322,14 +322,14 @@
                 {l s='Fields marked with a * are required' mod='pigmbhpaymill'}
             </p>
         </div>
-        <p class="cart_navigation">
+        <p class="cart_navigation paymill_cart_navi">
             {if $opc}
                 <a href="{$link->getPageLink('order', true)}" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
             {/if}
             {if !$opc}
                 <a href="{$link->getPageLink('order', true)}?step=3" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
             {/if}
-            <input type="submit" id='submitButton' value="{l s='Order' mod='pigmbhpaymill'}" class="exclusive_large" />
+            <input type="submit" id='submitButton' value="{l s='Order' mod='pigmbhpaymill'}" class="exclusive_large" style="float: right;" />
         </p>
     </form>
 {/if}

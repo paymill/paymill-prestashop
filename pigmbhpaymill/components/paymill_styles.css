@@ -19,6 +19,7 @@
     background: #eaeff1;
     border: 1px solid #bdc5c8;
     border-radius: 4px;
+    box-sizing: content-box;
     box-shadow: inset 0 2px 2px #dde2e4;
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
@@ -79,6 +80,12 @@
 
 #paymill_form .paymill_confirm_button{
     float:right;
+}
+
+.paymill_cart_navi{
+    position: relative;
+    width: 400px;
+    margin: auto;
 }
 
 .paymill-tooltip {
