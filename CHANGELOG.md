@@ -1,3 +1,7 @@
+## 1.3.0
+* added support for Presta 1.6
+* added support for mobile theme
+
 ## 1.2.0
 * added iban validation
 * added creditcard predetection and improved validation
