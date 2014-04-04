@@ -185,7 +185,7 @@
             debug("API returned error: " + getErrorMessage(error.apierror));
             alert("API returned error: " + getErrorMessage(error.apierror));
             submitted = false;
-            if(error.apierror === 'invalid_public_key'){
+            if (error.apierror === 'invalid_public_key') {
                 location.href = 'index.php?controller=order&step=3&paymillerror=1&errorCode=10001';
             }
         } else {
@@ -324,15 +324,15 @@
                 {l s='The following Amount will be charged' mod='pigmbhpaymill'}: <b>{displayPrice price=$displayTotal}</b><br>
                 {l s='Fields marked with a * are required' mod='pigmbhpaymill'}
             </p>
+            <p class="cart_navigation paymill_cart_navi">
+                {if $opc}
+                    <a href="{$link->getPageLink('order', true)}" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
+                {/if}
+                {if !$opc}
+                    <a href="{$link->getPageLink('order', true)}?step=3" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
+                {/if}
+                <input type="submit" id='submitButton' value="{l s='Order' mod='pigmbhpaymill'}" class="exclusive_large" style="float: right;" />
+            </p>
         </div>
-        <p class="cart_navigation paymill_cart_navi">
-            {if $opc}
-                <a href="{$link->getPageLink('order', true)}" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
-            {/if}
-            {if !$opc}
-                <a href="{$link->getPageLink('order', true)}?step=3" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
-            {/if}
-            <input type="submit" id='submitButton' value="{l s='Order' mod='pigmbhpaymill'}" class="exclusive_large" style="float: right;" />
-        </p>
     </form>
 {/if}
