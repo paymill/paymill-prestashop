@@ -4,25 +4,13 @@ require_once 'Interface.php';
 
 require_once realpath(dirname(__FILE__)) . '/../Exception.php';
 
-/**
- * It's incorrect to test for the function itself. Since we know exactly when the
- * json_decode function was introduced. So we test the PHP version instead.
- */
-if (version_compare(PHP_VERSION, '5.2.0', '<')) {
-    throw new Exception('Your PHP version is too old: install the PECL JSON extension');
-}
-else if (!function_exists('json_decode')) {
-    throw new Exception('The JSON extension is missing: install it.');
+if (!function_exists('json_decode')) {
+    throw new Exception("Please install the PHP JSON extension");
 }
 
-/**
- * Check if the cURL extension is enabled.
- *
- */
-if (!extension_loaded('curl')) {
-    throw new Exception('Please install the PHP cURL extension');
+if (!function_exists('curl_init')) {
+    throw new Exception("Please install the PHP cURL extension");
 }
-
 
 /**
  *   Services_Paymill cURL HTTP client
@@ -55,21 +43,11 @@ class Services_Paymill_Apiclient_Curl implements Services_Paymill_Apiclient_Inte
      *
      * @param string $apiKey
      * @param string $apiEndpoint
-     * @param array $extracURL
-     *   Extra cURL options. The array is keyed by the name of the cURL
-     *   options.
      */
-    public function __construct($apiKey, $apiEndpoint, $extracURL = array())
+    public function __construct($apiKey, $apiEndpoint)
     {
         $this->_apiKey = $apiKey;
         $this->_apiUrl = $apiEndpoint;
-        /**
-         * Proxy support. The proxy can be SOCKS5 or HTTP.
-         * Also the connection could be tunneled through.
-         */
-        if (!empty($extracURL)) {
-            $this->_extraOptions = $extracURL;
-        }
     }
 
     /**
@@ -103,11 +81,11 @@ class Services_Paymill_Apiclient_Curl implements Services_Paymill_Apiclient_Inte
                     $responseCode = $this->_responseArray['body']['data']['response_code'];
                 }
 
-                return array('data' => array(
-                                 'error' => $errorMessage,
-                                 'response_code' => $responseCode,
-                                 'http_status_code' => $httpStatusCode
-                             ));
+                return array("data" => array(
+                        "error" => $errorMessage,
+                        "response_code" => $responseCode,
+                        "http_status_code" => $httpStatusCode
+                        ));
             }
 
             return $this->_responseArray['body'];
@@ -134,11 +112,6 @@ class Services_Paymill_Apiclient_Curl implements Services_Paymill_Apiclient_Inte
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_CAINFO => realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'paymill.crt',
         );
-
-        // Add extra options to cURL if defined.
-        if (!empty($this->_extraOptions)) {
-            $curlOpts += $this->_extraOptions;
-        }
 
         if (Services_Paymill_Apiclient_Interface::HTTP_GET === $method) {
             if (0 !== count($params)) {

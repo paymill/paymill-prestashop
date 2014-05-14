@@ -192,6 +192,23 @@ class PigmbhPaymill extends PaymentModule
             } else {
                 $toleranz = number_format(0, 2, '.', '');
             }
+            
+            $acceptedBrands = array();
+            foreach (Tools::getValue('accepted_brands') as $acceptedBrand) {
+                $acceptedBrands[$acceptedBrand] = true;
+            }
+            
+            $acceptedBrandsResult = array();
+            
+            foreach ($oldConfig->getAccpetedCreditCards() as $key => $value) {
+                if (array_key_exists($key, $acceptedBrands)) {
+                    $acceptedBrandsResult[$key] = true;
+                } else {
+                    $acceptedBrandsResult[$key] = false;
+                }
+                
+            }
+            
             $newConfig->setCreditcard(Tools::getValue('creditcard', 'OFF'));
             $newConfig->setDirectdebit(Tools::getValue('debit', 'OFF'));
             $newConfig->setDebug(Tools::getValue('debug', 'OFF'));
@@ -199,6 +216,7 @@ class PigmbhPaymill extends PaymentModule
             $newConfig->setLogging(Tools::getValue('logging', 'OFF'));
             $newConfig->setPrivateKey(trim(Tools::getValue('privatekey', $oldConfig->getPrivateKey())));
             $newConfig->setPublicKey(trim(Tools::getValue('publickey', $oldConfig->getPublicKey())));
+            $newConfig->setAccpetedCreditCards($acceptedBrandsResult);
             $this->_configurationHandler->updateConfiguration($newConfig);
             $this->registerPaymillWebhook($newConfig->getPrivateKey());
         }
@@ -256,25 +274,41 @@ class PigmbhPaymill extends PaymentModule
     {
         $configurationModel = $this->_configurationHandler->loadConfiguration();
         return
-            '<link rel="stylesheet" type="text/css" href="' . _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/pigmbhpaymill/components/paymill_styles.css">
-            <form action="' . Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']) . '" method="post">
-			<fieldset class="paymill_center">
-			<legend>' . $this->displayName . '</legend>
-				<table cellpadding="0" cellspacing="0">
-                    <tr><td colspan="2" class="paymill_config_header">' . $this->l('config_payments') . '</td></tr>
-                    <tr><td class="paymill_config_label">' . $this->l('Activate creditcard-payment') . '</td><td class="paymill_config_value"><input type="checkbox" name="creditcard" ' . $this->getCheckboxState($configurationModel->getCreditcard()) . ' /></td></tr>
-                    <tr><td class="paymill_config_label">' . $this->l('Activate debit-payment') . '</td><td class="paymill_config_value"><input type="checkbox" name="debit" ' . $this->getCheckboxState($configurationModel->getDirectdebit()) . ' /></td></tr>
-                    <tr><td colspan="2" style="height: 15px;"></td></tr>
-                    <tr><td colspan="2" class="paymill_config_header">' . $this->l('config_main') . '</td></tr>
-                    <tr><td class="paymill_config_label">' . $this->l('Private Key') . '</td><td class="paymill_config_value"><input type="text" class="paymill_config_text" name="privatekey" value="' . $configurationModel->getPrivateKey() . '" /></td></tr>
-                    <tr><td class="paymill_config_label">' . $this->l('Public Key') . '</td><td class="paymill_config_value"><input type="text" class="paymill_config_text" name="publickey" value="' . $configurationModel->getPublicKey() . '" /></td></tr>
-					<tr><td class="paymill_config_label">' . $this->l('Activate debugging') . '</td><td class="paymill_config_value"><input type="checkbox" name="debug" ' . $this->getCheckboxState($configurationModel->getDebug()) . ' /></td></tr>
-					<tr><td class="paymill_config_label">' . $this->l('Activate logging') . '</td><td class="paymill_config_value"><input type="checkbox" name="logging" ' . $this->getCheckboxState($configurationModel->getLogging()) . ' /></td></tr>
-                    <tr><td class="paymill_config_label">' . $this->l('Activate fastCheckout') . '</td><td class="paymill_config_value"><input type="checkbox" name="fastcheckout" ' . $this->getCheckboxState($configurationModel->getFastcheckout()) . ' /></td></tr>
-                    <tr><td colspan="2" align="center"><input class="button" name="btnSubmit" value="' . $this->l('Save') . '" type="submit" /></td></tr>
-				</table>
-			</fieldset>
-		</form>';
+    '<link rel="stylesheet" type="text/css" href="' . _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/pigmbhpaymill/components/paymill_styles.css">
+    <form action="' . Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']) . '" method="post">
+        <fieldset class="paymill_center">
+            <legend>' . $this->displayName . '</legend>
+            <table cellpadding="0" cellspacing="0">
+                <tr><td colspan="2" class="paymill_config_header">' . $this->l('config_payments') . '</td></tr>
+                <tr><td class="paymill_config_label">' . $this->l('Activate creditcard-payment') . '</td><td class="paymill_config_value"><input type="checkbox" name="creditcard" ' . $this->getCheckboxState($configurationModel->getCreditcard()) . ' /></td></tr>
+                <tr><td class="paymill_config_label">' . $this->l('Activate debit-payment') . '</td><td class="paymill_config_value"><input type="checkbox" name="debit" ' . $this->getCheckboxState($configurationModel->getDirectdebit()) . ' /></td></tr>
+                <tr><td colspan="2" style="height: 15px;"></td></tr>
+                <tr><td colspan="2" class="paymill_config_header">' . $this->l('config_main') . '</td></tr>
+                <tr><td class="paymill_config_label">' . $this->l('Private Key') . '</td><td class="paymill_config_value"><input type="text" class="paymill_config_text" name="privatekey" value="' . $configurationModel->getPrivateKey() . '" /></td></tr>
+                <tr><td class="paymill_config_label">' . $this->l('Public Key') . '</td><td class="paymill_config_value"><input type="text" class="paymill_config_text" name="publickey" value="' . $configurationModel->getPublicKey() . '" /></td></tr>
+                <tr><td class="paymill_config_label">' . $this->l('Activate debugging') . '</td><td class="paymill_config_value"><input type="checkbox" name="debug" ' . $this->getCheckboxState($configurationModel->getDebug()) . ' /></td></tr>
+                <tr><td class="paymill_config_label">' . $this->l('Activate logging') . '</td><td class="paymill_config_value"><input type="checkbox" name="logging" ' . $this->getCheckboxState($configurationModel->getLogging()) . ' /></td></tr>
+                <tr><td class="paymill_config_label">' . $this->l('Activate fastCheckout') . '</td><td class="paymill_config_value"><input type="checkbox" name="fastcheckout" ' . $this->getCheckboxState($configurationModel->getFastcheckout()) . ' /></td></tr>
+                <tr><td class="paymill_config_label">' . $this->l('Accepted CreditCard Brands') . '</td><td class="paymill_config_value"><select multiple name="accepted_brands[]">' . $this->_getAccepetdBrandOptions($configurationModel) . '</select></td></tr>
+                <tr><td colspan="2" align="center"><input class="button" name="btnSubmit" value="' . $this->l('Save') . '" type="submit" /></td></tr>
+            </table>
+        </fieldset>
+    </form>';
+    }
+    
+    /**
+     * @param configurationModel $configurationModel
+     * @return string
+     */
+    private function _getAccepetdBrandOptions(configurationModel $configurationModel)
+    {
+        $html = '';
+        foreach ($configurationModel->getAccpetedCreditCards() as $brand => $selected) {
+            $selectedHtml = $selected ? 'selected' : '';
+            $html .= '<option value="' . $brand . '" ' . $selectedHtml . '>' . $brand . '</option>';
+        }
+        
+        return $html;
     }
 
     private function getCheckboxState($value)

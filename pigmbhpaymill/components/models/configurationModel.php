@@ -43,7 +43,28 @@ class configurationModel
      * @var boolean
      */
     private $_directdebit;
+    
+    /**
+     * @var array
+     */
+    private $_accpetedCreditCards;
 
+    /**
+     * @return array
+     */
+    public function getAccpetedCreditCards()
+    {
+        return $this->_accpetedCreditCards;
+    }
+
+    /**
+     * @param array $accpetedCreditCards
+     */
+    public function setAccpetedCreditCards($accpetedCreditCards)
+    {
+        $this->_accpetedCreditCards = $accpetedCreditCards;
+    }
+        
     /**
      * @return string
      */
