@@ -99,6 +99,8 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'components' => _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/pigmbhpaymill/components/',
             'customer' => $this->context->customer->firstname . ' ' . $this->context->customer->lastname,
             'prefilledFormData' => $payment,
+            'acceptedBrands' => Configuration::get('PIGMBH_PAYMILL_ACCEPTED_BRANDS'),
+            'acceptedBrandsDecoded' => json_decode(Configuration::get('PIGMBH_PAYMILL_ACCEPTED_BRANDS'), true)
         );
 
         $this->context->smarty->assign($data);
