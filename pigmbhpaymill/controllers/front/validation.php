@@ -14,6 +14,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 
     public function initContent()
     {
+        
         session_start();
         unset($_SESSION['log_id']);
         $_SESSION['log_id'] = time();
@@ -43,7 +44,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         $shop = $this->context->shop;
         foreach ($this->module->getCurrency((int) $cart->id_currency) as $currency) {
             if ($currency['id_currency'] == $cart->id_currency) {
-            $iso_currency = $currency['iso_code'];
+                $iso_currency = $currency['iso_code'];
             }
         }
 
@@ -66,13 +67,14 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         if ($token === "dummyToken") {
             $paymentProcessor->setPaymentId(!empty($userData['paymentId']) ? $userData['paymentId'] : null);
         }
-
+        
         $result = $paymentProcessor->processPayment();
+        
         $this->log(
             'Payment processing resulted in'
             , ($result ? 'Success' : 'Fail')
         );
-
+        
         $paymill = $this->module;
         // finish the order if payment was sucessfully processed
         if ($result === true) {
