@@ -27,7 +27,6 @@ class configurationHandler
                     'PIGMBH_PAYMILL_DEBIT',
                     'PIGMBH_PAYMILL_CREDITCARD',
                     'PIGMBH_PAYMILL_FASTCHECKOUT',
-                    'PIGMBH_PAYMILL_SEPA'
                 )
         );
         $configModel->setPublicKey(isset($config['PIGMBH_PAYMILL_PUBLICKEY']) ? $config['PIGMBH_PAYMILL_PUBLICKEY'] : '');
@@ -37,7 +36,6 @@ class configurationHandler
         $configModel->setDirectdebit(isset($config['PIGMBH_PAYMILL_DEBIT']) ? $config['PIGMBH_PAYMILL_DEBIT'] : false);
         $configModel->setCreditcard(isset($config['PIGMBH_PAYMILL_CREDITCARD']) ? $config['PIGMBH_PAYMILL_CREDITCARD'] : false);
         $configModel->setFastcheckout(isset($config['PIGMBH_PAYMILL_FASTCHECKOUT']) ? $config['PIGMBH_PAYMILL_FASTCHECKOUT'] : false);
-        $configModel->setSepa(isset($config['PIGMBH_PAYMILL_SEPA']) ? $config['PIGMBH_PAYMILL_SEPA'] : false);
         return $configModel;
     }
 
@@ -54,7 +52,6 @@ class configurationHandler
         Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', $model->getDebug());
         Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', $model->getLogging());
         Configuration::updateValue('PIGMBH_PAYMILL_FASTCHECKOUT', $model->getFastcheckout());
-        Configuration::updateValue('PIGMBH_PAYMILL_SEPA', $model->getSepa());
     }
 
     /**
@@ -69,7 +66,6 @@ class configurationHandler
         Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', 'OFF');
         Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', 'ON');
         Configuration::updateValue('PIGMBH_PAYMILL_FASTCHECKOUT', 'OFF');
-        Configuration::updateValue('PIGMBH_PAYMILL_SEPA', 'OFF');
         return true; //needs to return true for installation
     }
 

@@ -94,7 +94,6 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'this_path' => $this->module->getPathUri(),
             'this_path_ssl' => Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->module->name . '/',
             'public_key' => Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'),
-            'paymill_sepa' => Configuration::get('PIGMBH_PAYMILL_SEPA') == 'on',
             'payment' => Tools::getValue('payment'),
             'paymill_debugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
             'components' => _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/pigmbhpaymill/components/',

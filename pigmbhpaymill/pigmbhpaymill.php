@@ -199,7 +199,6 @@ class PigmbhPaymill extends PaymentModule
             $newConfig->setLogging(Tools::getValue('logging', 'OFF'));
             $newConfig->setPrivateKey(trim(Tools::getValue('privatekey', $oldConfig->getPrivateKey())));
             $newConfig->setPublicKey(trim(Tools::getValue('publickey', $oldConfig->getPublicKey())));
-            $newConfig->setSepa(Tools::getValue('sepa', 'OFF'));
             $this->_configurationHandler->updateConfiguration($newConfig);
             $this->registerPaymillWebhook($newConfig->getPrivateKey());
         }
@@ -272,7 +271,6 @@ class PigmbhPaymill extends PaymentModule
 					<tr><td class="paymill_config_label">' . $this->l('Activate debugging') . '</td><td class="paymill_config_value"><input type="checkbox" name="debug" ' . $this->getCheckboxState($configurationModel->getDebug()) . ' /></td></tr>
 					<tr><td class="paymill_config_label">' . $this->l('Activate logging') . '</td><td class="paymill_config_value"><input type="checkbox" name="logging" ' . $this->getCheckboxState($configurationModel->getLogging()) . ' /></td></tr>
                     <tr><td class="paymill_config_label">' . $this->l('Activate fastCheckout') . '</td><td class="paymill_config_value"><input type="checkbox" name="fastcheckout" ' . $this->getCheckboxState($configurationModel->getFastcheckout()) . ' /></td></tr>
-                    <tr><td class="paymill_config_label">SEPA</td><td class="paymill_config_value"><input type="checkbox" name="sepa" ' . $this->getCheckboxState($configurationModel->getSepa()) . ' /></td></tr>
                     <tr><td colspan="2" align="center"><input class="button" name="btnSubmit" value="' . $this->l('Save') . '" type="submit" /></td></tr>
 				</table>
 			</fieldset>
