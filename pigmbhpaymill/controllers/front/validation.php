@@ -39,6 +39,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 
 
         $paymentProcessor = new Services_Paymill_PaymentProcessor(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
+        
         $cart = $this->context->cart;
         $user = $this->context->customer;
         $shop = $this->context->shop;
@@ -77,11 +78,20 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         
         $paymill = $this->module;
         // finish the order if payment was sucessfully processed
+        
         if ($result === true) {
             $customer = new Customer((int) $cart->id_customer);
             $this->saveUserData($paymentProcessor->getClientId(), $paymentProcessor->getPaymentId(), (int) $cart->id_customer);
+            
+            $paymentText = '';
+            if ($payment === 'debit') {
+                $paymentText = 'ELV /SEPA Debit Date: ' . date('Y-m-d', strtotime("+7 day"));
+            } else {
+                $paymentText = 'Credit Card';
+            }
+            
             $orderID = $paymill->validateOrder(
-                (int) $cart->id, Configuration::get('PIGMBH_PAYMILL_ORDERSTATE'), $cart->getOrderTotal(true, Cart::BOTH), $paymill->displayName, null, array(), null, false, $customer->secure_key, $shop);
+                (int) $cart->id, Configuration::get('PIGMBH_PAYMILL_ORDERSTATE'), $cart->getOrderTotal(true, Cart::BOTH), $paymentText , null, array(), null, false, $customer->secure_key, $shop);
             $this->updatePaymillTransaction($paymentProcessor->getTransactionId(), 'OrderID: ' . $orderID . ' - Name:' . $user->lastname . ', ' . $user->firstname);
 
             Tools::redirect('index.php?controller=order-confirmation?key=' . $customer->secure_key . '&id_cart=' . (int) $cart->id . '&id_module=' . (int) $paymill->id . '&id_order=' . (int) $paymill->currentOrder);
