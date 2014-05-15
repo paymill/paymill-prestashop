@@ -82,12 +82,17 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
         if ($result === true) {
             $customer = new Customer((int) $cart->id_customer);
             $this->saveUserData($paymentProcessor->getClientId(), $paymentProcessor->getPaymentId(), (int) $cart->id_customer);
-            
             $paymentText = '';
             if ($payment === 'debit') {
-                $paymentText = 'ELV /SEPA Debit Date: ' . date('Y-m-d', strtotime("+7 day"));
+                
+                $days = Configuration::get('PIGMBH_PAYMILL_DEBIT_DAYS');
+                if (!is_numeric($days)) {
+                    $days = '7';
+                }
+                
+                $paymentText = $paymill->l('ELV /SEPA Debit Date: ') . date('Y-m-d', strtotime("+$days day"));
             } else {
-                $paymentText = 'Credit Card';
+                $paymentText = $paymill->l('Credit Card');
             }
             
             $orderID = $paymill->validateOrder(
@@ -113,8 +118,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
                  'message'=>$message,
                 ), false, false, Db::INSERT, false);
             } catch (exception $e) {
-                print_r($e);
-                exit;
+                
             }
         }
     }

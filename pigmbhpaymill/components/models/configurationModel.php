@@ -48,7 +48,28 @@ class configurationModel
      * @var array
      */
     private $_accpetedCreditCards;
+    
+    /**
+     * @var string
+     */
+    private $_debitDays;
 
+    /**
+     * @return string
+     */
+    public function getDebitDays()
+    {
+        return $this->_debitDays;
+    }
+
+    /** 
+     * @param string $debitDays
+     */
+    public function setDebitDays($debitDays)
+    {
+        $this->_debitDays = $debitDays;
+    }
+    
     /**
      * @return array
      */

@@ -12,8 +12,11 @@ $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_d2560860c51f895a9871741f0805c
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_37c5b6e7c4291021b6100a6754ae7ffe"] = "Clave pública";
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_4355c4db961539628702c5818ddb71df"] = "Activar debugging";
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_3132e398e6e7acace9290305a55a7d25"] = "Activar el registro";
+$_MODULE['<{pigmbhpaymill}prestashop>pigmbhpaymill_59a10f6da66d0a5a4f7d7c76fa275b01'] = 'Akzeptierte Kreditkarten';
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_db5acc95be6e6b2a02e5bf3516387883"] = "Activar la compra rápida";
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_c9cc8cce247e49bae79f15173ce97354"] = "Guardar";
+$_MODULE['<{pigmbhpaymill}prestashop>validation_56a51b7f616a536703192e16850d23c2'] = 'ELV / SEPA Days until the debit: ';
+$_MODULE['<{pigmbhpaymill}prestashop>validation_73a61696f100b3858511e212a3feea6b'] = 'Credit Card';
 $_MODULE["<{pigmbhpaymill}prestashop>logging_6c7794632edc21ff452a3abed8adb2f8"] = "Búsqueda conectada";
 $_MODULE["<{pigmbhpaymill}prestashop>logging_dcafb98d01cdeea2ff573f2a06c48b58"] = "Buscar";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_295f491189901501cb93ddd02b0a2250"] = "CVC inválido";

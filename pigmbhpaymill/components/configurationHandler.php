@@ -22,6 +22,7 @@ class configurationHandler
                 array(
                     'PIGMBH_PAYMILL_PUBLICKEY',
                     'PIGMBH_PAYMILL_PRIVATEKEY',
+                    'PIGMBH_PAYMILL_DEBIT_DAYS',
                     'PIGMBH_PAYMILL_DEBUG',
                     'PIGMBH_PAYMILL_LOGGING',
                     'PIGMBH_PAYMILL_DEBIT',
@@ -32,6 +33,7 @@ class configurationHandler
         );
         $configModel->setPublicKey(isset($config['PIGMBH_PAYMILL_PUBLICKEY']) ? $config['PIGMBH_PAYMILL_PUBLICKEY'] : '');
         $configModel->setPrivateKey(isset($config['PIGMBH_PAYMILL_PRIVATEKEY']) ? $config['PIGMBH_PAYMILL_PRIVATEKEY'] : '');
+        $configModel->setDebitDays(isset($config['PIGMBH_PAYMILL_DEBIT_DAYS']) ? $config['PIGMBH_PAYMILL_DEBIT_DAYS'] : '');
         $configModel->setDebug(isset($config['PIGMBH_PAYMILL_DEBUG']) ? $config['PIGMBH_PAYMILL_DEBUG'] : false);
         $configModel->setLogging(isset($config['PIGMBH_PAYMILL_LOGGING']) ? $config['PIGMBH_PAYMILL_LOGGING'] : false);
         $configModel->setDirectdebit(isset($config['PIGMBH_PAYMILL_DEBIT']) ? $config['PIGMBH_PAYMILL_DEBIT'] : false);
@@ -51,6 +53,7 @@ class configurationHandler
         Configuration::updateValue('PIGMBH_PAYMILL_CREDITCARD', $model->getCreditcard());
         Configuration::updateValue('PIGMBH_PAYMILL_PUBLICKEY', $model->getPublicKey());
         Configuration::updateValue('PIGMBH_PAYMILL_PRIVATEKEY', $model->getPrivateKey());
+        Configuration::updateValue('PIGMBH_PAYMILL_DEBIT_DAYS', $model->getDebitDays());
         Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', $model->getDebug());
         Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', $model->getLogging());
         Configuration::updateValue('PIGMBH_PAYMILL_FASTCHECKOUT', $model->getFastcheckout());
@@ -66,6 +69,7 @@ class configurationHandler
         Configuration::updateValue('PIGMBH_PAYMILL_CREDITCARD', 'OFF');
         Configuration::updateValue('PIGMBH_PAYMILL_PUBLICKEY', '');
         Configuration::updateValue('PIGMBH_PAYMILL_PRIVATEKEY', '');
+        Configuration::updateValue('PIGMBH_PAYMILL_DEBIT_DAYS', '7');
         Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', 'OFF');
         Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', 'ON');
         Configuration::updateValue('PIGMBH_PAYMILL_FASTCHECKOUT', 'OFF');
