@@ -1,3 +1,8 @@
+## 1.4.0
+* add payment logos
+* merge elv / sepa form
+* add pre notification to email and invoice
+
 ## 1.3.0
 * added support for Presta 1.6
 * added support for mobile theme
