@@ -84,6 +84,13 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 
         $_SESSION['pigmbhPaymill']['authorizedAmount'] = (int) round($cart->getOrderTotal(true, Cart::BOTH) * 100);
 
+
+        $brands = array();
+
+        foreach (json_decode(Configuration::get('PIGMBH_PAYMILL_ACCEPTED_BRANDS'), true) as $brandKey => $brandValue) {
+            $brands[str_replace('-', '', $brandKey)] = $brandValue;
+        }
+        
         $data = array(
             'nbProducts' => $cart->nbProducts(),
             'cust_currency' => $cart->id_currency,
@@ -100,7 +107,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'customer' => $this->context->customer->firstname . ' ' . $this->context->customer->lastname,
             'prefilledFormData' => $payment,
             'acceptedBrands' => Configuration::get('PIGMBH_PAYMILL_ACCEPTED_BRANDS'),
-            'acceptedBrandsDecoded' => json_decode(Configuration::get('PIGMBH_PAYMILL_ACCEPTED_BRANDS'), true)
+            'acceptedBrandsDecoded' => $brands
         );
 
         $this->context->smarty->assign($data);

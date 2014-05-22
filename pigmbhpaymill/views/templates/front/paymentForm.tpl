@@ -318,10 +318,10 @@
                 {if $acceptedBrandsDecoded.visa}<img src="{$components}/images/32x20_visa.png" alt="visa">{/if}
                 {if $acceptedBrandsDecoded.mastercard}<img src="{$components}/images/32x20_mastercard.png" alt="mastercard"> {/if}
                 {if $acceptedBrandsDecoded.amex}<img src="{$components}/images/32x20_amex.png" alt="amex"> {/if}
-                {if $acceptedBrandsDecoded.carta-si}<img src="{$components}/images/32x20_carta-si.png" alt="carta-si"> {/if}
-                {if $acceptedBrandsDecoded.carte-bleue}<img src="{$components}/images/32x20_carte-bleue.png" alt="carte-bleue"> {/if}
-                {if $acceptedBrandsDecoded.diners-club}<img src="{$components}/images/32x20_dinersclub.png" alt="maestro"> {/if}
-                {if $acceptedBrandsDecoded.china-unionpay}<img src="{$components}/images/32x20_unionpay.png" alt="china-unionpay"> {/if}
+                {if $acceptedBrandsDecoded.cartasi}<img src="{$components}/images/32x20_carta-si.png" alt="carta-si"> {/if}
+                {if $acceptedBrandsDecoded.cartebleue}<img src="{$components}/images/32x20_carte-bleue.png" alt="carte-bleue"> {/if}
+                {if $acceptedBrandsDecoded.dinersclub}<img src="{$components}/images/32x20_dinersclub.png" alt="maestro"> {/if}
+                {if $acceptedBrandsDecoded.chinaunionpay}<img src="{$components}/images/32x20_unionpay.png" alt="china-unionpay"> {/if}
                 {if $acceptedBrandsDecoded.discover}<img src="{$components}/images/32x20_discover.png" alt="discover"> {/if}
                 {if $acceptedBrandsDecoded.dankort}<img src="{$components}/images/32x20_dankort.png" alt="dankort"> {/if}
                 {if $acceptedBrandsDecoded.jcb}<img src="{$components}/images/32x20_jcb.png" alt="jcb"> {/if}
