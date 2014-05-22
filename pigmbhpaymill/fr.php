@@ -26,8 +26,8 @@ $_MODULE["<{pigmbhpaymill}prestashop>paymentform_b6aea06643321d8ca987415b272529a
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_02c1ceb76211fab1438280f0e7566163"] = "Veuillez saisir le nom du titulaire du compte de débit direct";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_60f59fa92ef774c868b7f6c3809faae3"] = "Veuillez saisir un numéro de compte de débit direct valide";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_d9c3a431f3d766dd8e73bae03e1fca73"] = "Veuillez saisir un code bancaire de débit direct valide.";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_a819b1df441ad6e36a1ee7090e31a617"] = "IBAN";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_2b750d494a62d5cd48c997a1cf8c1c44"] = "BIC";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_a819b1df441ad6e36a1ee7090e31a617"] = "Please enter your iban.";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_2b750d494a62d5cd48c997a1cf8c1c44"] = "Please enter your bic.";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_b3ea5d4962bbcb423b6e3693d7a1ea9f"] = "Unknown Error";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_3a1352bdd435ae1a6bca9f1a905356d4"] = "The communication with the psp failed.";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_3b227bb4f8950c16f67421a55079986b"] = "The public key is invalid.";
