@@ -217,6 +217,7 @@ class PigmbhPaymill extends PaymentModule
             $newConfig->setPrivateKey(trim(Tools::getValue('privatekey', $oldConfig->getPrivateKey())));
             $newConfig->setPublicKey(trim(Tools::getValue('publickey', $oldConfig->getPublicKey())));
             $newConfig->setAccpetedCreditCards($acceptedBrandsResult);
+            $newConfig->setDebitDays(Tools::getValue('debit_days', '7'));
             $this->_configurationHandler->updateConfiguration($newConfig);
             $this->registerPaymillWebhook($newConfig->getPrivateKey());
         }
