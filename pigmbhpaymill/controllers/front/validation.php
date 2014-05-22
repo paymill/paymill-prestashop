@@ -95,10 +95,24 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
                 $paymentText = $paymill->l('Credit Card');
             }
             
+            $_SESSION['piPaymentText'] = $paymentText;
+            
             $orderID = $paymill->validateOrder(
-                (int) $cart->id, Configuration::get('PIGMBH_PAYMILL_ORDERSTATE'), $cart->getOrderTotal(true, Cart::BOTH), $paymentText , null, array(), null, false, $customer->secure_key, $shop);
+                (int) $cart->id, Configuration::get('PIGMBH_PAYMILL_ORDERSTATE'), 
+                $cart->getOrderTotal(true, Cart::BOTH), 
+                $paymentText , 
+                null, 
+                array(), 
+                null, 
+                false, 
+                $customer->secure_key, 
+                $shop
+            );
+            
             $this->updatePaymillTransaction($paymentProcessor->getTransactionId(), 'OrderID: ' . $orderID . ' - Name:' . $user->lastname . ', ' . $user->firstname);
 
+            $_SESSION['piOrderId'] = $orderID;
+            
             Tools::redirect('index.php?controller=order-confirmation?key=' . $customer->secure_key . '&id_cart=' . (int) $cart->id . '&id_module=' . (int) $paymill->id . '&id_order=' . (int) $paymill->currentOrder);
         } else {
             $errorMessage = $paymill->errorCodeMapping($paymentProcessor->getErrorCode());
