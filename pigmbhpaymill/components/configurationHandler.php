@@ -19,18 +19,19 @@ class configurationHandler
     {
         $configModel = new configurationModel();
         $config = Configuration::getMultiple(
-                array(
-                    'PIGMBH_PAYMILL_PUBLICKEY',
-                    'PIGMBH_PAYMILL_PRIVATEKEY',
-                    'PIGMBH_PAYMILL_DEBIT_DAYS',
-                    'PIGMBH_PAYMILL_DEBUG',
-                    'PIGMBH_PAYMILL_LOGGING',
-                    'PIGMBH_PAYMILL_DEBIT',
-                    'PIGMBH_PAYMILL_CREDITCARD',
-                    'PIGMBH_PAYMILL_FASTCHECKOUT',
-                    'PIGMBH_PAYMILL_ACCEPTED_BRANDS',
-                )
+            array(
+                'PIGMBH_PAYMILL_PUBLICKEY',
+                'PIGMBH_PAYMILL_PRIVATEKEY',
+                'PIGMBH_PAYMILL_DEBIT_DAYS',
+                'PIGMBH_PAYMILL_DEBUG',
+                'PIGMBH_PAYMILL_LOGGING',
+                'PIGMBH_PAYMILL_DEBIT',
+                'PIGMBH_PAYMILL_CREDITCARD',
+                'PIGMBH_PAYMILL_FASTCHECKOUT',
+                'PIGMBH_PAYMILL_ACCEPTED_BRANDS',
+            )
         );
+        
         $configModel->setPublicKey(isset($config['PIGMBH_PAYMILL_PUBLICKEY']) ? $config['PIGMBH_PAYMILL_PUBLICKEY'] : '');
         $configModel->setPrivateKey(isset($config['PIGMBH_PAYMILL_PRIVATEKEY']) ? $config['PIGMBH_PAYMILL_PRIVATEKEY'] : '');
         $configModel->setDebitDays(isset($config['PIGMBH_PAYMILL_DEBIT_DAYS']) ? $config['PIGMBH_PAYMILL_DEBIT_DAYS'] : '');
