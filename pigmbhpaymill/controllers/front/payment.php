@@ -29,7 +29,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
         if (Configuration::get('PIGMBH_PAYMILL_CREDITCARD'))
             $valid_payments[] = 'creditcard';
         if (!in_array(Tools::getValue('payment'), $valid_payments)) 
-            Tools::redirectLink(__PS_BASE_URI__ . 'order.php?step=1');
+            Tools::redirectLink(__PS_BASE_URI__.'order.php?step=1');
         
         $db_data = $this->getPaymillUserData();
         
@@ -83,7 +83,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
     {
         $payment = false;
         if ($db_data && $this->validatePayment($db_data['paymentId'])) {
-            $payment_object = new Services_Paymill_Payments(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
+            $payment_object = new Services_Paymill_Payments(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), 'https://api.paymill.com/v2/');
             $payment_response = $payment_object->getOne($db_data['paymentId']);
             if ($payment_response['id'] === $db_data['paymentId'])
                 $payment = $db_data['paymentId'] !== '' ? $payment_response : false;
@@ -105,7 +105,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
     private function updatePaymillClient($db_data)
     {
         if ($db_data && $this->validateClient($db_data['clientId'])) {
-            $client_object = new Services_Paymill_Clients(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
+            $client_object = new Services_Paymill_Clients(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), 'https://api.paymill.com/v2/');
             $old_client = $client_object->getOne($db_data['clientId']);
             if ($this->context->customer->email !== $old_client['email']) {
                 $client_object->update(array(
@@ -150,7 +150,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
      */
     private function validateClient($client_id)
     {
-        $client_object = new Services_Paymill_Clients(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
+        $client_object = new Services_Paymill_Clients(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), 'https://api.paymill.com/v2/');
         return $this->validatePaymillId($client_object, $client_id);
     }
 
@@ -162,7 +162,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
      */
     private function validatePayment($payment_id)
     {
-        $payment_object = new Services_Paymill_Payments(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), "https://api.paymill.com/v2/");
+        $payment_object = new Services_Paymill_Payments(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), 'https://api.paymill.com/v2/');
         return $this->validatePaymillId($payment_object, $payment_id);
     }
 
