@@ -1,4 +1,18 @@
 <?php
+/**
+* 2012-2014 PAYMILL
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+*
+*  @author    PAYMILL <support@paymill.com>
+*  @copyright 2012-2014 PAYMILL
+*  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*/
 
 require_once 'models/configurationModel.php';
 
@@ -31,7 +45,7 @@ class configurationHandler
                 'PIGMBH_PAYMILL_ACCEPTED_BRANDS',
             )
         );
-        
+
         $configModel->setPublicKey(isset($config['PIGMBH_PAYMILL_PUBLICKEY']) ? $config['PIGMBH_PAYMILL_PUBLICKEY'] : '');
         $configModel->setPrivateKey(isset($config['PIGMBH_PAYMILL_PRIVATEKEY']) ? $config['PIGMBH_PAYMILL_PRIVATEKEY'] : '');
         $configModel->setDebitDays(isset($config['PIGMBH_PAYMILL_DEBIT_DAYS']) ? $config['PIGMBH_PAYMILL_DEBIT_DAYS'] : '');
@@ -40,7 +54,7 @@ class configurationHandler
         $configModel->setDirectdebit(isset($config['PIGMBH_PAYMILL_DEBIT']) ? $config['PIGMBH_PAYMILL_DEBIT'] : false);
         $configModel->setCreditcard(isset($config['PIGMBH_PAYMILL_CREDITCARD']) ? $config['PIGMBH_PAYMILL_CREDITCARD'] : false);
         $configModel->setFastcheckout(isset($config['PIGMBH_PAYMILL_FASTCHECKOUT']) ? $config['PIGMBH_PAYMILL_FASTCHECKOUT'] : false);
-        $configModel->setAccpetedCreditCards(isset($config['PIGMBH_PAYMILL_ACCEPTED_BRANDS']) ? json_decode($config['PIGMBH_PAYMILL_ACCEPTED_BRANDS'], true) : false);
+        $configModel->setAccpetedCreditCards(isset($config['PIGMBH_PAYMILL_ACCEPTED_BRANDS']) ? Tools::jsonDecode($config['PIGMBH_PAYMILL_ACCEPTED_BRANDS'], true) : false);
         return $configModel;
     }
 
@@ -58,7 +72,7 @@ class configurationHandler
         Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', $model->getDebug());
         Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', $model->getLogging());
         Configuration::updateValue('PIGMBH_PAYMILL_FASTCHECKOUT', $model->getFastcheckout());
-        Configuration::updateValue('PIGMBH_PAYMILL_ACCEPTED_BRANDS', json_encode($model->getAccpetedCreditCards()));
+        Configuration::updateValue('PIGMBH_PAYMILL_ACCEPTED_BRANDS', Tools::jsonEncode($model->getAccpetedCreditCards()));
     }
 
     /**
@@ -76,7 +90,7 @@ class configurationHandler
         Configuration::updateValue('PIGMBH_PAYMILL_FASTCHECKOUT', 'OFF');
         Configuration::updateValue(
             'PIGMBH_PAYMILL_ACCEPTED_BRANDS',
-            json_encode(
+            Tools::jsonEncode(
                 array(
                     'visa' => false,
                     'mastercard' => false,
@@ -92,7 +106,7 @@ class configurationHandler
                 )
             )
         );
-        
+
         return true; //needs to return true for installation
     }
 

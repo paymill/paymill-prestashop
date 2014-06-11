@@ -1,4 +1,18 @@
 <?php
+/**
+* 2012-2014 PAYMILL
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+*
+*  @author    PAYMILL <support@paymill.com>
+*  @copyright 2012-2014 PAYMILL
+*  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*/
 
 require_once 'Apiclient/Curl.php';
 /**
@@ -15,7 +29,7 @@ abstract class Services_Paymill_Base
 
     /**
      * Paymill HTTP client class
-     * 
+     *
      * @var Services_Paymill_Apiclient_Interface
      */
     protected $_httpClient;
@@ -34,7 +48,7 @@ abstract class Services_Paymill_Base
 
     /**
      * General REST GET verb
-     * 
+     *
      * @param array  $filters    e.g. count,offest
      * @param string $identifier resource id
      *
@@ -54,7 +68,7 @@ abstract class Services_Paymill_Base
     /**
      * General REST GET verb
      * returns one item or null
-     * 
+     *
      * @param string $identifier resource id
      *
      * @return array resource item | null
@@ -64,16 +78,16 @@ abstract class Services_Paymill_Base
         if (!$identifier) {
             return null;
         }
-        
+
         $filters = array("count" => 1, 'offset' => 0);
-        
+
         return $this->get($filters, $identifier);
     }
 
     /**
      * General REST DELETE verb
      * Delete or inactivate/cancel resource item
-     * 
+     *
      * @param string $clientId
      *
      * @return array item deleted
@@ -133,7 +147,7 @@ abstract class Services_Paymill_Base
 
         return $response['data'];
     }
-    
+
     /**
      * Returns the response of the last request as an array
      * @return mixed Response

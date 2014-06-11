@@ -1,26 +1,41 @@
-<link rel="stylesheet" type="text/css" href="{$components}/paymill_styles.css" />
+{**
+* 2012-2014 PAYMILL
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+*
+*  @author    PAYMILL <support@paymill.com>
+*  @copyright 2012-2014 PAYMILL
+*  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*}
+
+<link rel="stylesheet" type="text/css" href="{$modul_base}/css/paymill_styles.css" />
 <script type="text/javascript">
     var PAYMILL_PUBLIC_KEY = '{$public_key}';
-    var PAYMILL_IMAGE = '{$components}/images';
+    var PAYMILL_IMAGE = '{$modul_base}/img';
     var prefilled = new Array();
     var submitted = false;
     var acceptedBrands = {$acceptedBrands};
 </script>
 <script type="text/javascript" src="https://bridge.paymill.com/"></script>
-<script type="text/javascript" src="{$components}/javascript/Iban.js"></script>
-<script type="text/javascript" src="{$components}/javascript/BrandDetection.js"></script>
+<script type="text/javascript" src="{$modul_base}/js/Iban.js"></script>
+<script type="text/javascript" src="{$modul_base}/js/BrandDetection.js"></script>
 <script type="text/javascript">
-    function isSepa() 
+    function isSepa()
     {
         return !isNumber($('#paymill_iban').val().substr(0, 2));
     }
-    
-    function isNumber(n) 
+
+    function isNumber(n)
     {
         return !isNaN(parseFloat(n)) && isFinite(n);
     }
-    
-    function validate() 
+
+    function validate()
     {
         debug("Paymill handler triggered");
         var result = true;
@@ -37,28 +52,28 @@
             field.push($('#paymill-card-cvc'));
             result = false;
         }
-        
+
         if (!paymill.validateHolder($('#paymill-card-holder').val())) {
             errorMessage = "{l s='Please enter the creditcardholders name.' mod='pigmbhpaymill'}";
             $("#paymill-error").append($("<div/>").html(errorMessage));
             field.push($('#paymill-card-holder'));
             result = false;
         }
-        
+
         if (!paymill.validateExpiry($('#paymill-card-expirydate').val().split('/')[0], $('#paymill-card-expirydate').val().split('/')[1])) {
             errorMessage = "{l s='Please enter a valid date.' mod='pigmbhpaymill'}";
             $("#paymill-error").append($("<div/>").html(errorMessage));
             field.push($('#paymill-card-expirydate'));
             result = false;
         }
-        
+
         if (!paymill.validateCardNumber($('#paymill-card-number').val())) {
             errorMessage = "{l s='Please enter your creditcardnumber.' mod='pigmbhpaymill'}";
             $("#paymill-error").append($("<div/>").html(errorMessage));
             field.push($('#paymill-card-number'));
             result = false;
         }
-        
+
         {elseif $payment == 'debit'}
         if (!paymill.validateHolder($('#paymill_accountholder').val())) {
             errorMessage = "{l s='Please enter the accountholder' mod='pigmbhpaymill'}";
@@ -66,7 +81,7 @@
             field.push($('#paymill_accountholder'));
             result = false;
         }
-        
+
         if (!isSepa()) {
             if (!paymill.validateAccountNumber($('#paymill_iban').val())) {
                 errorMessage = "{l s='Please enter your accountnumber.' mod='pigmbhpaymill'}";
@@ -74,7 +89,7 @@
                 field.push($('#paymill_iban'));
                 result = false;
             }
-            
+
             if (!paymill.validateBankCode($('#paymill_bic').val())) {
                 errorMessage = "{l s='Please enter your bankcode.' mod='pigmbhpaymill'}";
                 $("#paymill-error").append($("<div/>").html(errorMessage));
@@ -89,7 +104,7 @@
                 field.push($('#paymill_iban'));
                 result = false;
             }
-            
+
             if ($('#paymill_bic').val() === "") {
                 errorMessage = "{l s='Please enter your bic.' mod='pigmbhpaymill'}";
                 $("#paymill-error").append($("<div/>").html(errorMessage));
@@ -97,13 +112,13 @@
                 result = false;
             }
         }
-        
+
         {/if}
         if (!result) {
             for (var i = 0; i < field.length; i++) {
                 field[i].addClass('field-error');
             }
-            
+
             $("#paymill-error").show(500);
             $("#submitButton").removeAttr('disabled');
         } else {
@@ -113,9 +128,9 @@
 
         return result;
     }
-    
-            
-    function debug(message) 
+
+
+    function debug(message)
     {
     {if $paymill_debugging == 'true'}
         {if $payment == 'creditcard'}
@@ -125,7 +140,7 @@
         {/if}
     {/if}
     }
-    
+
     $(document).ready(function() {
         prefilled = getFormData(prefilled, true);
         $("#paymill_form").submit(function(event) {
@@ -173,7 +188,7 @@
                     }
                 }
             }
-            
+
             return submitted;
         });
 
@@ -182,14 +197,14 @@
             var cardnumber = $('#paymill-card-number').val();
             var detector = new BrandDetection();
             var brand = detector.detect(cardnumber);
-            
+
             var allDisabled = true;
             for (possibleAcceptableBrand in acceptedBrands) {
                 if (acceptedBrands[possibleAcceptableBrand]) {
                     allDisabled = false;
                 }
             }
-            
+
             if ((brand !== 'unknown' && acceptedBrands[brand]) || allDisabled) {
                 $('#paymill-card-number').addClass("paymill-card-number-" + brand);
                 if (!detector.validate(cardnumber)) {
@@ -205,8 +220,8 @@
                 $("#paymill-card-expirydate").val(expiryDate);
             }
         });
-        
-        function getFormData(array, ignoreEmptyValues) 
+
+        function getFormData(array, ignoreEmptyValues)
         {
             $('#paymill_form :input:text').each(function() {
                 if ($(this).val() === "" && ignoreEmptyValues) {
@@ -216,8 +231,8 @@
             });
             return array;
         }
-    
-        function PaymillResponseHandler(error, result) 
+
+        function PaymillResponseHandler(error, result)
         {
             debug("Started Paymill response handler");
             if (error) {
@@ -238,8 +253,8 @@
                 form.submit();
             }
         }
-    
-        function getErrorMessage(code) 
+
+        function getErrorMessage(code)
         {
             var errormessage = '{l s='Unknown Error' mod='pigmbhpaymill'}';
             switch (code) {

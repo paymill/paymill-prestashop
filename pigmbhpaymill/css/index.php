@@ -14,21 +14,12 @@
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 */
 
-interface Services_Paymill_Apiclient_Interface
-{
-    const HTTP_POST = 'POST';
-    const HTTP_GET  = 'GET';
-    const HTTP_PUT  = 'PUT';
-    const HTTP_DELETE  = 'DELETE';
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
 
-    /**
-     * Perform API and handle exceptions
-     *
-     * @param $action
-     * @param array $params
-     * @param string $method
-     * @return mixed
-     */
-    public function request($action, $params = array(), $method = 'POST');
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 
-}
+header("Location: ../");
+exit;

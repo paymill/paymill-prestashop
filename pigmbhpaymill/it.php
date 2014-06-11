@@ -1,5 +1,4 @@
 <?php
-global $_MODULE;
 $_MODULE = array();
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_1ef3e269a9500231415bd231bb29ecf6"] = "Addebito diretto e pagamenti con carta di credito PAYMILL";
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_8e40c7d5748c55e0f5f034dd566493de"] = "Si è verificato un errore durante l\'elaborazione del pagamento.";

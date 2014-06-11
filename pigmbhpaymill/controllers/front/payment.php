@@ -1,4 +1,18 @@
 <?php
+/**
+* 2012-2014 PAYMILL
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+*
+*  @author    PAYMILL <support@paymill.com>
+*  @copyright 2012-2014 PAYMILL
+*  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*/
 
 require_once dirname(__FILE__) . '/../../paymill/v2/lib/Services/Paymill/Clients.php';
 require_once dirname(__FILE__) . '/../../paymill/v2/lib/Services/Paymill/Payments.php';
@@ -28,11 +42,11 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             $valid_payments[] = 'debit';
         if (Configuration::get('PIGMBH_PAYMILL_CREDITCARD'))
             $valid_payments[] = 'creditcard';
-        if (!in_array(Tools::getValue('payment'), $valid_payments)) 
+        if (!in_array(Tools::getValue('payment'), $valid_payments))
             Tools::redirectLink(__PS_BASE_URI__.'order.php?step=1');
-        
+
         $db_data = $this->getPaymillUserData();
-        
+
         $this->updatePaymillClient($db_data);
 
         $cart = $this->context->cart;
@@ -44,11 +58,11 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
         }
 
         $_SESSION['pigmbhPaymill']['authorizedAmount'] = (int) round($cart->getOrderTotal(true, Cart::BOTH) * 100);
-        
+
         $brands = array();
-        foreach (json_decode(Configuration::get('PIGMBH_PAYMILL_ACCEPTED_BRANDS'), true) as $brand_key => $brand_value)
+        foreach (Tools::jsonDecode(Configuration::get('PIGMBH_PAYMILL_ACCEPTED_BRANDS'), true) as $brand_key => $brand_value)
             $brands[str_replace('-', '', $brand_key)] = $brand_value;
-        
+
         $data = array(
             'nbProducts' => $cart->nbProducts(),
             'cust_currency' => $cart->id_currency,
@@ -61,7 +75,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             'public_key' => Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'),
             'payment' => Tools::getValue('payment'),
             'paymill_debugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
-            'components' => _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/pigmbhpaymill/components/',
+            'modul_base' => _PS_BASE_URL_ . __PS_BASE_URI__ . 'modules/pigmbhpaymill/',
             'customer' => $this->context->customer->firstname . ' ' . $this->context->customer->lastname,
             'prefilledFormData' => $this->updatePaymillPayment($db_data),
             'acceptedBrands' => Configuration::get('PIGMBH_PAYMILL_ACCEPTED_BRANDS'),
@@ -72,10 +86,10 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
         parent::initContent();
         $this->setTemplate('paymentForm.tpl');
     }
-    
+
     /**
      * Update paymill payment data if necessary
-     * 
+     *
      * @param array $db_data
      * @return boolean|array
      */
@@ -93,13 +107,13 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
                 $payment['expire_date'] = $payment['expire_month'] . "/" . $payment['expire_year'];
             }
         }
-        
+
         return $payment;
     }
-    
+
     /**
      * Update paymill client data if necessary
-     * 
+     *
      * @param array $db_data
      */
     private function updatePaymillClient($db_data)
@@ -116,10 +130,10 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
             }
         }
     }
-    
+
     /**
      * Selects paymill client and payment id from database
-     * 
+     *
      * @return array
      */
     private function getPaymillUserData()
@@ -138,13 +152,13 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
                 $db_data = array();
             }
         }
-        
+
         return $db_data;
     }
-    
+
     /**
      * Validates if paymill client id exists
-     * 
+     *
      * @param string $client_id
      * @return boolean
      */
@@ -156,7 +170,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 
     /**
      * Validates if paymill payment id exists
-     * 
+     *
      * @param string $payment_id
      * @return boolean
      */
@@ -168,7 +182,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 
     /**
      * Validates if paymill id exists
-     * 
+     *
      * @param mixed $object
      * @param string $id
      * @return boolean
