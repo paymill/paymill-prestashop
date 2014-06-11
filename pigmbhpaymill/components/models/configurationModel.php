@@ -19,67 +19,67 @@
  * @category   PayIntelligent
  * @copyright  Copyright (c) 2011 PayIntelligent GmbH (http://payintelligent.de)
  */
-class configurationModel
+class ConfigurationModel
 {
 	/**
 	 * @var string
 	 */
-	private $_privateKey;
+	private $private_key;
 
 	/**
 	 * @var string
 	 */
-	private $_publicKey;
+	private $public_key;
 
 	/**
 	 * @var boolean
 	 */
-	private $_debug;
+	private $debug;
 
 	/**
 	 * @var boolean
 	 */
-	private $_logging;
+	private $logging;
 
 	/**
 	 * @var boolean
 	 */
-	private $_fastcheckout;
+	private $fastcheckout;
 
 	/**
 	 * @var boolean
 	 */
-	private $_creditcard;
+	private $creditcard;
 
 	/**
 	 * @var boolean
 	 */
-	private $_directdebit;
+	private $directdebit;
 
 	/**
 	 * @var array
 	 */
-	private $_accpetedCreditCards;
+	private $accpeted_creditcards;
 
 	/**
 	 * @var string
 	 */
-	private $_debitDays;
+	private $debit_days;
 
 	/**
 	 * @return string
 	 */
 	public function getDebitDays()
 	{
-		return $this->_debitDays;
+		return $this->debit_days;
 	}
 
 	/**
-	 * @param string $debitDays
+	 * @param string $debit_days
 	 */
-	public function setDebitDays($debitDays)
+	public function setDebitDays($debit_days)
 	{
-		$this->_debitDays = $debitDays;
+		$this->debit_days = $debit_days;
 	}
 
 	/**
@@ -87,15 +87,15 @@ class configurationModel
 	 */
 	public function getAccpetedCreditCards()
 	{
-		return $this->_accpetedCreditCards;
+		return $this->accpeted_creditcards;
 	}
 
 	/**
-	 * @param array $accpetedCreditCards
+	 * @param array $accpeted_creditards
 	 */
-	public function setAccpetedCreditCards($accpetedCreditCards)
+	public function setAccpetedCreditCards($accpeted_creditards)
 	{
-		$this->_accpetedCreditCards = $accpetedCreditCards;
+		$this->accpeted_creditcards = $accpeted_creditards;
 	}
 
 	/**
@@ -103,15 +103,15 @@ class configurationModel
 	 */
 	public function getPrivateKey()
 	{
-		return $this->_privateKey;
+		return $this->private_key;
 	}
 
 	/**
-	 * @param string $privateKey
+	 * @param string $private_key
 	 */
-	public function setPrivateKey($privateKey)
+	public function setPrivateKey($private_key)
 	{
-		$this->_privateKey = $privateKey;
+		$this->private_key = $private_key;
 	}
 
 	/**
@@ -119,15 +119,15 @@ class configurationModel
 	 */
 	public function getPublicKey()
 	{
-		return $this->_publicKey;
+		return $this->public_key;
 	}
 
 	/**
-	 * @param string $publicKey
+	 * @param string $public_key
 	 */
-	public function setPublicKey($publicKey)
+	public function setPublicKey($public_key)
 	{
-		$this->_publicKey = $publicKey;
+		$this->public_key = $public_key;
 	}
 
 	/**
@@ -135,7 +135,7 @@ class configurationModel
 	 */
 	public function getDebug()
 	{
-		return $this->_debug;
+		return $this->debug;
 	}
 
 	/**
@@ -143,7 +143,7 @@ class configurationModel
 	 */
 	public function setDebug($debug)
 	{
-		$this->_debug = $debug;
+		$this->debug = $debug;
 	}
 
 	/**
@@ -151,7 +151,7 @@ class configurationModel
 	 */
 	public function getLogging()
 	{
-		return $this->_logging;
+		return $this->logging;
 	}
 
 	/**
@@ -159,7 +159,7 @@ class configurationModel
 	 */
 	public function setLogging($logging)
 	{
-		$this->_logging = $logging;
+		$this->logging = $logging;
 	}
 
 	/**
@@ -167,7 +167,7 @@ class configurationModel
 	 */
 	public function getFastcheckout()
 	{
-		return $this->_fastcheckout;
+		return $this->fastcheckout;
 	}
 
 	/**
@@ -175,7 +175,7 @@ class configurationModel
 	 */
 	public function setFastcheckout($fastcheckout)
 	{
-		$this->_fastcheckout = $fastcheckout;
+		$this->fastcheckout = $fastcheckout;
 	}
 
 	/**
@@ -183,7 +183,7 @@ class configurationModel
 	 */
 	public function getCreditcard()
 	{
-		return $this->_creditcard;
+		return $this->creditcard;
 	}
 
 	/**
@@ -191,7 +191,7 @@ class configurationModel
 	 */
 	public function setCreditcard($creditcard)
 	{
-		$this->_creditcard = $creditcard;
+		$this->creditcard = $creditcard;
 	}
 
 	/**
@@ -199,7 +199,7 @@ class configurationModel
 	 */
 	public function getDirectdebit()
 	{
-		return $this->_directdebit;
+		return $this->directdebit;
 	}
 
 	/**
@@ -207,7 +207,7 @@ class configurationModel
 	 */
 	public function setDirectdebit($directdebit)
 	{
-		$this->_directdebit = $directdebit;
+		$this->directdebit = $directdebit;
 	}
 
 }

@@ -1,18 +1,18 @@
 <?php
 /**
-* 2012-2014 PAYMILL
-*
-* NOTICE OF LICENSE
-*
-* This source file is subject to the Academic Free License (AFL 3.0)
-* that is bundled with this package in the file LICENSE.txt.
-* It is also available through the world-wide-web at this URL:
-* http://opensource.org/licenses/afl-3.0.php
-*
-*  @author    PAYMILL <support@paymill.com>
-*  @copyright 2012-2014 PAYMILL
-*  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
-*/
+ * 2012-2014 PAYMILL
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ *
+ *  @author    PAYMILL <support@paymill.com>
+ *  @copyright 2012-2014 PAYMILL
+ *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
 
 require_once dirname(__FILE__).'/../../paymill/v2/lib/Services/Paymill/PaymentProcessor.php';
 require_once dirname(__FILE__).'/../../paymill/v2/lib/Services/Paymill/LoggingInterface.php';
@@ -81,11 +81,10 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 
 		$this->log('Start processing payment with token', $this->token);
 
-		foreach ($this->module->getCurrency((int) $this->context->cart->id_currency) as $currency) {
+		foreach ($this->module->getCurrency((int)$this->context->cart->id_currency) as $currency)
+		{
 			if ($currency['id_currency'] == $this->context->cart->id_currency)
-			{
 				$this->iso_currency = $currency['iso_code'];
-			}
 		}
 	}
 
@@ -99,9 +98,9 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		$result = $this->processPayment();
 		if ($result === true)
 		{
-			$customer = new Customer((int) $this->context->cart->id_customer);
+			$customer = new Customer((int)$this->context->cart->id_customer);
 			$this->saveUserData(
-				$this->payment_processor->getClientId(), $this->payment_processor->getPaymentId(), (int) $this->context->cart->id_customer
+				$this->payment_processor->getClientId(), $this->payment_processor->getPaymentId(), (int)$this->context->cart->id_customer
 			);
 
 			$payment_text = $this->getPaymentText();
@@ -109,16 +108,28 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 			$_SESSION['piPaymentText'] = $payment_text;
 
 			$order_id = $this->module->validateOrder(
-				(int) $this->context->cart->id, Configuration::get('PIGMBH_PAYMILL_ORDERSTATE'), $this->context->cart->getOrderTotal(true, Cart::BOTH), $payment_text, null, array(), null, false, $customer->secure_key, $this->context->shop
+				(int)$this->context->cart->id,
+				Configuration::get('PIGMBH_PAYMILL_ORDERSTATE'),
+				$this->context->cart->getOrderTotal(true, Cart::BOTH),
+				$payment_text,
+				null,
+				array(),
+				null,
+				false,
+				$customer->secure_key,
+				$this->context->shop
 			);
 
 			$this->updatePaymillTransaction(
-				$this->payment_processor->getTransactionId(), 'OrderID: '.$order_id.' - Name:'.$this->context->customer->lastname.', '.$this->context->customer->firstname
+				$this->payment_processor->getTransactionId(),
+				'OrderID: '.$order_id.' - Name:'.$this->context->customer->lastname.', '.$this->context->customer->firstname
 			);
 
 			$_SESSION['piOrderId'] = $order_id;
 
-			Tools::redirect('index.php?controller=order-confirmation?key='.$customer->secure_key.'&id_cart='.(int) $this->context->cart->id.'&id_module='.(int) $this->module->id.'&id_order='.(int) $this->module->currentOrder);
+			Tools::redirect('index.php?controller=order-confirmation?key='
+				.$customer->secure_key.'&id_cart='.(int)$this->context->cart->id
+				.'&id_module='.(int)$this->module->id.'&id_order='.(int)$this->module->currentOrder);
 		}
 		else
 		{
@@ -137,20 +148,14 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		$payment_text = '';
 		if ($this->payment === 'debit')
 		{
-
 			$days = Configuration::get('PIGMBH_PAYMILL_DEBIT_DAYS');
 			if (!is_numeric($days))
-			{
 				$days = '7';
-			}
 
 			$payment_text = $this->module->l('ELV /SEPA Debit Date: ').date('Y-m-d', strtotime('+'.$days.' day'));
 		}
 		else
-		{
 			$payment_text = $this->module->l('Credit Card');
-		}
-
 		return $payment_text;
 	}
 
@@ -175,10 +180,10 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		$this->payment_processor->setSource(Configuration::get('PIGMBH_PAYMILL_VERSION').'_prestashop_'._PS_VERSION_);
 
 		if ($this->payment == 'creditcard')
-			$user_data = $this->db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_creditcard_userdata` WHERE `userId`='.$this->context->customer->id);
+			$sql = 'SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_creditcard_userdata` WHERE `userId`='.$this->context->customer->id;
 		elseif ($this->payment == 'debit')
-			$user_data = $this->db->getRow('SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`='.$this->context->customer->id);
-
+			$sql = 'SELECT `clientId`,`paymentId` FROM `pigmbh_paymill_directdebit_userdata` WHERE `userId`='.$this->context->customer->id;
+		$user_data = $this->db->getRow($sql);
 		$this->payment_processor->setClientId(!empty($user_data['clientId']) ? $user_data['clientId'] : null);
 
 		if ($this->token === 'dummyToken')
@@ -186,11 +191,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 
 		$result = $this->payment_processor->processPayment();
 
-		$this->log(
-			'Payment processing resulted in'
-			, ($result ? 'Success' : 'Fail')
-		);
-
+		$this->log('Payment processing resulted in', ($result ? 'Success' : 'Fail'));
 		return $result;
 	}
 
@@ -204,15 +205,11 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		$db = Db::getInstance();
 		if (Configuration::get('PIGMBH_PAYMILL_LOGGING') === 'on')
 		{
-			try {
-				$db->insert('pigmbh_paymill_logging', array(
-					'identifier' => $_SESSION["log_id"],
-					'debug' => $debug_info,
-					'message' => $message,
-					), false, false, Db::INSERT, false);
-			} catch (exception $e) {
-
-			}
+			$db->insert('pigmbh_paymill_logging', array(
+				'identifier' => $_SESSION['log_id'],
+				'debug' => $debug_info,
+				'message' => $message,
+				), false, false, Db::INSERT, false);
 		}
 	}
 
@@ -230,7 +227,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		try {
 			$query = 'SELECT COUNT(*) as `count` FROM '.$table.' WHERE clientId="'.$client_id.'";';
 			$count = $db->executeS($query, true);
-			$count = (int) $count[0]['count'];
+			$count = (int)$count[0]['count'];
 			if ($count === 0)
 			{
 				$this->log('Inserted new data.', var_export(array($client_id, $payment_id, $user_id), true));
