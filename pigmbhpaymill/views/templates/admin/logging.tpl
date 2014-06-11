@@ -12,7 +12,7 @@
 *  @copyright 2012-2014 PAYMILL
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-{$config}
+{$config|escape:'UTF-8'}
 
 <br>
 
@@ -30,8 +30,8 @@
             <tr>
                 <td class="dataTableContent">{$row.identifier|escape:'intval'}</td>
                 <td class="dataTableContent">{$row.date|escape:'html'}</td>
-                <td class="dataTableContent">{$row.message|escape:'html'}</td>
-                <td class="dataTableContent">{$row.debug|escape:'url'}</td>
+                <td class="dataTableContent">{$row.message|escape:'UTF-8'}</td>
+                <td class="dataTableContent">{$row.debug|escape:'UTF-8'}</td>
             </tr>
             {foreachelse}
             <tr>

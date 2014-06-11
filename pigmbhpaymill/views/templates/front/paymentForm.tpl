@@ -13,17 +13,17 @@
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
 
-<link rel="stylesheet" type="text/css" href="{$modul_base}/css/paymill_styles.css" />
+<link rel="stylesheet" type="text/css" href="{$modul_base|escape:'UTF-8'}/css/paymill_styles.css" />
 <script type="text/javascript">
-    var PAYMILL_PUBLIC_KEY = '{$public_key}';
-    var PAYMILL_IMAGE = '{$modul_base}/img';
+    var PAYMILL_PUBLIC_KEY = '{$public_key|escape:'UTF-8'}';
+    var PAYMILL_IMAGE = '{$modul_base|escape:'UTF-8'}/img';
     var prefilled = new Array();
     var submitted = false;
-    var acceptedBrands = {$acceptedBrands};
+    var acceptedBrands = {$acceptedBrands|escape:'UTF-8'};
 </script>
 <script type="text/javascript" src="https://bridge.paymill.com/"></script>
-<script type="text/javascript" src="{$modul_base}/js/Iban.js"></script>
-<script type="text/javascript" src="{$modul_base}/js/BrandDetection.js"></script>
+<script type="text/javascript" src="{$modul_base|escape:'UTF-8'}/js/Iban.js"></script>
+<script type="text/javascript" src="{$modul_base|escape:'UTF-8'}/js/BrandDetection.js"></script>
 <script type="text/javascript">
     function isSepa()
     {
@@ -164,8 +164,8 @@
                                 exp_month: $('#paymill-card-expirydate').val().split('/')[0],
                                 exp_year: $('#paymill-card-expirydate').val().split('/')[1],
                                 cvc: $('#paymill-card-cvc').val(),
-                                amount_int: {$total},
-                                currency: '{$currency_iso}'
+                                amount_int: {$total|escape:'intval'},
+                                currency: '{$currency_iso|escape:'UTF-8'}'
                             }, PaymillResponseHandler);
                             {elseif $payment == 'debit'}
                             if (!isSepa()) {
@@ -215,7 +215,7 @@
 
         $('#paymill-card-expirydate').keyup(function() {
             var expiryDate = $("#paymill-card-expirydate").val();
-            if (expiryDate.match(/^.{2}$/)) {
+            if (expiryDate.match(/^\d\d$/)) {
                 expiryDate += "/";
                 $("#paymill-card-expirydate").val(expiryDate);
             }
@@ -335,44 +335,44 @@
     <p class="warning">{l s='Your cart is empty.' mod='pigmbhpaymill'}</p>
 {else}
 
-    <form id='paymill_form' action="{$link->getModuleLink('pigmbhpaymill', 'validation', [], true)}" method="post">
+    <form id='paymill_form' action="{$link->getModuleLink('pigmbhpaymill', 'validation', [], true)|escape:'UTF-8'}" method="post">
         <div class="debit">
-            <input type="hidden" name="payment" value="{$payment}">
+            <input type="hidden" name="payment" value="{$payment|escape:'UTF-8'}">
             <div id="paymill-error" class="error center" style="display:none;"></div>
             {if $payment == "creditcard"}
-                {if $acceptedBrandsDecoded.visa}<img src="{$components}/images/32x20_visa.png" alt="visa">{/if}
-                {if $acceptedBrandsDecoded.mastercard}<img src="{$components}/images/32x20_mastercard.png" alt="mastercard"> {/if}
-                {if $acceptedBrandsDecoded.amex}<img src="{$components}/images/32x20_amex.png" alt="amex"> {/if}
-                {if $acceptedBrandsDecoded.cartasi}<img src="{$components}/images/32x20_carta-si.png" alt="carta-si"> {/if}
-                {if $acceptedBrandsDecoded.cartebleue}<img src="{$components}/images/32x20_carte-bleue.png" alt="carte-bleue"> {/if}
-                {if $acceptedBrandsDecoded.dinersclub}<img src="{$components}/images/32x20_dinersclub.png" alt="maestro"> {/if}
-                {if $acceptedBrandsDecoded.chinaunionpay}<img src="{$components}/images/32x20_unionpay.png" alt="china-unionpay"> {/if}
-                {if $acceptedBrandsDecoded.discover}<img src="{$components}/images/32x20_discover.png" alt="discover"> {/if}
-                {if $acceptedBrandsDecoded.dankort}<img src="{$components}/images/32x20_dankort.png" alt="dankort"> {/if}
-                {if $acceptedBrandsDecoded.jcb}<img src="{$components}/images/32x20_jcb.png" alt="jcb"> {/if}
-                {if $acceptedBrandsDecoded.maestro}<img src="{$components}/images/32x20_maestro.png" alt="maestro"> {/if}
+                {if $acceptedBrandsDecoded.visa}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_visa.png" alt="visa">{/if}
+                {if $acceptedBrandsDecoded.mastercard}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_mastercard.png" alt="mastercard"> {/if}
+                {if $acceptedBrandsDecoded.amex}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_amex.png" alt="amex"> {/if}
+                {if $acceptedBrandsDecoded.cartasi}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_carta-si.png" alt="carta-si"> {/if}
+                {if $acceptedBrandsDecoded.cartebleue}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_carte-bleue.png" alt="carte-bleue"> {/if}
+                {if $acceptedBrandsDecoded.dinersclub}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_dinersclub.png" alt="maestro"> {/if}
+                {if $acceptedBrandsDecoded.chinaunionpay}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_unionpay.png" alt="china-unionpay"> {/if}
+                {if $acceptedBrandsDecoded.discover}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_discover.png" alt="discover"> {/if}
+                {if $acceptedBrandsDecoded.dankort}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_dankort.png" alt="dankort"> {/if}
+                {if $acceptedBrandsDecoded.jcb}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_jcb.png" alt="jcb"> {/if}
+                {if $acceptedBrandsDecoded.maestro}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_maestro.png" alt="maestro"> {/if}
             <fieldset>
                 <label for="paymill-card-number" class="field-left">{l s='Creditcard-number' mod='pigmbhpaymill'}*</label>
                 <input id="paymill-card-number" type="text" class="field-left" value="{if $prefilledFormData.last4}****************{$prefilledFormData.last4}{/if}" />
                 <label for="paymill-card-expirydate" class="field-right">{l s='Valid until' mod='pigmbhpaymill'}*</label>
-                <input id="paymill-card-expirydate" type="text" class="field-right" value="{if $prefilledFormData.expire_date}{$prefilledFormData.expire_date}{else}MM/YYYY{/if}">
+                <input id="paymill-card-expirydate" type="text" class="field-right" value="{if $prefilledFormData.expire_date}{$prefilledFormData.expire_date|escape:'UTF-8'}{else}MM/YYYY{/if}">
             </fieldset>
             <fieldset>
                 <label for="paymill-card-holder" class="field-left">{l s='Cardholder' mod='pigmbhpaymill'}*</label>
-                <input id="paymill-card-holder" type="text" class="field-left" value="{if $prefilledFormData.card_holder}{$prefilledFormData.card_holder}{else}{$customer}{/if}"/>
+                <input id="paymill-card-holder" type="text" class="field-left" value="{if $prefilledFormData.card_holder}{$prefilledFormData.card_holder|escape:'UTF-8'}{else}{$customer|escape:'UTF-8'}{/if}"/>
                 <label for="paymill-card-cvc" class="field-right">{l s='CVC' mod='pigmbhpaymill'}*<span class="paymill-tooltip" title="{l s='What is a CVV/CVC number? Prospective credit cards will have a 3 to 4-digit number, usually on the back of the card. It ascertains that the payment is carried out by the credit card holder and the card account is legitimate. On Visa the CVV (Card Verification Value) appears after and to the right of your card number. Same goes for Mastercard’s CVC (Card Verfication Code), which also appears after and to the right of  your card number, and has 3-digits. Diners Club, Discover, and JCB credit and debit cards have a three-digit card security code which also appears after and to the right of your card number. The American Express CID (Card Identification Number) is a 4-digit number printed on the front of your card. It appears above and to the right of your card number. On Maestro the CVV appears after and to the right of your number. If you don’t have a CVV for your Maestro card you can use 000.' mod='pigmbhpaymill'}">?</span></label>
                 <input id="paymill-card-cvc" type="text" class="field-right" value="{if $prefilledFormData.last4}***{/if}" />
             </fieldset>
             {elseif $payment == "debit"}
             <fieldset>
                 <label for="paymill_iban" class="field-left">IBAN* / {l s='Accountnumber' mod='pigmbhpaymill'}*</label>
-                <input id="paymill_iban" type="text" class="field-left" value="{if $prefilledFormData.iban}{$prefilledFormData.iban}{else}{if $prefilledFormData.account}{$prefilledFormData.account}{/if}{/if}" />
+                <input id="paymill_iban" type="text" class="field-left" value="{if $prefilledFormData.iban}{$prefilledFormData.iban|escape:'UTF-8'}{else}{if $prefilledFormData.account|escape:'UTF-8'}{$prefilledFormData.account}{/if}{/if}" />
                 <label for="paymill_bic" class="field-right">BIC* / {l s='Banknumber' mod='pigmbhpaymill'}*</label>
-                <input id="paymill_bic" type="text" class="field-right" value="{if $prefilledFormData.bic}{$prefilledFormData.bic}{else}{if $prefilledFormData.code}{$prefilledFormData.code}{/if}{/if}" />
+                <input id="paymill_bic" type="text" class="field-right" value="{if $prefilledFormData.bic}{$prefilledFormData.bic|escape:'UTF-8'}{else}{if $prefilledFormData.code|escape:'UTF-8'}{$prefilledFormData.code}{/if}{/if}" />
             </fieldset>
             <fieldset>
                 <label for="paymill_accountholder" class="field-full">{l s='Accountholder' mod='pigmbhpaymill'}*</label>
-                <input id="paymill_accountholder" type="text" class="field-full" value="{if $prefilledFormData.holder}{$prefilledFormData.holder}{else}{$customer}{/if}"/>
+                <input id="paymill_accountholder" type="text" class="field-full" value="{if $prefilledFormData.holder}{$prefilledFormData.holder|escape:'UTF-8'}{else}{$customer|escape:'UTF-8'}{/if}"/>
             </fieldset>
             {/if}
             <p class="description">
@@ -381,10 +381,10 @@
             </p>
             <p class="cart_navigation paymill_cart_navi">
                 {if $opc}
-                    <a href="{$link->getPageLink('order', true)}" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
+                    <a href="{$link->getPageLink('order', true)|escape:'UTF-8'}" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
                 {/if}
                 {if !$opc}
-                    <a href="{$link->getPageLink('order', true)}?step=3" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
+                    <a href="{$link->getPageLink('order', true)|escape:'UTF-8'}?step=3" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
                 {/if}
                 <input type="submit" id='submitButton' value="{l s='Order' mod='pigmbhpaymill'}" class="exclusive_large" style="float: right;" />
             </p>
