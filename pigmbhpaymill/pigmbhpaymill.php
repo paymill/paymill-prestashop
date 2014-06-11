@@ -44,17 +44,6 @@ class PigmbhPaymill extends PaymentModule
 	 */
 	public function __construct()
 	{
-		if (session_id() == '')
-			session_start();
-		if (isset($_SESSION['piOrderId']) && Tools::getValue('id_order') == $_SESSION['piOrderId'])
-		{
-			$name = $_SESSION['piPaymentText'];
-			unset($_SESSION['piPaymentText']);
-			unset($_SESSION['piOrderId']);
-		}
-		else
-			$name = $this->l('PigmbhPaymill');
-
 		$this->name = 'pigmbhpaymill';
 		$this->tab = 'payments_gateways';
 		$this->version = '1.4.0';
@@ -66,8 +55,17 @@ class PigmbhPaymill extends PaymentModule
 		parent::__construct();
 
 		$this->configuration_handler = new ConfigurationHandler();
-		$this->displayName = $name;
+		$this->displayName = $this->l('PigmbhPaymill');
 		$this->description = $this->l('Payment via Paymill.');
+
+		if (session_id() == '')
+			session_start();
+		if (isset($_SESSION['piOrderId']) && Tools::getValue('id_order') == $_SESSION['piOrderId'])
+		{
+			$this->description = $_SESSION['piPaymentText'];
+			unset($_SESSION['piPaymentText']);
+			unset($_SESSION['piOrderId']);
+		}
 	}
 
 	/**
@@ -310,6 +308,7 @@ class PigmbhPaymill extends PaymentModule
 		$sql = 'SELECT `id`,`identifier`,`date`,`message`,`debug` FROM `pigmbh_paymill_logging` '.$where.' LIMIT '.$start.', '.$this->limit;
 		foreach ($db->executeS($sql, true) as $row)
 		{
+			$unsorted_print_data = array();
 			foreach ($row as $key => $value)
 			{
 				$value = is_array($value) ? $value[1].'<br><br>'.$value[0] : $value;

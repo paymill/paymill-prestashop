@@ -52,13 +52,18 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 	private $iso_currency;
 
 	/**
+	 * @var int
+	 */
+	private $log_id;
+
+
+	/**
 	 * Initialize needed class variables and session
 	 */
 	private function paymillInit()
 	{
-		session_start();
-		unset($_SESSION['log_id']);
-		$_SESSION['log_id'] = time();
+
+		$this->log_id = time();
 		$this->db = Db::getInstance();
 		$this->token = Tools::getValue('paymillToken');
 		$this->payment = Tools::getValue('payment');
@@ -206,7 +211,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		if (Configuration::get('PIGMBH_PAYMILL_LOGGING') === 'on')
 		{
 			$db->insert('pigmbh_paymill_logging', array(
-				'identifier' => $_SESSION['log_id'],
+				'identifier' => $this->log_id,
 				'debug' => $debug_info,
 				'message' => $message,
 				), false, false, Db::INSERT, false);

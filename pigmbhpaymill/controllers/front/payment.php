@@ -35,7 +35,6 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 		$this->display_column_left = false;
 		$this->display_column_center = true;
 		$this->display_column_right = false;
-		session_start();
 		$valid_payments = array();
 		if (Configuration::get('PIGMBH_PAYMILL_DEBIT'))
 			$valid_payments[] = 'debit';
