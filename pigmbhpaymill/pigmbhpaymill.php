@@ -57,41 +57,6 @@ class PigmbhPaymill extends PaymentModule
 		$this->configuration_handler = new ConfigurationHandler();
 		$this->displayName = $this->l('PigmbhPaymill');
 		$this->description = $this->l('Payment via Paymill.');
-
-		if (session_id() == '')
-			session_start();
-		if (isset($_SESSION['piOrderId']) && Tools::getValue('id_order') == $_SESSION['piOrderId'])
-		{
-			$this->description = $_SESSION['piPaymentText'];
-			unset($_SESSION['piPaymentText']);
-			unset($_SESSION['piOrderId']);
-		}
-	}
-
-	/**
-	 * Create the order
-	 *
-	 * @param type $id_cart
-	 * @param type $id_order_state
-	 * @param type $amount_paid
-	 * @param type $payment_method
-	 * @param type $message
-	 * @param type $extra_vars
-	 * @param type $currency_special
-	 * @param type $dont_touch_amount
-	 * @param type $secure_key
-	 * @param Shop $shop
-	 * @return boolean
-	 */
-	public function validateOrder($id_cart, $id_order_state, $amount_paid, $payment_method = 'Unknown', $message = null,
-		$extra_vars = array(), $currency_special = null, $dont_touch_amount = false, $secure_key = false, Shop $shop = null)
-	{
-		$return_value = null;
-		if (parent::validateOrder($id_cart, $id_order_state, $amount_paid, $payment_method, $message,
-			$extra_vars, $currency_special, $dont_touch_amount, $secure_key, $shop))
-			$return_value = $this->currentOrder;
-
-		return $return_value;
 	}
 
 	/**
@@ -246,7 +211,7 @@ class PigmbhPaymill extends PaymentModule
 			$accepted_brands[$accepted_brand] = true;
 
 		$accepted_brands_result = array();
-		foreach ($old_config->getAccpetedCreditCards() as $key => $value)
+		foreach (array_keys($old_config->getAccpetedCreditCards()) as $key)
 		{
 			if (array_key_exists($key, $accepted_brands))
 				$accepted_brands_result[$key] = true;
@@ -339,9 +304,8 @@ class PigmbhPaymill extends PaymentModule
 	 */
 	private function showConfigurationForm()
 	{
-		$configuration_model = $this->configuration_handler->loadConfiguration();
-		return
-			'<link rel="stylesheet" type="text/css" href="'._PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_styles.css">
+	$configuration_model = $this->configuration_handler->loadConfiguration();
+	return '<link rel="stylesheet" type="text/css" href="'._PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_styles.css">
         <form action="'.Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']).'" method="post">
             <fieldset class="paymill_center">
                 <legend>'.$this->displayName.'</legend>
