@@ -340,17 +340,17 @@
             <input type="hidden" name="payment" value="{$payment|escape:'UTF-8'}">
             <div id="paymill-error" class="error center" style="display:none;"></div>
             {if $payment == "creditcard"}
-                {if $acceptedBrandsDecoded.visa}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_visa.png" alt="visa">{/if}
-                {if $acceptedBrandsDecoded.mastercard}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_mastercard.png" alt="mastercard"> {/if}
-                {if $acceptedBrandsDecoded.amex}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_amex.png" alt="amex"> {/if}
-                {if $acceptedBrandsDecoded.cartasi}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_carta-si.png" alt="carta-si"> {/if}
-                {if $acceptedBrandsDecoded.cartebleue}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_carte-bleue.png" alt="carte-bleue"> {/if}
-                {if $acceptedBrandsDecoded.dinersclub}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_dinersclub.png" alt="maestro"> {/if}
-                {if $acceptedBrandsDecoded.chinaunionpay}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_unionpay.png" alt="china-unionpay"> {/if}
-                {if $acceptedBrandsDecoded.discover}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_discover.png" alt="discover"> {/if}
-                {if $acceptedBrandsDecoded.dankort}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_dankort.png" alt="dankort"> {/if}
-                {if $acceptedBrandsDecoded.jcb}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_jcb.png" alt="jcb"> {/if}
-                {if $acceptedBrandsDecoded.maestro}<img src="{$modul_base|escape:'UTF-8'}/images/32x20_maestro.png" alt="maestro"> {/if}
+                {if $acceptedBrandsDecoded.visa}<img src="{$modul_base|escape:'UTF-8'}img/32x20_visa.png" alt="visa">{/if}
+                {if $acceptedBrandsDecoded.mastercard}<img src="{$modul_base|escape:'UTF-8'}img/32x20_mastercard.png" alt="mastercard"> {/if}
+                {if $acceptedBrandsDecoded.amex}<img src="{$modul_base|escape:'UTF-8'}img/32x20_amex.png" alt="amex"> {/if}
+                {if $acceptedBrandsDecoded.cartasi}<img src="{$modul_base|escape:'UTF-8'}img/32x20_carta-si.png" alt="carta-si"> {/if}
+                {if $acceptedBrandsDecoded.cartebleue}<img src="{$modul_base|escape:'UTF-8'}img/32x20_carte-bleue.png" alt="carte-bleue"> {/if}
+                {if $acceptedBrandsDecoded.dinersclub}<img src="{$modul_base|escape:'UTF-8'}img/32x20_dinersclub.png" alt="maestro"> {/if}
+                {if $acceptedBrandsDecoded.chinaunionpay}<img src="{$modul_base|escape:'UTF-8'}img/32x20_unionpay.png" alt="china-unionpay"> {/if}
+                {if $acceptedBrandsDecoded.discover}<img src="{$modul_base|escape:'UTF-8'}img/32x20_discover.png" alt="discover"> {/if}
+                {if $acceptedBrandsDecoded.dankort}<img src="{$modul_base|escape:'UTF-8'}img/32x20_dankort.png" alt="dankort"> {/if}
+                {if $acceptedBrandsDecoded.jcb}<img src="{$modul_base|escape:'UTF-8'}img/32x20_jcb.png" alt="jcb"> {/if}
+                {if $acceptedBrandsDecoded.maestro}<img src="{$modul_base|escape:'UTF-8'}img/32x20_maestro.png" alt="maestro"> {/if}
             <fieldset>
                 <label for="paymill-card-number" class="field-left">{l s='Creditcard-number' mod='pigmbhpaymill'}*</label>
                 <input id="paymill-card-number" type="text" class="field-left" value="{if $prefilledFormData.last4}****************{$prefilledFormData.last4}{/if}" />

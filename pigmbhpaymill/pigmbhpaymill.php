@@ -57,6 +57,9 @@ class PigmbhPaymill extends PaymentModule
 		$this->configuration_handler = new ConfigurationHandler();
 		$this->displayName = $this->l('PigmbhPaymill');
 		$this->description = $this->l('Payment via Paymill.');
+		//Adjust Modulname to the One use in Checkout, so the customer will be correctly redirected to the thank-you page
+		if ($this->context->cookie->__isset('paymill_payment_text'))
+		$this->displayName = $this->context->cookie->__get('paymill_payment_text');
 	}
 
 	/**
@@ -143,7 +146,7 @@ class PigmbhPaymill extends PaymentModule
 		$this->context->smarty->assign(array(
 			'paymillerror' => Tools::getValue('paymillerror') == 1 ? $this->l('Payment could not be processed.') : null,
 			'errormessage' => $this->errorCodeMapping(Tools::getValue('errorCode')),
-			'components' => _PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/components/'
+			'modul_base' => _PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/'
 		));
 
 		return $this->display(__FILE__, 'views/templates/hook/error.tpl');

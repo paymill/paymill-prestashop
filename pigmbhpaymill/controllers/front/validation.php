@@ -108,8 +108,8 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 			);
 
 			$payment_text = $this->getPaymentText();
-
-			$order_id = $this->module->validateOrder(
+			$this->context->cookie->__set('paymill_payment_text', $payment_text);
+			$this->module->validateOrder(
 				(int)$this->context->cart->id,
 				Configuration::get('PIGMBH_PAYMILL_ORDERSTATE'),
 				$this->context->cart->getOrderTotal(true, Cart::BOTH),
@@ -124,7 +124,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 
 			$this->updatePaymillTransaction(
 				$this->payment_processor->getTransactionId(),
-				'OrderID: '.$order_id.' - Name:'.$this->context->customer->lastname.', '.$this->context->customer->firstname
+				'OrderID: '.(int)$this->module->currentOrder.' - Name:'.$this->context->customer->lastname.', '.$this->context->customer->firstname
 			);
 
 			Tools::redirect('index.php?controller=order-confirmation?key='
@@ -169,8 +169,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 			Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), 'https://api.paymill.com/v2/'
 		);
 
-		$this->payment_processor->setAmount($_SESSION['pigmbhPaymill']['authorizedAmount']);
-		$this->payment_processor->setPreAuthAmount($_SESSION['pigmbhPaymill']['authorizedAmount']);
+		$this->payment_processor->setAmount((int)round($this->context->cart->getOrderTotal(true, Cart::BOTH) * 100));
 		$this->payment_processor->setToken($this->token);
 		$this->payment_processor->setCurrency(Tools::strtolower($this->iso_currency));
 		$this->payment_processor->setName($this->context->customer->lastname.', '.$this->context->customer->firstname);

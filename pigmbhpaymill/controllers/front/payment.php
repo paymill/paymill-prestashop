@@ -57,8 +57,6 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 			}
 		}
 
-		$_SESSION['pigmbhPaymill']['authorizedAmount'] = (int)round($cart->getOrderTotal(true, Cart::BOTH) * 100);
-
 		$brands = array();
 		foreach (Tools::jsonDecode(Configuration::get('PIGMBH_PAYMILL_ACCEPTED_BRANDS'), true) as $brand_key => $brand_value)
 			$brands[str_replace('-', '', $brand_key)] = $brand_value;
@@ -68,7 +66,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 			'cust_currency' => $cart->id_currency,
 			'currencies' => $this->module->getCurrency((int)$cart->id_currency),
 			'currency_iso' => $iso_currency,
-			'total' => $_SESSION['pigmbhPaymill']['authorizedAmount'],
+			'total' => (int)round($cart->getOrderTotal(true, Cart::BOTH) * 100),
 			'displayTotal' => $cart->getOrderTotal(true, Cart::BOTH),
 			'this_path' => $this->module->getPathUri(),
 			'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->module->name.'/',
