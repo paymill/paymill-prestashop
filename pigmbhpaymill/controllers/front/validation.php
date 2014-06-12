@@ -62,7 +62,6 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 	 */
 	private function paymillInit()
 	{
-
 		$this->log_id = time();
 		$this->db = Db::getInstance();
 		$this->token = Tools::getValue('paymillToken');
@@ -110,8 +109,6 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 
 			$payment_text = $this->getPaymentText();
 
-			$_SESSION['piPaymentText'] = $payment_text;
-
 			$order_id = $this->module->validateOrder(
 				(int)$this->context->cart->id,
 				Configuration::get('PIGMBH_PAYMILL_ORDERSTATE'),
@@ -129,8 +126,6 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 				$this->payment_processor->getTransactionId(),
 				'OrderID: '.$order_id.' - Name:'.$this->context->customer->lastname.', '.$this->context->customer->firstname
 			);
-
-			$_SESSION['piOrderId'] = $order_id;
 
 			Tools::redirect('index.php?controller=order-confirmation?key='
 				.$customer->secure_key.'&id_cart='.(int)$this->context->cart->id
