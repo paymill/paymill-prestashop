@@ -12,6 +12,15 @@
 *  @copyright 2012-2014 PAYMILL
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
+
+<div class="paymill_center" style="height: 130px;position:relative">
+    <img src="https://static.paymill.com/r/f215617e88bb5c66dcc3bd0bf94be172ea052ac6/img/paymill-logo.png">
+    <span style="position:absolute;top:35px;left:0px;">
+        <p>{$paymilldescription|escape:'UTF-8'}</p>
+        <a href="https://www.paymill.com" class="button" target="_blank">Register Account</a>
+    </span>
+</div>
+
 {$config|escape:'UTF-8'}
 
 <br>

@@ -295,7 +295,8 @@ class PigmbhPaymill extends PaymentModule
 			'paymillMaxPage' => $max_page,
 			'paymillCurrentPage' => $page,
 			'paymillSearchValue' => $search,
-			'paymillConnectedSearch' => $connected_search
+			'paymillConnectedSearch' => $connected_search,
+			'paymilldescription' => ''
 		));
 
 		return $this->display(__FILE__, 'views/templates/admin/logging.tpl');
