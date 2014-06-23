@@ -246,9 +246,11 @@ class PigmbhPaymill extends PaymentModule
 		if (Tools::isSubmit('btnSubmit'))
 			$this->onConfigurationSave();
 
+        $configuration_model = $this->configuration_handler->loadConfiguration();
+
 		//logging
 		$db = Db::getInstance();
-		$data = array();
+		$logdata = array();
 		$detail_data = array();
 		$show_detail = false;
 		$search = Tools::getValue('searchvalue', false);
@@ -284,77 +286,43 @@ class PigmbhPaymill extends PaymentModule
 					.'&paymillkey='.$key.'&searchvalue='.$search.'">'.$this->l('see more').'</a>' : $value;
 			}
 
-			$data[] = $unsorted_print_data;
+			$logdata[] = $unsorted_print_data;
 		}
 
 		$this->context->smarty->assign(array(
-			'config' => $this->showConfigurationForm(),
-			'data' => $data,
-			'detailData' => $detail_data,
-			'showDetail' => $show_detail,
-			'paymillMaxPage' => $max_page,
-			'paymillCurrentPage' => $page,
-			'paymillSearchValue' => $search,
-			'paymillConnectedSearch' => $connected_search,
-			'paymilldescription' => ''
+			'include' => array(
+                'css' => _PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_styles.css',
+                'header' => dirname(__FILE__) . '/views/templates/admin/paymillheader.tpl',
+                'config' => dirname(__FILE__) . '/views/templates/admin/paymillconfig.tpl',
+                'log' => dirname(__FILE__) . '/views/templates/admin/paymilllog.tpl',
+            ),
+            'header' => array(
+                'paymill_description' => 'Online payments made easy'
+            ),
+            'config' => array(
+                'action' => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
+                'creditcard' => $this->getCheckboxState($configuration_model->getCreditcard()),
+                'debit' => $this->getCheckboxState($configuration_model->getDirectdebit()),
+                'privatekey' => $configuration_model->getPrivateKey(),
+                'publickey' => $configuration_model->getPublicKey(),
+                'debit_days' => $configuration_model->getDebitDays(),
+                'debug' => $this->getCheckboxState($configuration_model->getDebug()),
+                'logging' => $this->getCheckboxState($configuration_model->getLogging()),
+                'fastcheckout' => $this->getCheckboxState($configuration_model->getFastcheckout()),
+                'accepted_brands' => $configuration_model->getAccpetedCreditCards(),
+            ),
+            'logging' => array(
+                'data' => $logdata,
+                'detail_data' => $detail_data,
+                'show_detail' => $show_detail,
+                'paymill_maxpage' => $max_page,
+                'paymill_currentpage' => $page,
+                'paymill_searchvalue' => $search,
+                'paymill_connectedsearch' => $connected_search,
+            )
 		));
 
-		return $this->display(__FILE__, 'views/templates/admin/logging.tpl');
-	}
-
-	/**
-	 * Get the configuration form html
-	 * @return string
-	 */
-	private function showConfigurationForm()
-	{
-	$configuration_model = $this->configuration_handler->loadConfiguration();
-	return '<link rel="stylesheet" type="text/css" href="'._PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_styles.css">
-        <form action="'.Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']).'" method="post">
-            <fieldset class="paymill_center">
-                <legend>'.$this->displayName.'</legend>
-                <table cellpadding="0" cellspacing="0">
-                    <tr><td colspan="2" class="paymill_config_header">'.$this->l('config_payments').'</td></tr>
-                    <tr><td class="paymill_config_label">'.$this->l('Activate creditcard-payment').'</td><td class="paymill_config_value">
-					<input type="checkbox" name="creditcard" '.$this->getCheckboxState($configuration_model->getCreditcard()).' /></td></tr>
-                    <tr><td class="paymill_config_label">'.$this->l('Activate debit-payment').'</td><td class="paymill_config_value">
-					<input type="checkbox" name="debit" '.$this->getCheckboxState($configuration_model->getDirectdebit()).' /></td></tr>
-                    <tr><td colspan="2" style="height: 15px;"></td></tr>
-                    <tr><td colspan="2" class="paymill_config_header">'.$this->l('config_main').'</td></tr>
-                    <tr><td class="paymill_config_label">'.$this->l('Private Key').'</td><td class="paymill_config_value">
-					<input type="text" class="paymill_config_text" name="privatekey" value="'.$configuration_model->getPrivateKey().'" /></td></tr>
-                    <tr><td class="paymill_config_label">'.$this->l('Public Key').'</td><td class="paymill_config_value">
-					<input type="text" class="paymill_config_text" name="publickey" value="'.$configuration_model->getPublicKey().'" /></td></tr>
-                    <tr><td class="paymill_config_label">'.$this->l('Days until the debit').'</td><td class="paymill_config_value">
-					<input type="text" class="paymill_config_text" name="debit_days" value="'.$configuration_model->getDebitDays().'" /></td></tr>
-                    <tr><td class="paymill_config_label">'.$this->l('Activate debugging').'</td><td class="paymill_config_value">
-					<input type="checkbox" name="debug" '.$this->getCheckboxState($configuration_model->getDebug()).' /></td></tr>
-                    <tr><td class="paymill_config_label">'.$this->l('Activate logging').'</td><td class="paymill_config_value">
-					<input type="checkbox" name="logging" '.$this->getCheckboxState($configuration_model->getLogging()).' /></td></tr>
-                    <tr><td class="paymill_config_label">'.$this->l('Activate fastCheckout').'</td><td class="paymill_config_value">
-					<input type="checkbox" name="fastcheckout" '.$this->getCheckboxState($configuration_model->getFastcheckout()).' /></td></tr>
-                    <tr><td class="paymill_config_label">'.$this->l('Accepted CreditCard Brands').'</td><td class="paymill_config_value">
-					<select multiple name="accepted_brands[]">'.$this->getAccepetdBrandOptions($configuration_model).'</select></td></tr>
-                    <tr><td colspan="2" align="center"><input class="button" name="btnSubmit" value="'.$this->l('Save').'" type="submit" /></td></tr>
-                </table>
-            </fieldset>
-        </form>';
-	}
-
-	/**
-	 * @param ConfigurationModel $configuration_model
-	 * @return string
-	 */
-	private function getAccepetdBrandOptions(ConfigurationModel $configuration_model)
-	{
-		$html = '';
-		foreach ($configuration_model->getAccpetedCreditCards() as $brand => $selected)
-		{
-			$selected_html = $selected ? 'selected' : '';
-			$html .= '<option value="'.$brand.'" '.$selected_html.'>'.$brand.'</option>';
-		}
-
-		return $html;
+		return $this->display(__FILE__, 'views/templates/admin/adminpage.tpl');
 	}
 
 	/**

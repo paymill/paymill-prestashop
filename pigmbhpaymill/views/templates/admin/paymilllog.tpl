@@ -12,30 +12,17 @@
 *  @copyright 2012-2014 PAYMILL
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-
-<div class="paymill_center" style="height: 130px;position:relative">
-    <img src="https://static.paymill.com/r/f215617e88bb5c66dcc3bd0bf94be172ea052ac6/img/paymill-logo.png">
-    <span style="position:absolute;top:35px;left:0px;">
-        <p>{$paymilldescription|escape:'UTF-8'}</p>
-        <a href="https://www.paymill.com" class="button" target="_blank">Register Account</a>
-    </span>
-</div>
-
-{$config|escape:'UTF-8'}
-
-<br>
-
 <form id="paymill_logging" method="post">
-    <fieldset class="paymill_center">
+    <fieldset>
         <legend>Log</legend>
-        <table class="paymill_center">
+        <table width="100%">
             <tr>
                 <th class="dataTableHeadingContent">IDENTIFIER</th>
                 <th class="dataTableHeadingContent">DATE</th>
                 <th class="dataTableHeadingContent">MESSAGE</th>
                 <th class="dataTableHeadingContent">DEBUG</th>
             </tr>
-            {foreach from=$data item=row}
+            {foreach from=$logging.data item=row}
             <tr>
                 <td class="dataTableContent">{$row.identifier|escape:'intval'}</td>
                 <td class="dataTableContent">{$row.date|escape:'html'}</td>
@@ -48,22 +35,20 @@
             </tr>
             {/foreach}
         </table>
-        <input type="text" name="searchvalue" value="{$paymillSearchValue|escape:'html'}" style="width:20%">
+        <input type="text" name="searchvalue" value="{$logging.paymill_searchvalue|escape:'html'}" style="width:20%">
         <select name="paymillpage">
-                {foreach from=$paymillMaxPage item=page key=key}
-        <option{if $paymillCurrentPage == $page} selected{/if}>{$page|escape:'intval'}</option>
+                {foreach from=$logging.paymill_maxpage item=page key=key}
+        <option{if $logging.paymill_currentpage == $page} selected{/if}>{$page|escape:'intval'}</option>
                 {/foreach}
         </select>
-        <input type="checkbox" name="connectedsearch" {if $paymillConnectedSearch === "on"}checked{/if}> {l s='Get connected data for matches' mod='pigmbhpaymill'}
+        <input type="checkbox" name="connectedsearch" {if $logging.paymill_connectedsearch === "on"}checked{/if}> {l s='Get connected data for matches' mod='pigmbhpaymill'}
         <input type="submit" style="float:right;" value="{l s='Search and goto page' mod='pigmbhpaymill'}">
     </fieldset>
 </form>
 
-<br>
-
-{if $showDetail}
-    <fieldset class="paymill_center">
-        <legend>{$detailData.title|upper|escape}</legend>
-        <pre>{$detailData.data|escape:'htmlall'}</pre>
+{if $logging.show_detail}
+    <fieldset>
+        <legend>{$logging.detail_data.title|upper|escape}</legend>
+        <pre>{$logging.detail_data.data|escape:'htmlall'}</pre>
     </fieldset>
 {/if}

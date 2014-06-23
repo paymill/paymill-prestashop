@@ -198,23 +198,34 @@
     border-bottom: 1px dashed #cccccc;
 }
 
-.paymill_config_header {
+#paymill_adminpage .paymill_config_header {
     font-weight: bold;
 }
 
-.paymill_center{
-    margin-left: auto;
-    margin-right: auto;
-    width: 575px;
-}
-.paymill_config_label{
+#paymill_adminpage .paymill_config_label{
     width: 300px;
 }
-.paymill_config_value{
+#paymill_adminpage .paymill_config_value{
     text-align: center;
     width: 300px;
 }
 
-.paymill_config_text{
+#paymill_adminpage .paymill_config_text{
     width: 220px;
+}
+#paymill_adminpage .paymill_config_select{
+    width: 230px;
+    height: 180px;
+}
+#paymill_adminpage .paymill_config_button{
+    width:164px;
+    height:30px;
+    background-color:#ff5a00;
+    border-color:#ff8c00;
+    color:#FFF;
+    cursor:pointer;
+}
+#paymill_adminpage fieldset{
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
