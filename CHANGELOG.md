@@ -1,7 +1,7 @@
 ## 1.5.0 - 23.06.2014
 * adjust code to cover up prestashop-standards
 
-## 1.4.0 - 22.03.2014
+## 1.4.0 - 22.05.2014
 * add new configuration: active creditcard brands
     - Visa
 	- MasterCard
