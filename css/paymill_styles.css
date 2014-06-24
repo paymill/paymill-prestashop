@@ -1,0 +1,220 @@
+#paymill_form {
+    float: right;
+    width: 100%;
+}
+
+#paymill_form div{
+    /* clean up mobile design*/
+    border: none !important;
+}
+
+#paymill_form input[type="text"] {
+    position: absolute;
+    padding: 7px;
+    top: 20px;
+    height: 24px;
+    font-family: inherit;
+    font-size: 11px;
+    color: #6d7578;
+    background: #eaeff1;
+    border: 1px solid #bdc5c8;
+    border-radius: 4px;
+    box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-shadow: inset 0 2px 2px #dde2e4;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+#paymill_form .center{
+    margin-left: auto;
+    margin-right: auto;
+    width: 340px;
+}
+
+#paymill_form input[type="text"]:focus {
+    border-color: #6d7578;
+    outline: none;
+    color: #424a4d;
+}
+
+#paymill_form .debit{
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#paymill_form .field-error {
+    border-color: #FF0000 !important;
+}
+
+#paymill_form .field-left {
+    width: 180px;
+    left: 0px;
+}
+
+#paymill_form .field-right {
+    left: 240px;
+    width: 140px;
+}
+
+#paymill_form .field-full {
+    width: 380px;
+    left: 0px;
+}
+
+
+#paymill_form fieldset {
+    position: relative;
+    border: none;
+    height: 70px;
+}
+
+#paymill_form label {
+    position: absolute;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+#paymill_form .paymill_confirm_button{
+    float:right;
+}
+
+.paymill_cart_navi{
+    position: relative;
+    width: 400px;
+    margin: auto;
+}
+
+.paymill-tooltip {
+    margin-left: 3px;
+    font-size: 11px;
+    color: #E2E2E2;
+    padding: 0 5px;
+    border-radius: 100px;
+    background: #636363;
+}
+
+.paymill_error{
+    color: #000;
+    background: #F8E2E2;
+    border: 1px solid #FF1B1B;
+    border-radius: 4px;
+    padding: 0.5em;
+    margin: 0.3em auto 1.5em auto;
+    box-shadow: inset 0 2px 2px #dde2e4;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.paymill-card-number-visa
+{
+    background: url('../img/32x20_visa.png') no-repeat center right !important;
+}
+
+.paymill-card-number-mastercard
+{
+    background: url('../img/32x20_mastercard.png') no-repeat center right !important;
+}
+
+.paymill-card-number-amex
+{
+    background: url('../img/32x20_amex.png') no-repeat center right !important;
+}
+
+.paymill-card-number-jcb
+{
+    background: url('../img/32x20_jcb.png') no-repeat center right !important;
+}
+
+.paymill-card-number-maestro
+{
+    background: url('../img/32x20_maestro.png') no-repeat center right !important;
+}
+
+.paymill-card-number-carte-bleue
+{
+    background: url('../img/32x20_unionpay.png') no-repeat center right !important;
+}
+
+.paymill-card-number-diners-club
+{
+    background: url('../img/32x20_dinersclub.png') no-repeat center right !important;
+}
+
+.paymill-card-number-discover
+{
+    background: url('../img/32x20_discover.png') no-repeat center right !important;
+}
+
+.paymill-card-number-carta-si
+{
+    background: url('../img/32x20_carta-si.png') no-repeat center right !important;
+}
+
+.paymill-card-number-carte-bleue
+{
+    background: url('../img/32x20_carte-bleue.png') no-repeat center right !important;
+}
+
+.paymill-card-number-dankort
+{
+    background: url('../img/32x20_dankort.png') no-repeat center right !important;
+}
+
+.paymill-card-number-china-unionpay
+{
+    background: url('../img/32x20_unionpay.png') no-repeat center right !important;
+}
+
+.paymill-card-number-grayscale
+{
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 3.5+ */
+    filter: gray; /* IE6-9 */
+    -webkit-filter: grayscale(100%); /* Chrome 19+ & Safari 6+ */
+}
+
+/* Admin */
+.dataTableHeadingContent {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 5px;
+    background-color: #f1f1f1;
+    border: 1px solid #CCCCCC;
+}
+.dataTableContent {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 10px;
+    color: #000000;
+    background-color: #FFFFFF;
+    vertical-align: middle;
+    border-bottom: 1px dashed #cccccc;
+}
+
+.paymill_config_header {
+    font-weight: bold;
+}
+
+.paymill_center{
+    margin-left: auto;
+    margin-right: auto;
+    width: 575px;
+}
+.paymill_config_label{
+    width: 300px;
+}
+.paymill_config_value{
+    text-align: center;
+    width: 300px;
+}
+
+.paymill_config_text{
+    width: 220px;
+}
