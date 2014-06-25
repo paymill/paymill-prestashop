@@ -14,18 +14,24 @@
 *}
 
 {if $creditcard === 'on' && $valid_key}
+<div class="row">
+    <div class="col-xs-12 col-md-6">
     <p class="payment_module">
-        <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'creditcard'])|escape:'UTF-8'}" title="{l s='Paymill Creditcard' mod='pigmbhpaymill'}">
-            <img src="{$this_path_ssl|escape:'UTF-8'}/../logo.gif">
+        <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'creditcard'])|escape:'UTF-8'}" title="{l s='Paymill Creditcard' mod='pigmbhpaymill'}" class="creditcard">
             {l s='Paymill Creditcard' mod='pigmbhpaymill'}
         </a>
     </p>
+    </div>
+</div>
 {/if}
 {if $debit === 'on' && $valid_key}
+<div class="row">
+    <div class="col-xs-12 col-md-6">
     <p class="payment_module">
-        <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'debit'])|escape:'UTF-8'}" title="{l s='Paymill Directdebit' mod='pigmbhpaymill'}">
-            <img src="{$this_path_ssl|escape:'UTF-8'}/../logo.gif">
+        <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'debit'])|escape:'UTF-8'}" title="{l s='Paymill Directdebit' mod='pigmbhpaymill'}" class="elv">
             {l s='Paymill Directdebit' mod='pigmbhpaymill'}
         </a>
     </p>
+    </div>
+</div>
 {/if}

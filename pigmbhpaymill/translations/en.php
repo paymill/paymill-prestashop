@@ -72,8 +72,8 @@ $_MODULE["<{pigmbhpaymill}prestashop>paymentform_fbc4693ad8cd8fd628848fcfc2378f1
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_82130ba6c49d07bc4ebda5a45a871b90"] = "Account holder";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_db4d7b1139c5f5887821a54d8ef27c71"] = "Amount";
 $_MODULE["<{pigmbhpaymill}prestashop>paymentform_9fa45a4dfd768b1faa4d245792fbd185"] = "Fields marked with an * are mandatory.";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_3adf712b8413a09c3c9de40a5b23fc5d"] = "Payment selection";
-$_MODULE["<{pigmbhpaymill}prestashop>paymentform_a240fa27925a635b08dc28c9e4f9216d"] = "Order";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_3adf712b8413a09c3c9de40a5b23fc5d"] = "Change payment method";
+$_MODULE["<{pigmbhpaymill}prestashop>paymentform_a240fa27925a635b08dc28c9e4f9216d"] = "Pay now";
 $_MODULE["<{pigmbhpaymill}prestashop>confirmation_7a223127bd5f4a87a989fb8c560bb15b"] = "Thank you for your order";
-$_MODULE["<{pigmbhpaymill}prestashop>payment_9300f4d366a0f5e0b57afef7e8a7474d"] = "Credit card";
-$_MODULE["<{pigmbhpaymill}prestashop>payment_89ce55b91d58a25f4271514be6b1146e"] = "Direct debit";
+$_MODULE["<{pigmbhpaymill}prestashop>payment_9300f4d366a0f5e0b57afef7e8a7474d"] = "Pay with credit card";
+$_MODULE["<{pigmbhpaymill}prestashop>payment_89ce55b91d58a25f4271514be6b1146e"] = "Pay with direct debit";
