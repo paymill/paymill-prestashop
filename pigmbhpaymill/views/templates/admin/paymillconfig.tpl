@@ -14,7 +14,7 @@
 *}
 <form action="{$action}" method="post">
     <fieldset>
-        <legend>Settings</legend>
+        <legend>{l s='Settings' mod='pigmbhpaymill'}</legend>
 
         <!-- Payment Config -->
         <div class="margin-form">
