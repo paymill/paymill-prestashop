@@ -1,3 +1,7 @@
+## 1.5.1 - 2014-06-25
+* added support for boostrap 3
+* Updated styles
+
 ## 1.5.0 - 2014-06-23
 * adjust code to cover up prestashop-standards
 
