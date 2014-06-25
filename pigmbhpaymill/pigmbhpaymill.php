@@ -246,7 +246,7 @@ class PigmbhPaymill extends PaymentModule
 		if (Tools::isSubmit('btnSubmit'))
 			$this->onConfigurationSave();
 
-        $configuration_model = $this->configuration_handler->loadConfiguration();
+		$configuration_model = $this->configuration_handler->loadConfiguration();
 
 		//logging
 		$db = Db::getInstance();
@@ -291,35 +291,35 @@ class PigmbhPaymill extends PaymentModule
 
 		$this->context->smarty->assign(array(
 			'include' => array(
-                'css' => _PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_styles.css',
-                'header' => dirname(__FILE__) . '/views/templates/admin/paymillheader.tpl',
-                'config' => dirname(__FILE__) . '/views/templates/admin/paymillconfig.tpl',
-                'log' => dirname(__FILE__) . '/views/templates/admin/paymilllog.tpl',
-            ),
-            'header' => array(
-                'paymill_description' => 'Online payments made easy'
-            ),
-            'config' => array(
-                'action' => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
-                'creditcard' => $this->getCheckboxState($configuration_model->getCreditcard()),
-                'debit' => $this->getCheckboxState($configuration_model->getDirectdebit()),
-                'privatekey' => $configuration_model->getPrivateKey(),
-                'publickey' => $configuration_model->getPublicKey(),
-                'debit_days' => $configuration_model->getDebitDays(),
-                'debug' => $this->getCheckboxState($configuration_model->getDebug()),
-                'logging' => $this->getCheckboxState($configuration_model->getLogging()),
-                'fastcheckout' => $this->getCheckboxState($configuration_model->getFastcheckout()),
-                'accepted_brands' => $configuration_model->getAccpetedCreditCards(),
-            ),
-            'logging' => array(
-                'data' => $logdata,
-                'detail_data' => $detail_data,
-                'show_detail' => $show_detail,
-                'paymill_maxpage' => $max_page,
-                'paymill_currentpage' => $page,
-                'paymill_searchvalue' => $search,
-                'paymill_connectedsearch' => $connected_search,
-            )
+				'css' => _PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_styles.css',
+				'header' => dirname(__FILE__).'/views/templates/admin/paymillheader.tpl',
+				'config' => dirname(__FILE__).'/views/templates/admin/paymillconfig.tpl',
+				'log' => dirname(__FILE__).'/views/templates/admin/paymilllog.tpl',
+			),
+			'header' => array(
+				'paymill_description' => 'Online payments made easy'
+			),
+			'config' => array(
+				'action' => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
+				'creditcard' => $this->getCheckboxState($configuration_model->getCreditcard()),
+				'debit' => $this->getCheckboxState($configuration_model->getDirectdebit()),
+				'privatekey' => $configuration_model->getPrivateKey(),
+				'publickey' => $configuration_model->getPublicKey(),
+				'debit_days' => $configuration_model->getDebitDays(),
+				'debug' => $this->getCheckboxState($configuration_model->getDebug()),
+				'logging' => $this->getCheckboxState($configuration_model->getLogging()),
+				'fastcheckout' => $this->getCheckboxState($configuration_model->getFastcheckout()),
+				'accepted_brands' => $configuration_model->getAccpetedCreditCards(),
+			),
+			'logging' => array(
+				'data' => $logdata,
+				'detail_data' => $detail_data,
+				'show_detail' => $show_detail,
+				'paymill_maxpage' => $max_page,
+				'paymill_currentpage' => $page,
+				'paymill_searchvalue' => $search,
+				'paymill_connectedsearch' => $connected_search,
+			)
 		));
 
 		return $this->display(__FILE__, 'views/templates/admin/adminpage.tpl');
