@@ -1,3 +1,8 @@
+## 1.5.1 - 2014-06-23
+* improved Design for Prestashop 1.6
+* Transaction description limited to 128 charakters
+* disabled autocompletation for inputfields
+
 ## 1.5.0 - 2014-06-23
 * adjust code to cover up prestashop-standards
 
