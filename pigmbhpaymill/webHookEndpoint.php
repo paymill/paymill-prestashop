@@ -29,28 +29,29 @@ if (validateNotification($request))
 
 function validateNotification($notification)
 {
-	if (isset($notification) && !empty($notification))
+	$result = false;
+	if (isNotificationFormatValid($notification) && $notification['event']['event_type'] === 'refund.succeeded')
 	{
-		// Check eventtype
-		if (isset($notification['event']['event_type']))
-		{
-			if ($notification['event']['event_type'] == 'refund.succeeded')
-			{
-				$id = null;
-				if (isset($notification['event']['event_resource']['transaction']['id']))
-					$id = $notification['event']['event_resource']['transaction']['id'];
+		$transaction_object = new Services_Paymill_Transactions(
+			Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), 'https://api.paymill.com/v2/'
+		);
+		$id = $notification['event']['event_resource']['transaction']['id'];
+		$transaction_result = $transaction_object->getOne($id);
+		$result = isset($transaction_result['id']) && $transaction_result['id'] === $id;
 
-				$transaction_object = new Services_Paymill_Transactions(
-					Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), 'https://api.paymill.com/v2/'
-				);
+	}
+	return $result;
+}
 
-				$result = $transaction_object->getOne($id);
-				return $result['id'] === $id;
-			}
+function isNotificationFormatValid($notification){
+	$result = false;
+	if(isset($notification) && !empty($notification) && isset($notification['event'])){
+		$event = $notification['event'];
+		if(isset($event['event_type']) && isset($event['event_resource']['transaction']['id'])){
+			$result = true;
 		}
 	}
-
-	return false;
+	return $result;
 }
 
 function getOrderIdFromNotification($transaction_description)
