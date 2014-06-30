@@ -123,8 +123,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 			);
 
 			$this->updatePaymillTransaction(
-				$this->payment_processor->getTransactionId(),
-				'OrderID: '.(int)$this->module->currentOrder.' - Name:'.$this->context->customer->lastname.', '.$this->context->customer->firstname
+				$this->payment_processor->getTransactionId(),				
 				substr('OrderID: '.(int)$this->module->currentOrder.' - Name:'.$this->context->customer->lastname.', '.$this->context->customer->firstname,0,128)
 			);
 
