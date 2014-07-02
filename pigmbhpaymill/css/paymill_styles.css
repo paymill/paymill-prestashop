@@ -1,3 +1,25 @@
+div.row p.payment_module a.creditcard {
+      background: url('../img/icon-hook.png') 15px 15px no-repeat #fbfbfb; }
+div.row p.payment_module a.elv {
+      background: url('../img/icon-hook.png') 15px 15px no-repeat #fbfbfb; }
+div.row p.payment_module a.creditcard:after, p.payment_module a.elv:after {
+      display: block;
+      content: "\f054";
+      position: absolute;
+      right: 15px;
+      margin-top: -11px;
+      top: 50%;
+      font-family: "FontAwesome";
+      font-size: 25px;
+      height: 22px;
+      width: 14px;
+      color: #777777; }
+div.row p.payment_module a:hover {
+      background-color: #f6f6f6; }
+div.row p.payment_module a span {
+      font-weight: bold;
+      color: #777777; }
+
 .paymill-tooltip {
     margin-left: 3px;
     font-size: 11px;

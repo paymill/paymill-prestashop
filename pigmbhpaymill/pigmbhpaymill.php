@@ -60,6 +60,7 @@ class PigmbhPaymill extends PaymentModule
 		//Adjust Modulname to the One use in Checkout, so the customer will be correctly redirected to the thank-you page
 		if ($this->context->cookie->__isset('paymill_payment_text'))
 		$this->displayName = $this->context->cookie->__get('paymill_payment_text');
+
 	}
 
 	/**
@@ -131,8 +132,11 @@ class PigmbhPaymill extends PaymentModule
 			'valid_key' => !in_array(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), array('', null))
 			&& !in_array(Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'), array('', null)),
 		));
+		$template = 'views/templates/hook/payment.tpl';
+		if(_PS_VERSION_ < "1.6")
+			$template = 'views/templates/hook/payment1_5.tpl';
 
-		return $this->display(__FILE__, 'views/templates/hook/payment.tpl');
+		return $this->display(__FILE__, $template);
 	}
 
 	/**
