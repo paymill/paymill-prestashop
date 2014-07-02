@@ -1,5 +1,4 @@
 <link rel="stylesheet" type="text/css" href="{$modul_base|escape:'UTF-8'}/css/paymill_styles.css" />
-<link rel="stylesheet" type="text/css" href="{$modul_base|escape:'UTF-8'}/css/paymill_checkout_1_6.css" />
 <div class="row">
     <div class="col-md-12">
         {capture name=path}{l s='Paymill' mod='pigmbhpaymill'}{/capture}
