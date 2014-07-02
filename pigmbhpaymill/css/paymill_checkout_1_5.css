@@ -1,0 +1,84 @@
+#paymill_form {
+    float: right;
+    width: 100%;
+}
+
+#paymill_form div{
+    /* clean up mobile design*/
+    border: none !important;
+}
+
+#paymill_form input[type="text"] {
+    position: absolute;
+    padding: 7px;
+    top: 20px;
+    height: 24px;
+    font-family: inherit;
+    font-size: 11px;
+    color: #6d7578;
+    background: #eaeff1;
+    border: 1px solid #bdc5c8;
+    border-radius: 4px;
+    box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-shadow: inset 0 2px 2px #dde2e4;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+#paymill_form .center{
+    margin-left: auto;
+    margin-right: auto;
+    width: 340px;
+}
+
+#paymill_form input[type="text"]:focus {
+    border-color: #6d7578;
+    outline: none;
+    color: #424a4d;
+}
+
+#paymill_form .debit{
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#paymill_form .field-error {
+    border-color: #FF0000 !important;
+}
+
+#paymill_form .field-left {
+    width: 180px;
+    left: 0px;
+}
+
+#paymill_form .field-right {
+    left: 240px;
+    width: 140px;
+}
+
+#paymill_form .field-full {
+    width: 380px;
+    left: 0px;
+}
+
+
+#paymill_form fieldset {
+    position: relative;
+    border: none;
+    height: 70px;
+}
+
+#paymill_form label {
+    position: absolute;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+#paymill_form .paymill_confirm_button{
+    float:right;
+}
