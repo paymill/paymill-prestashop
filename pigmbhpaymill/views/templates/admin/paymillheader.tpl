@@ -34,6 +34,7 @@
         <ol style="list-style-type:disc;list-style-position:inside">
             <li>{l s='All major credit and debit cards supported (Visa, MasterCard, American Express)' mod='pigmbhpaymill'}</li>
             <li>{l s='Available in 40 countries and accept payments from around the world' mod='pigmbhpaymill'}</li>
+            <li>{l s='accepting up to 100 different currencies' mod='pigmbhpaymill'}</li>
             <li>{l s='Free merchant account' mod='pigmbhpaymill'}</li>
             <li>{l s='Free fraud protection to keep you safe' mod='pigmbhpaymill'}</li>
             <li>{l s='No set-up fees and no monthly fees' mod='pigmbhpaymill'}</li>

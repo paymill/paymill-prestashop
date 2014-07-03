@@ -3,7 +3,6 @@ global $_MODULE;
 $_MODULE = array();
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_10c5644846787c7bedd95a27ac46649a"] = "Pagamentos por cartão de crédito e débito direto PAYMILL";
 $_MODULE["<{pigmbhpaymill}prestashop>pigmbhpaymill_8e40c7d5748c55e0f5f034dd566493de"] = "Ocorreu um erro durante o processamento do seu pagamento.";
-$_MODULE["<{pigmbhpaymill}prestashop>paymillconfig_f4f70727dc34561dfde1a3c529b6205c"] = "PLACEHOLDER";
 $_MODULE["<{pigmbhpaymill}prestashop>paymillconfig_565a30e7a71104fee1947d5a61ce05df"] = "Definições de Pagamento";
 $_MODULE["<{pigmbhpaymill}prestashop>paymillconfig_25640062516acc81cd2220f3f02ee6a5"] = "Activar cartão de crédito";
 $_MODULE["<{pigmbhpaymill}prestashop>paymillconfig_16ac6c100d081e5728ea9c9acf823fed"] = "Activar débito directo";
