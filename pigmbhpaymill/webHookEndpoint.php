@@ -46,7 +46,8 @@ function validateNotification($notification)
 function isNotificationFormatValid($notification)
 {
 	$result = false;
-	if (isset($notification) && !empty($notification) && isset($notification['event'])){
+	if (isset($notification) && !empty($notification) && isset($notification['event']))
+	{
 		$event = $notification['event'];
 		if (isset($event['event_type']) && isset($event['event_resource']['transaction']['id']))
 			$result = true;
