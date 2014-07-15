@@ -12,7 +12,7 @@
 *  @copyright 2012-2014 PAYMILL
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<form action="{$action|escape:'UTF-8'}" method="post">
+<form action="{$config.action|escape:'UTF-8'}" method="post">
     <fieldset>
         <legend>{l s='Settings' mod='pigmbhpaymill'}</legend>
 
