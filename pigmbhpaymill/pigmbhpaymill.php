@@ -133,7 +133,7 @@ class PigmbhPaymill extends PaymentModule
 			&& !in_array(Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'), array('', null)),
 		));
 		$template = 'views/templates/hook/payment.tpl';
-		if(_PS_VERSION_ < "1.6")
+		if (_PS_VERSION_ < '1.6')
 			$template = 'views/templates/hook/payment1_5.tpl';
 
 		return $this->display(__FILE__, $template);
@@ -293,7 +293,8 @@ class PigmbhPaymill extends PaymentModule
 			$logdata[] = $unsorted_print_data;
 		}
 
-		$myaction = $this->context->link->getAdminLink('AdminModules', false).'&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
+		$myaction = $this->context->link->getAdminLink('AdminModules', false);
+		$myaction .= '&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
 		$myaction .= '&token='.Tools::getAdminTokenLite('AdminModules');
 
 		$this->context->smarty->assign(array(

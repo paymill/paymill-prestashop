@@ -123,11 +123,11 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 			);
 
 			$this->updatePaymillTransaction(
-				$this->payment_processor->getTransactionId(),				
-				substr('OrderID: '.(int)$this->module->currentOrder.' - Name:'.$this->context->customer->lastname.', '.$this->context->customer->firstname,0,128)
-			);
+                $this->payment_processor->getTransactionId(),
+                Tools::substr('OrderID: '.(int)$this->module->currentOrder.' - Name:'.$this->context->customer->lastname.', '.$this->context->customer->firstname, 0, 128)
+            );
 
-			Tools::redirect('index.php?controller=order-confirmation?key='
+            Tools::redirect('index.php?controller=order-confirmation?key='
 				.$customer->secure_key.'&id_cart='.(int)$this->context->cart->id
 				.'&id_module='.(int)$this->module->id.'&id_order='.(int)$this->module->currentOrder);
 		}

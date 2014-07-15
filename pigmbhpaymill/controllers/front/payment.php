@@ -62,7 +62,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 			$brands[str_replace('-', '', $brand_key)] = $brand_value;
 
 		$data = array(
-			'use_backward_compatible_checkout' => _PS_VERSION_ < "1.6",
+			'use_backward_compatible_checkout' => _PS_VERSION_ < '1.6',
 			'nbProducts' => $cart->nbProducts(),
 			'cust_currency' => $cart->id_currency,
 			'currencies' => $this->module->getCurrency((int)$cart->id_currency),
