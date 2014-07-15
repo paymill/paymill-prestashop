@@ -293,6 +293,9 @@ class PigmbhPaymill extends PaymentModule
 			$logdata[] = $unsorted_print_data;
 		}
 
+		$myaction = $this->context->link->getAdminLink('AdminModules', false).'&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
+		$myaction .= '&token='.Tools::getAdminTokenLite('AdminModules');
+
 		$this->context->smarty->assign(array(
 			'include' => array(
 				'css' => _PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_styles.css',
@@ -304,7 +307,7 @@ class PigmbhPaymill extends PaymentModule
 				'paymill_description' => 'Online payments made easy'
 			),
 			'config' => array(
-				'action' => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
+				'action' => 	$myaction,
 				'creditcard' => $this->getCheckboxState($configuration_model->getCreditcard()),
 				'debit' => $this->getCheckboxState($configuration_model->getDirectdebit()),
 				'privatekey' => $configuration_model->getPrivateKey(),
