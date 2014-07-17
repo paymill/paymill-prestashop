@@ -6,6 +6,7 @@ $_MODULE['<{pigmbhpaymill}prestashop>pigmbhpaymill_10c5644846787c7bedd95a27ac466
 $_MODULE['<{pigmbhpaymill}prestashop>pigmbhpaymill_8e40c7d5748c55e0f5f034dd566493de'] = 'Während Ihrer Zahlung ist ein Fehler aufgetreten.';
 $_MODULE['<{pigmbhpaymill}prestashop>validation_56a51b7f616a536703192e16850d23c2'] = 'ELV';
 $_MODULE['<{pigmbhpaymill}prestashop>validation_73a61696f100b3858511e212a3feea6b'] = 'Kreditkarte';
+$_MODULE['<{pigmbhpaymill}prestashop>paymillconfig_f4f70727dc34561dfde1a3c529b6205c'] = 'Einstellungen';
 $_MODULE['<{pigmbhpaymill}prestashop>paymillconfig_565a30e7a71104fee1947d5a61ce05df'] = 'Zahlungskonfiguration';
 $_MODULE['<{pigmbhpaymill}prestashop>paymillconfig_25640062516acc81cd2220f3f02ee6a5'] = 'Kreditkartenzahlung aktivieren';
 $_MODULE['<{pigmbhpaymill}prestashop>paymillconfig_16ac6c100d081e5728ea9c9acf823fed'] = 'ELV aktivieren';
@@ -15,6 +16,8 @@ $_MODULE['<{pigmbhpaymill}prestashop>paymillconfig_3132e398e6e7acace9290305a55a7
 $_MODULE['<{pigmbhpaymill}prestashop>paymillconfig_db5acc95be6e6b2a02e5bf3516387883'] = 'Fast Checkout erlauben';
 $_MODULE['<{pigmbhpaymill}prestashop>paymillconfig_d2560860c51f895a9871741f0805c39e'] = 'Private Key';
 $_MODULE['<{pigmbhpaymill}prestashop>paymillconfig_37c5b6e7c4291021b6100a6754ae7ffe'] = 'Public Key';
+$_MODULE['<{pigmbhpaymill}prestashop>paymillconfig_30527332311e3b5c731a71062cbee7e5'] = 'Tage bis zum Einzug';
+$_MODULE['<{pigmbhpaymill}prestashop>paymillconfig_59a10f6da66d0a5a4f7d7c76fa275b01'] = 'Akzeptierte Kreditkarten';
 $_MODULE['<{pigmbhpaymill}prestashop>paymillconfig_c9cc8cce247e49bae79f15173ce97354'] = 'Speichern';
 $_MODULE['<{pigmbhpaymill}prestashop>paymillheader_6a26f548831e6a8c26bfbbd9f6ec61e0'] = 'Hilfe';
 $_MODULE['<{pigmbhpaymill}prestashop>paymillheader_b797d7be96efe55022d380168de71341'] = 'PAYMILL bietet Ihnen Online Zahlungen aus einer Hand. Erlauben Sie Ihren Shop-Kunden direkt auf Ihrer Website per Zahlkarte oder Lastschrift zu bezahlen, ohne sie auf andere Seiten umzuleiten. Profitieren Sie so von höheren Kaufraten.';
