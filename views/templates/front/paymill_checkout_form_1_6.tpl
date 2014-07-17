@@ -12,7 +12,7 @@
 *  @copyright 2012-2014 PAYMILL
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<link rel="stylesheet" type="text/css" href="{$modul_base|escape:'UTF-8'}/css/paymill_styles.css" />
+
 <div class="row">
     <div class="col-md-12">
         {capture name=path}{l s='Paymill' mod='pigmbhpaymill'}{/capture}

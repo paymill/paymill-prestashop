@@ -85,13 +85,17 @@ class PigmbhPaymill extends PaymentModule
 		$this->warning = null;
 		if(is_null($this->warning) && !function_exists('curl_init'))
 			$this->warning = $this->l('cURL is required to use this module. Please install the php extention cURL.');
-		if(is_null($this->warning) && parent::install() && $this->registerHook('payment') && $this->registerHook('paymentReturn') && $this->registerHook('paymentTop'))
+		if(is_null($this->warning) && !(parent::install()
+			&& $this->registerHook('payment')
+			&& $this->registerHook('paymentReturn')
+			&& $this->registerHook('Header')
+			&& $this->registerHook('paymentTop')))
 			$this->warning = $this->l('There was an Error installing the module.');
-		if(is_null($this->warning) && $this->configuration_handler->setDefaultConfiguration())
+		if(is_null($this->warning) && !$this->configuration_handler->setDefaultConfiguration())
 			$this->warning = $this->l('There was an Error initiating the configuration.');
-		if(is_null($this->warning) && $this->createDatabaseTables())
+		if(is_null($this->warning) && !$this->createDatabaseTables())
 			$this->warning = $this->l('There was an Error creating the database tables.');
-		if(is_null($this->warning) && $this->addPaymillOrderState())
+		if(is_null($this->warning) && !$this->addPaymillOrderState())
 			$this->warning = $this->l('There was an Error creating a custom orderstate.');
 
 		return is_null($this->warning);
@@ -106,6 +110,7 @@ class PigmbhPaymill extends PaymentModule
 	{
 		Configuration::deleteByName('PIGMBH_PAYMILL_ORDERSTATE', null);
 		return $this->unregisterHook('payment') && $this->unregisterHook('paymentReturn') && $this->unregisterHook('paymentTop')
+			&& $this->unregisterHook('Header')
 			&& parent::uninstall();
 	}
 
@@ -122,6 +127,20 @@ class PigmbhPaymill extends PaymentModule
 				'url' => _PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/webHookEndpoint.php',
 				'event_types' => array('refund.succeeded')
 		));
+	}
+
+	/**
+	 * @return string
+	 */
+	public function hookHeader($params)
+	{
+		if (!$this->active)
+			return;
+
+		$this->context->controller->addCSS(__PS_BASE_URI__ .'modules/pigmbhpaymill/css/paymill_styles.css');
+		if(_PS_VERSION_ < '1.6')
+			$this->context->controller->addCSS(__PS_BASE_URI__ .'modules/pigmbhpaymill/css/paymill_checkout_1_5.css');
+
 	}
 
 	/**
@@ -185,7 +204,7 @@ class PigmbhPaymill extends PaymentModule
 		try {
 			$db = Db::getInstance();
 
-			$db->execute('CREATE TABLE IF NOT EXISTS `'.DB_PREFIX.'pigmbh_paymill_logging` (
+			$db->execute('CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'pigmbh_paymill_logging` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`identifier` text NOT NULL,
 				`debug` text NOT NULL,
@@ -195,7 +214,7 @@ class PigmbhPaymill extends PaymentModule
 				) AUTO_INCREMENT=1'
 			);
 
-			$db->execute('CREATE TABLE IF NOT EXISTS `'.DB_PREFIX.'pigmbh_paymill_directdebit_userdata` (
+			$db->execute('CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'pigmbh_paymill_directdebit_userdata` (
 				`userId` int(11) NOT NULL,
 				`clientId` text NOT NULL,
 				`paymentId` text NOT NULL,
@@ -203,7 +222,7 @@ class PigmbhPaymill extends PaymentModule
 				);'
 			);
 
-			$db->execute('CREATE TABLE IF NOT EXISTS `'.DB_PREFIX.'pigmbh_paymill_creditcard_userdata` (
+			$db->execute('CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'pigmbh_paymill_creditcard_userdata` (
 				`userId` int(11) NOT NULL,
 				`clientId` text NOT NULL,
 				`paymentId` text NOT NULL,
@@ -269,7 +288,7 @@ class PigmbhPaymill extends PaymentModule
 		$connected_search = Tools::getValue('connectedsearch', 'off');
 		$this->limit = 10;
 		$where = $search && !empty($search) ? ' WHERE `debug` LIKE "%'.$search.'%" OR `message` LIKE "%'.$search.'%"' : null;
-		$db->execute('SELECT * FROM `'.DB_PREFIX.'pigmbh_paymill_logging`'.$where, true);
+		$db->execute('SELECT * FROM `'._DB_PREFIX_.'pigmbh_paymill_logging`'.$where, true);
 		$max_page = ceil($db->numRows() / $this->limit) == 0 ? 1 : range(1, ceil($db->numRows() / $this->limit));
 		$page = $max_page < Tools::getValue('paymillpage', 1) ? $max_page : Tools::getValue('paymillpage', 1);
 		$start = $page * $this->limit - $this->limit;
@@ -278,16 +297,16 @@ class PigmbhPaymill extends PaymentModule
 		if (Tools::getValue('paymillid') && Tools::getValue('paymillkey'))
 		{
 			$show_detail = true;
-			$row = $db->executeS('SELECT * FROM `'.DB_PREFIX.'pigmbh_paymill_logging` WHERE id="'.Tools::getValue('paymillid').'";', true);
+			$row = $db->executeS('SELECT * FROM `'._DB_PREFIX_.'pigmbh_paymill_logging` WHERE id="'.Tools::getValue('paymillid').'";', true);
 			$detail_data['title'] = 'DEBUG';
 			$detail_data['data'] = $row[0]['debug'];
 		}
 
 		//getAll Data
 		if ($connected_search === 'on')
-			$where = 'WHERE `identifier` in(SELECT `identifier` FROM `'.DB_PREFIX.'pigmbh_paymill_logging` '.$where.')';
+			$where = 'WHERE `identifier` in(SELECT `identifier` FROM `'._DB_PREFIX_.'pigmbh_paymill_logging` '.$where.')';
 
-		$sql = 'SELECT `id`,`identifier`,`date`,`message`,`debug` FROM `'.DB_PREFIX.'pigmbh_paymill_logging` '.$where.' LIMIT '.$start.', '.$this->limit;
+		$sql = 'SELECT `id`,`identifier`,`date`,`message`,`debug` FROM `'._DB_PREFIX_.'pigmbh_paymill_logging` '.$where.' LIMIT '.$start.', '.$this->limit;
 		foreach ($db->executeS($sql, true) as $row)
 		{
 			$unsorted_print_data = array();
@@ -384,7 +403,7 @@ class PigmbhPaymill extends PaymentModule
 
 			if ($new_orderstate->add())
 			{
-				$paymill_icon = dirname(__FILE__).'/logo.gif';
+				$paymill_icon = dirname(__FILE__).'/img/20x20_orderstate.gif';
 				$new_state_icon = dirname(__FILE__).'/../../img/os/'.(int)$new_orderstate->id.'.gif';
 				copy($paymill_icon, $new_state_icon);
 			}

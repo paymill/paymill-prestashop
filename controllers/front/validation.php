@@ -180,9 +180,9 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		$this->payment_processor->setSource(Configuration::get('PIGMBH_PAYMILL_VERSION').'_prestashop_'._PS_VERSION_);
 
 		if ($this->payment == 'creditcard')
-			$sql = 'SELECT `clientId`,`paymentId` FROM `'.DB_PREFIX.'pigmbh_paymill_creditcard_userdata` WHERE `userId`='.$this->context->customer->id;
+			$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_creditcard_userdata` WHERE `userId`='.$this->context->customer->id;
 		elseif ($this->payment == 'debit')
-			$sql = 'SELECT `clientId`,`paymentId` FROM `'.DB_PREFIX.'pigmbh_paymill_directdebit_userdata` WHERE `userId`='.$this->context->customer->id;
+			$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_directdebit_userdata` WHERE `userId`='.$this->context->customer->id;
 		$user_data = $this->db->getRow($sql);
 		$this->payment_processor->setClientId(!empty($user_data['clientId']) ? $user_data['clientId'] : null);
 
@@ -225,25 +225,25 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		$db = Db::getInstance();
 		$table = Tools::getValue('payment') == 'creditcard' ? 'pigmbh_paymill_creditcard_userdata' : 'pigmbh_paymill_directdebit_userdata';
 		try {
-			$query = 'SELECT COUNT(*) as `count` FROM `'.DB_PREFIX.$table.'` WHERE clientId="'.$client_id.'";';
+			$query = 'SELECT COUNT(*) as `count` FROM `'._DB_PREFIX_.$table.'` WHERE clientId="'.$client_id.'";';
 			$count = $db->executeS($query, true);
 			$count = (int)$count[0]['count'];
 			if ($count === 0)
 			{
 				$this->log('Inserted new data.', var_export(array($client_id, $payment_id, $user_id), true));
-				$sql = 'INSERT INTO `'.DB_PREFIX.$table.'` (`clientId`, `paymentId`, `userId`) VALUES("'.$client_id.'", "'.$payment_id.'", '.$user_id.');';
+				$sql = 'INSERT INTO `'._DB_PREFIX_.$table.'` (`clientId`, `paymentId`, `userId`) VALUES("'.$client_id.'", "'.$payment_id.'", '.$user_id.');';
 			}
 			elseif ($count === 1)
 			{
 				if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on')
 				{
 					$this->log('Updated User '.$client_id, var_export(array($client_id, $payment_id), true));
-					$sql = 'UPDATE `'.DB_PREFIX.$table.'` SET `clientId`="'.$client_id.'", `paymentId`="'.$payment_id.'" WHERE `userId`='.$user_id;
+					$sql = 'UPDATE `'._DB_PREFIX_.$table.'` SET `clientId`="'.$client_id.'", `paymentId`="'.$payment_id.'" WHERE `userId`='.$user_id;
 				}
 				else
 				{
 					$this->log('Updated User $client_id.', var_export(array($client_id), true));
-					$sql = 'UPDATE `'.DB_PREFIX.$table.'` SET `clientId`="'.$client_id.'" WHERE `userId`='.$user_id;
+					$sql = 'UPDATE `'._DB_PREFIX_.$table.'` SET `clientId`="'.$client_id.'" WHERE `userId`='.$user_id;
 				}
 			}
 
