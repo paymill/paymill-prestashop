@@ -130,17 +130,19 @@ class PigmbhPaymill extends PaymentModule
 	}
 
 	/**
-	 * @return string
+	 * Load CSS and JS into HTML Head-tag
 	 */
 	public function hookHeader($params)
 	{
-		if (!$this->active)
+		if (!$this->active || $this->name !== Tools::getValue('module'))
 			return;
 
 		$this->context->controller->addCSS(__PS_BASE_URI__ .'modules/pigmbhpaymill/css/paymill_styles.css');
 		if(_PS_VERSION_ < '1.6')
 			$this->context->controller->addCSS(__PS_BASE_URI__ .'modules/pigmbhpaymill/css/paymill_checkout_1_5.css');
 
+		$this->context->controller->addJS(__PS_BASE_URI__ .'modules/pigmbhpaymill/js/BrandDetection.js');
+		$this->context->controller->addJS(__PS_BASE_URI__ .'modules/pigmbhpaymill/js/Iban.js');
 	}
 
 	/**
