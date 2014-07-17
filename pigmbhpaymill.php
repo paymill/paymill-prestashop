@@ -24,9 +24,6 @@ require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/paymill/v2/lib/Services/Paymi
  * @category   PayIntelligent
  * @copyright  Copyright (c) 2013 PayIntelligent GmbH (http://payintelligent.de)
  */
-if (!defined('_PS_VERSION_'))
-	exit;
-
 if (!function_exists('curl_init'))
 	exit;
 
