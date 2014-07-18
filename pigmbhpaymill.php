@@ -83,19 +83,19 @@ class PigmbhPaymill extends PaymentModule
 	public function install()
 	{
 		$this->warning = null;
-		if(is_null($this->warning) && !function_exists('curl_init'))
+		if (is_null($this->warning) && !function_exists('curl_init'))
 			$this->warning = $this->l('cURL is required to use this module. Please install the php extention cURL.');
-		if(is_null($this->warning) && !(parent::install()
+		if (is_null($this->warning) && !(parent::install()
 			&& $this->registerHook('payment')
 			&& $this->registerHook('paymentReturn')
 			&& $this->registerHook('Header')
 			&& $this->registerHook('paymentTop')))
 			$this->warning = $this->l('There was an Error installing the module.');
-		if(is_null($this->warning) && !$this->configuration_handler->setDefaultConfiguration())
+		if (is_null($this->warning) && !$this->configuration_handler->setDefaultConfiguration())
 			$this->warning = $this->l('There was an Error initiating the configuration.');
-		if(is_null($this->warning) && !$this->createDatabaseTables())
+		if (is_null($this->warning) && !$this->createDatabaseTables())
 			$this->warning = $this->l('There was an Error creating the database tables.');
-		if(is_null($this->warning) && !$this->addPaymillOrderState())
+		if (is_null($this->warning) && !$this->addPaymillOrderState())
 			$this->warning = $this->l('There was an Error creating a custom orderstate.');
 
 		return is_null($this->warning);
@@ -132,17 +132,19 @@ class PigmbhPaymill extends PaymentModule
 	/**
 	 * Load CSS and JS into HTML Head-tag
 	 */
-	public function hookHeader($params)
+	public function hookHeader()
 	{
 		if (!$this->active || $this->name !== Tools::getValue('module'))
 			return;
 
-		$this->context->controller->addCSS(__PS_BASE_URI__ .'modules/pigmbhpaymill/css/paymill_styles.css');
-		if(_PS_VERSION_ < '1.6')
-			$this->context->controller->addCSS(__PS_BASE_URI__ .'modules/pigmbhpaymill/css/paymill_checkout_1_5.css');
+		$this->context->controller->addCSS(__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_styles.css');
+		if (_PS_VERSION_ < '1.6')
+			$this->context->controller->addCSS(__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_checkout_1_5.css');
 
-		$this->context->controller->addJS(__PS_BASE_URI__ .'modules/pigmbhpaymill/js/BrandDetection.js');
-		$this->context->controller->addJS(__PS_BASE_URI__ .'modules/pigmbhpaymill/js/Iban.js');
+		$this->context->controller->addJS('https://bridge.paymill.com/');
+		$this->context->controller->addJS(__PS_BASE_URI__.'modules/pigmbhpaymill/js/BrandDetection.js');
+		$this->context->controller->addJS(__PS_BASE_URI__.'modules/pigmbhpaymill/js/Iban.js');
+		$this->context->controller->addJS(__PS_BASE_URI__.'modules/pigmbhpaymill/js/PaymillCheckout.js');
 	}
 
 	/**
