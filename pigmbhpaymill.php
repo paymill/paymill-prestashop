@@ -61,21 +61,6 @@ class PigmbhPaymill extends PaymentModule
 	}
 
 	/**
-	 * Update the order state
-	 *
-	 * @param int $order_id
-	 */
-	public function updateOrderState($order_id)
-	{
-		$result = Db::getInstance()->executeS('SELECT `id_order_state` FROM `'._DB_PREFIX_
-			.'order_state_lang` WHERE `template` = "refund" GROUP BY `template`;');
-		$sql = 'INSERT INTO `'._DB_PREFIX_.'order_history` (`id_employee`,`id_order`,`id_order_state`,`date_add`) VALUES (0,%d, %d, NOW());';
-		$order_state_id = (int)$result[0]['id_order_state'];
-		$secure_sql = sprintf($sql, $order_id, $order_state_id);
-		Db::getInstance()->execute($secure_sql);
-	}
-
-	/**
 	 * This function installs the Module
 	 *
 	 * @return boolean
