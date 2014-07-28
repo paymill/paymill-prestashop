@@ -73,7 +73,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 			'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->module->name.'/',
 			'public_key' => Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'),
 			'payment' => Tools::getValue('payment'),
-			'paymill_debugging' => Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
+			'paymill_debugging' => (int)Configuration::get('PIGMBH_PAYMILL_DEBUG') == 'on',
 			'modul_base' => _PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/',
 			'customer' => $this->context->customer->firstname.' '.$this->context->customer->lastname,
 			'prefilledFormData' => $this->updatePaymillPayment($db_data),
