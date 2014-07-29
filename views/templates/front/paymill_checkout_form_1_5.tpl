@@ -48,7 +48,7 @@
             <label for="paymill-card-number" class="field-left">{l s='Creditcard-number' mod='pigmbhpaymill'}*</label>
             <input id="paymill-card-number" type="text" class="field-left" value="{if $prefilledFormData.last4}****************{$prefilledFormData.last4}{/if}" />
             <label for="paymill-card-expirydate" class="field-right">{l s='Valid until' mod='pigmbhpaymill'}*</label>
-            <input id="paymill-card-expirydate" type="text" class="field-right" value="{if $prefilledFormData.expire_date}{$prefilledFormData.expire_date|escape:'UTF-8'}{else}MM/YYYY{/if}">
+            <input id="paymill-card-expirydate" type="text" class="field-right" placeholder="MM/YYYY" value="{if $prefilledFormData.expire_date}{$prefilledFormData.expire_date|escape:'UTF-8'}{/if}">
         </fieldset>
         <fieldset>
             <label for="paymill-card-holder" class="field-left">{l s='Cardholder' mod='pigmbhpaymill'}*</label>
