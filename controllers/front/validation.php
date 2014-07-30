@@ -207,8 +207,8 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		{
 			$db->insert('pigmbh_paymill_logging', array(
 				'identifier' => $this->log_id,
-				'debug' => $debug_info,
-				'message' => $message,
+				'debug' => $db->escape($debug_info),
+				'message' => $db->escape($message),
 				), false, false, Db::INSERT, true);
 		}
 	}
