@@ -273,7 +273,7 @@ class PigmbhPaymill extends PaymentModule
 		$logdata = array();
 		$detail_data = array();
 		$show_detail = false;
-		$search = Tools::getValue('searchvalue', false);
+		$search = $db->_escape(Tools::getValue('searchvalue', false));
 		$connected_search = Tools::getValue('connectedsearch', 'off');
 		$this->limit = 10;
 		$where = $search && !empty($search) ? ' WHERE `debug` LIKE "%'.$search.'%" OR `message` LIKE "%'.$search.'%"' : null;
@@ -286,7 +286,7 @@ class PigmbhPaymill extends PaymentModule
 		if (Tools::getValue('paymillid') && Tools::getValue('paymillkey'))
 		{
 			$show_detail = true;
-			$row = $db->executeS('SELECT * FROM `'._DB_PREFIX_.'pigmbh_paymill_logging` WHERE id="'.Tools::getValue('paymillid').'";', true);
+			$row = $db->executeS('SELECT * FROM `'._DB_PREFIX_.'pigmbh_paymill_logging` WHERE id="'.$db->_escape(Tools::getValue('paymillid')).'";', true);
 			$detail_data['title'] = 'DEBUG';
 			$detail_data['data'] = $row[0]['debug'];
 		}

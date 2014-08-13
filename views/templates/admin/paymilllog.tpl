@@ -35,7 +35,7 @@
             </tr>
             {/foreach}
         </table>
-        <input type="text" name="searchvalue" value="{$logging.paymill_searchvalue|escape:'html'}" style="width:20%">
+        <input type="text" name="searchvalue" value="{$logging.paymill_searchvalue|escape:'htmlall':'html'}" style="width:20%">
         <select name="paymillpage">
                 {foreach from=$logging.paymill_maxpage item=page key=key}
         <option{if $logging.paymill_currentpage == $page} selected{/if}>{$page|escape:'intval'}</option>
