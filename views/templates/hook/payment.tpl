@@ -17,7 +17,7 @@
 <div class="row">
     <div class="col-xs-12 col-md-6">
     <p class="payment_module">
-        <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'creditcard'])|escape:'url':'UTF-8'}" title="{l s='Paymill Creditcard' mod='pigmbhpaymill'}" class="creditcard">
+        <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'creditcard'])|escape:'html':'UTF-8'}" title="{l s='Paymill Creditcard' mod='pigmbhpaymill'}" class="creditcard">
             {l s='Paymill Creditcard' mod='pigmbhpaymill'}
         </a>
     </p>
@@ -28,7 +28,7 @@
 <div class="row">
     <div class="col-xs-12 col-md-6">
     <p class="payment_module">
-        <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'debit'])|escape:'url':'UTF-8'}" title="{l s='Paymill Directdebit' mod='pigmbhpaymill'}" class="elv">
+        <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'debit'])|escape:'html':'UTF-8'}" title="{l s='Paymill Directdebit' mod='pigmbhpaymill'}" class="elv">
             {l s='Paymill Directdebit' mod='pigmbhpaymill'}
         </a>
     </p>

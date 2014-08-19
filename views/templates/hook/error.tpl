@@ -15,5 +15,5 @@
 
 <link rel="stylesheet" type="text/css" href="{$modul_base|escape:'htmlall':'UTF-8'}/css/paymill_styles.css" />
 {if $paymillerror}
-    <div class="paymill_error">{$errormessage|escape:'htmlall':'UTF-8'}</div>
+    <div class="paymill_error">{$errormessage|escape:'html':'UTF-8'}</div>
 {/if}

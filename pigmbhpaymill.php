@@ -55,12 +55,8 @@ class PigmbhPaymill extends PaymentModule
 		$this->displayName = $this->l('PAYMILL');
 		$this->description = $this->l('Accept online payments easily in up to 100 currencies. Free download & testing!');
 		//Adjust Modulname to the One use in Checkout, so the customer will be correctly redirected to the thank-you page
-//		if ($this->context->cookie->__isset('paymill_payment_text'))
-//		$this->displayName = $this->context->cookie->__get('paymill_payment_text');
-
-
-//    var_dump($this->context->cookie->__get('paymill_payment_text'));
-//    exit;
+		if ($this->context->cookie->__isset('paymill_payment_text'))
+            $this->displayName = $this->context->cookie->__get('paymill_payment_text');
 
 	}
 
