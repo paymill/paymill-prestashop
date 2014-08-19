@@ -14,7 +14,7 @@
 *}
 
 <script type="text/javascript">
-    var PAYMILL_PUBLIC_KEY = '{$public_key|escape:'UTF-8'}';
+    var PAYMILL_PUBLIC_KEY = '{$public_key|escape:'htmlall'}';
     var paymillcheckout = new Object();
     paymillcheckout.errormessages = new Object();
     paymillcheckout.errormessages.bridge = {
@@ -50,11 +50,11 @@
         invalid_iban: "{l s='Please enter your iban.' mod='pigmbhpaymill'}",
         invalid_bic: "{l s='Please enter your bic.' mod='pigmbhpaymill'}"
     };
-    paymillcheckout.paymentmean = '{$payment|escape:'UTF-8'}';
-    paymillcheckout.acceptedBrands = {$acceptedBrands|escape:'UTF-8'};
+    paymillcheckout.paymentmean = '{$payment|escape:'htmlall':'UTF-8'}';
+    paymillcheckout.acceptedBrands = {$acceptedBrands|escape:'htmlall':'UTF-8'};
     paymillcheckout.debugmode = {$paymill_debugging|escape:'intval'};
     paymillcheckout.amount = {$total|escape:'intval'};
-    paymillcheckout.currency = '{$currency_iso|escape:'UTF-8'}';
+    paymillcheckout.currency = '{$currency_iso|escape:'htmlall':'UTF-8'}';
     paymillcheckout.prefilled = new Array();
     paymillcheckout.submitted = false;
 </script>

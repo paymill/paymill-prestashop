@@ -55,8 +55,12 @@ class PigmbhPaymill extends PaymentModule
 		$this->displayName = $this->l('PAYMILL');
 		$this->description = $this->l('Accept online payments easily in up to 100 currencies. Free download & testing!');
 		//Adjust Modulname to the One use in Checkout, so the customer will be correctly redirected to the thank-you page
-		if ($this->context->cookie->__isset('paymill_payment_text'))
-		$this->displayName = $this->context->cookie->__get('paymill_payment_text');
+//		if ($this->context->cookie->__isset('paymill_payment_text'))
+//		$this->displayName = $this->context->cookie->__get('paymill_payment_text');
+
+
+//    var_dump($this->context->cookie->__get('paymill_payment_text'));
+//    exit;
 
 	}
 
@@ -177,9 +181,8 @@ class PigmbhPaymill extends PaymentModule
 	 */
 	public function hookPaymentReturn()
 	{
-		if (!$this->active)
+        if (!$this->active)
 			return;
-
 		return $this->display(__FILE__, 'views/templates/hook/confirmation.tpl');
 	}
 
@@ -282,6 +285,10 @@ class PigmbhPaymill extends PaymentModule
 		$page = $max_page < Tools::getValue('paymillpage', 1) ? $max_page : Tools::getValue('paymillpage', 1);
 		$start = $page * $this->limit - $this->limit;
 
+        $myaction = $this->context->link->getAdminLink('AdminModules', false);
+		$myaction .= '&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
+		$myaction .= '&token='.Tools::getAdminTokenLite('AdminModules');
+
 		//Details
 		if (Tools::getValue('paymillid') && Tools::getValue('paymillkey'))
 		{
@@ -302,16 +309,15 @@ class PigmbhPaymill extends PaymentModule
 			foreach ($row as $key => $value)
 			{
 				$value = is_array($value) ? $value[1].'<br><br>'.$value[0] : $value;
-				$unsorted_print_data[$key] = Tools::strlen($value) >= 300 ? '<a href="'.$_SERVER['REQUEST_URI'].'&paymillid='.$row['id']
-					.'&paymillkey='.$key.'&searchvalue='.$search.'">'.$this->l('see more').'</a>' : $value;
+				$unsorted_print_data[$key] = $value;
+                if(Tools::strlen($value) >= 250)
+                    $unsorted_print_data['link'] = $myaction.'&paymillid='.$row['id'].'&paymillkey='.$key.'&searchvalue='.$search;
 			}
 
 			$logdata[] = $unsorted_print_data;
 		}
 
-		$myaction = $this->context->link->getAdminLink('AdminModules', false);
-		$myaction .= '&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
-		$myaction .= '&token='.Tools::getAdminTokenLite('AdminModules');
+
 
 		$this->context->smarty->assign(array(
 			'include' => array(

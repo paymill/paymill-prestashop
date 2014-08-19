@@ -26,24 +26,24 @@
 {else}
     </div>
 </div>
-<form role="form" id='paymill_form' action="{$link->getModuleLink('pigmbhpaymill', 'validation', [], true)|escape:'UTF-8'}" method="post" class="row">
+<form role="form" id='paymill_form' action="{$link->getModuleLink('pigmbhpaymill', 'validation', [], true)|escape:'url':'UTF-8'}" method="post" class="row">
     <div class="debit col-md-8 col-md-push-2">
         <input type="hidden" name="payment" value="{$payment|escape:'htmlall':'UTF-8'}">
         <div id="paymill-error" class="error center" style="display:none;"></div>
         <div class="row">
             <div class="cc-logos col-md-12">
             {if $payment == "creditcard"}
-                {if $acceptedBrandsDecoded.visa}<img src="{$modul_base|escape:'UTF-8'}img/32x20_visa.png" alt="visa">{/if}
-                {if $acceptedBrandsDecoded.mastercard}<img src="{$modul_base|escape:'UTF-8'}img/32x20_mastercard.png" alt="mastercard"> {/if}
-                {if $acceptedBrandsDecoded.amex}<img src="{$modul_base|escape:'UTF-8'}img/32x20_amex.png" alt="amex"> {/if}
-                {if $acceptedBrandsDecoded.cartasi}<img src="{$modul_base|escape:'UTF-8'}img/32x20_carta-si.png" alt="carta-si"> {/if}
-                {if $acceptedBrandsDecoded.cartebleue}<img src="{$modul_base|escape:'UTF-8'}img/32x20_carte-bleue.png" alt="carte-bleue"> {/if}
-                {if $acceptedBrandsDecoded.dinersclub}<img src="{$modul_base|escape:'UTF-8'}img/32x20_dinersclub.png" alt="maestro"> {/if}
-                {if $acceptedBrandsDecoded.chinaunionpay}<img src="{$modul_base|escape:'UTF-8'}img/32x20_unionpay.png" alt="china-unionpay"> {/if}
-                {if $acceptedBrandsDecoded.discover}<img src="{$modul_base|escape:'UTF-8'}img/32x20_discover.png" alt="discover"> {/if}
-                {if $acceptedBrandsDecoded.dankort}<img src="{$modul_base|escape:'UTF-8'}img/32x20_dankort.png" alt="dankort"> {/if}
-                {if $acceptedBrandsDecoded.jcb}<img src="{$modul_base|escape:'UTF-8'}img/32x20_jcb.png" alt="jcb"> {/if}
-                {if $acceptedBrandsDecoded.maestro}<img src="{$modul_base|escape:'UTF-8'}img/32x20_maestro.png" alt="maestro"> {/if}
+                {if $acceptedBrandsDecoded.visa}<img src="{$modul_base|escape:'url':'UTF-8'}img/32x20_visa.png" alt="visa">{/if}
+                {if $acceptedBrandsDecoded.mastercard}<img src="{$modul_base|escape:'url':'UTF-8'}img/32x20_mastercard.png" alt="mastercard"> {/if}
+                {if $acceptedBrandsDecoded.amex}<img src="{$modul_base|escape:'url':'UTF-8'}img/32x20_amex.png" alt="amex"> {/if}
+                {if $acceptedBrandsDecoded.cartasi}<img src="{$modul_base|escape:'url':'UTF-8'}img/32x20_carta-si.png" alt="carta-si"> {/if}
+                {if $acceptedBrandsDecoded.cartebleue}<img src="{$modul_base|escape:'url':'UTF-8'}img/32x20_carte-bleue.png" alt="carte-bleue"> {/if}
+                {if $acceptedBrandsDecoded.dinersclub}<img src="{$modul_base|escape:'url':'UTF-8'}img/32x20_dinersclub.png" alt="maestro"> {/if}
+                {if $acceptedBrandsDecoded.chinaunionpay}<img src="{$modul_base|escape:'url':'UTF-8'}img/32x20_unionpay.png" alt="china-unionpay"> {/if}
+                {if $acceptedBrandsDecoded.discover}<img src="{$modul_base|escape:'url':'UTF-8'}img/32x20_discover.png" alt="discover"> {/if}
+                {if $acceptedBrandsDecoded.dankort}<img src="{$modul_base|escape:'url':'UTF-8'}img/32x20_dankort.png" alt="dankort"> {/if}
+                {if $acceptedBrandsDecoded.jcb}<img src="{$modul_base|escape:'url':'UTF-8'}img/32x20_jcb.png" alt="jcb"> {/if}
+                {if $acceptedBrandsDecoded.maestro}<img src="{$modul_base|escape:'url':'UTF-8'}img/32x20_maestro.png" alt="maestro"> {/if}
             </div>
         </div>
         <div class="row">
@@ -94,10 +94,10 @@
         <div class="row">
             <div class="col-md-4 cart_navigation paymill_cart_navi">
                 {if $opc}
-                    <a href="{$link->getPageLink('order', true)|escape:'UTF-8'}" autocomplete="off" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
+                    <a href="{$link->getPageLink('order', true)|escape:'url':'UTF-8'}" autocomplete="off" class="button_large">{l s='Payment selection' mod='pigmbhpaymill'}</a>
                 {/if}
                 {if !$opc}
-                    <a href="{$link->getPageLink('order', true)|escape:'UTF-8'}?step=3" autocomplete="off" class="btn btn-default button-exclusive btn-lg"><i class="icon-chevron-left"></i> {l s='Payment selection' mod='pigmbhpaymill'}</a>
+                    <a href="{$link->getPageLink('order', true)|escape:'url':'UTF-8'}?step=3" autocomplete="off" class="btn btn-default button-exclusive btn-lg"><i class="icon-chevron-left"></i> {l s='Payment selection' mod='pigmbhpaymill'}</a>
                 {/if}
             </div>
             <div class="col-md-4 col-md-push-4">

@@ -26,8 +26,14 @@
             <tr>
                 <td class="dataTableContent">{$row.identifier|escape:'intval'}</td>
                 <td class="dataTableContent">{$row.date|escape:'htmlall'}</td>
-                <td class="dataTableContent">{$row.message|escape:'UTF-8'}</td>
-                <td class="dataTableContent">{$row.debug|escape:'UTF-8'}</td>
+                <td class="dataTableContent">{$row.message|escape:'htmlall'}</td>
+                <td class="dataTableContent">
+                    {if $row.link }
+                        <a href="{$row.link|escape:'html'}">{l s='see more' mod='pigmbhpaymill'}</a>
+                    {else}
+                        {$row.debug|escape:'htmlall'}
+                    {/if}
+                </td>
             </tr>
             {foreachelse}
             <tr>

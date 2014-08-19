@@ -15,16 +15,16 @@
 
 {if $creditcard === 'on' && $valid_key}
     <p class="payment_module">
-        <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'creditcard'])|escape:'UTF-8'}" title="{l s='Paymill Creditcard' mod='pigmbhpaymill'}">
-            <img src="{$this_path_ssl|escape:'UTF-8'}/../img/icon-hook.png">
+        <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'creditcard'])|escape:'url':'UTF-8'}" title="{l s='Paymill Creditcard' mod='pigmbhpaymill'}">
+            <img src="{$this_path_ssl|escape:'url':'UTF-8'}/../img/icon-hook.png">
             {l s='Paymill Creditcard' mod='pigmbhpaymill'}
         </a>
     </p>
 {/if}
 {if $debit === 'on' && $valid_key}
     <p class="payment_module">
-        <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'debit'])|escape:'UTF-8'}" title="{l s='Paymill Directdebit' mod='pigmbhpaymill'}">
-            <img src="{$this_path_ssl|escape:'UTF-8'}/../img/icon-hook.png">
+        <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'debit'])|escape:'url':'UTF-8'}" title="{l s='Paymill Directdebit' mod='pigmbhpaymill'}">
+            <img src="{$this_path_ssl|escape:'url':'UTF-8'}/../img/icon-hook.png">
             {l s='Paymill Directdebit' mod='pigmbhpaymill'}
         </a>
     </p>
