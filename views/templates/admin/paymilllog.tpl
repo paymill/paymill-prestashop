@@ -25,7 +25,7 @@
             {foreach from=$logging.data item=row}
             <tr>
                 <td class="dataTableContent">{$row.identifier|escape:'intval'}</td>
-                <td class="dataTableContent">{$row.date|escape:'html'}</td>
+                <td class="dataTableContent">{$row.date|escape:'htmlall'}</td>
                 <td class="dataTableContent">{$row.message|escape:'UTF-8'}</td>
                 <td class="dataTableContent">{$row.debug|escape:'UTF-8'}</td>
             </tr>
@@ -35,7 +35,7 @@
             </tr>
             {/foreach}
         </table>
-        <input type="text" name="searchvalue" value="{$logging.paymill_searchvalue|escape:'htmlall':'html'}" style="width:20%">
+        <input type="text" name="searchvalue" value="{$logging.paymill_searchvalue|escape:'htmlall'}" style="width:20%">
         <select name="paymillpage">
                 {foreach from=$logging.paymill_maxpage item=page key=key}
         <option{if $logging.paymill_currentpage == $page} selected{/if}>{$page|escape:'intval'}</option>
