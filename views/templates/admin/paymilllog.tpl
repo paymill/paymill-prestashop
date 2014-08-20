@@ -28,7 +28,7 @@
                 <td class="dataTableContent">{$row.date|escape:'htmlall'}</td>
                 <td class="dataTableContent">{$row.message|escape:'htmlall'}</td>
                 <td class="dataTableContent">
-                    {if $row.link }
+                    {if !empty($row.link) }
                         <a href="{$row.link|escape:'html'}">{l s='see more' mod='pigmbhpaymill'}</a>
                     {else}
                         {$row.debug|escape:'htmlall'}
