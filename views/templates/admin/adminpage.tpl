@@ -12,7 +12,7 @@
 *  @copyright 2012-2014 PAYMILL
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
-<link rel="stylesheet" type="text/css" href="{$include.css|escape:'url'}">
+<link rel="stylesheet" type="text/css" href="{$include.css|escape:'htmlall'}">
 <div id="paymill_adminpage">
     {include file=$include.header}
     {include file=$include.config}

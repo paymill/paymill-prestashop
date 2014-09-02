@@ -231,19 +231,19 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 			if ($count === 0)
 			{
 				$this->log('Inserted new data.', var_export(array($client_id, $payment_id, $user_id), true));
-				$sql = 'INSERT INTO `'._DB_PREFIX_.$table.'` (`clientId`, `paymentId`, `userId`) VALUES("'.$db->_escape($client_id).'", "'.$db->_escape($payment_id).'", '.$db->_escape($user_id).');';
+				$sql = 'INSERT INTO `'._DB_PREFIX_.$table.'` (`clientId`, `paymentId`, `userId`) VALUES("'.$db->_escape($client_id).'", "'.$db->_escape($payment_id).'", '.intval($user_id).');';
 			}
 			elseif ($count === 1)
 			{
 				if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on')
 				{
 					$this->log('Updated User '.$client_id, var_export(array($client_id, $payment_id), true));
-					$sql = 'UPDATE `'._DB_PREFIX_.$table.'` SET `clientId`="'.$db->_escape($client_id).'", `paymentId`="'.$db->_escape($payment_id).'" WHERE `userId`='.$db->_escape($user_id);
+					$sql = 'UPDATE `'._DB_PREFIX_.$table.'` SET `clientId`="'.$db->_escape($client_id).'", `paymentId`="'.$db->_escape($payment_id).'" WHERE `userId`='.intval($user_id);
 				}
 				else
 				{
 					$this->log('Updated User $client_id.', var_export(array($client_id), true));
-					$sql = 'UPDATE `'._DB_PREFIX_.$table.'` SET `clientId`="'.$db->_escape($client_id).'" WHERE `userId`='.$db->_escape($user_id);
+					$sql = 'UPDATE `'._DB_PREFIX_.$table.'` SET `clientId`="'.$db->_escape($client_id).'" WHERE `userId`='.intval($user_id);
 				}
 			}
 
