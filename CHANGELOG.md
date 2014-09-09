@@ -1,3 +1,9 @@
+## 2.0.1 - 2014-09-09
+* Changed register url and added referrer
+
+## 2.0.0 - 2014-08-29
+* Core-Release
+
 ## 1.5.1 - 2014-06-23
 * improved Design for Prestashop 1.6
 * Transaction description limited to 128 charakters
