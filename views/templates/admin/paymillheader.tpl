@@ -15,7 +15,7 @@
 <fieldset style="position:relative">
     <legend>{l s='Help' mod='pigmbhpaymill'}</legend>
     <img src="https://static.paymill.com/r/f215617e88bb5c66dcc3bd0bf94be172ea052ac6/img/paymill-logo.png">
-    <form action="https://app.paymill.com/user/register?referrer=prestashop" target="_blank">
+    <form action="https://app.paymill.com/user/register" target="_blank">
         <p>{l s='PAYMILL is your one-stop solution for online payments. Let your customers pay directly on your online store without redirecting them and benefit from higher conversions.' mod='pigmbhpaymill'}</p>
 
         <p><b>{l s='Your Payments Secured' mod='pigmbhpaymill'}</b><br>
@@ -45,6 +45,7 @@
         </ol>
 
         <p>{l s='Are you already registered with PAYMILL?' mod='pigmbhpaymill'}</p>
+        <input type="hidden" name="referrer" value="prestashop">
         <input type="submit" value="{l s='CREATE AN ACCOUNT' mod='pigmbhpaymill'}" class="paymill_config_button">
     </form>
 </fieldset>
