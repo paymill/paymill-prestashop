@@ -83,6 +83,7 @@ class PigmbhPaymill extends PaymentModule
 		if (is_null($this->warning) && !$this->addPaymillOrderState())
 			$this->warning = $this->l('There was an Error creating a custom orderstate.');
 
+        $this->registerHook('displayPaymentEU');
 		return is_null($this->warning);
 	}
 
@@ -153,6 +154,37 @@ class PigmbhPaymill extends PaymentModule
 			$template = 'views/templates/hook/payment1_5.tpl';
 
 		return $this->display(__FILE__, $template);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function hookdisplayPaymentEU()
+	{
+		if (!$this->active)
+			return;
+
+        $this->context->smarty->assign(array(
+			'this_path' => $this->_path,
+			'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/',
+			'debit' => Configuration::get('PIGMBH_PAYMILL_DEBIT'),
+			'creditcard' => Configuration::get('PIGMBH_PAYMILL_CREDITCARD'),
+			'valid_key' => !in_array(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), array('', null))
+			&& !in_array(Configuration::get('PIGMBH_PAYMILL_PUBLICKEY'), array('', null)),
+		));
+
+        return array(
+                array(
+                    'cta_text' => $this->l('Paymill Directdebit'),
+                    'logo' => Media::getMediaPath(dirname(__FILE__).'/img/icon-hook.png'),
+                    'action' => $this->context->link->getModuleLink($this->name, 'payment', array('payment'=>'debit'))
+                ),
+                array(
+                    'cta_text' => $this->l('Paymill Creditcard'),
+                    'logo' => Media::getMediaPath(dirname(__FILE__).'/img/icon-hook.png'),
+                    'action' => $this->context->link->getModuleLink($this->name, 'payment', array('payment'=>'creditcard'))
+                )
+        );
 	}
 
 	/**
