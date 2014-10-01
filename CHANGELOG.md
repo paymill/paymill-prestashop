@@ -1,3 +1,6 @@
+## 2.1.0 - 2014-10-01
+* added compatibility for EU-Legal(https://github.com/EU-Legal/modules)
+
 ## 2.0.1 - 2014-09-09
 * Changed register url and added referrer
 
