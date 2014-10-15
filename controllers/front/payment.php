@@ -195,7 +195,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 	{
 		$is_valid = false;
 		$object_result = $object->getOne($id);
-		if (array_key_exists('id', $object_result))
+		if (is_array($object_result) && array_key_exists('id', $object_result))
 			$is_valid = $id === $object_result['id'];
 		return $is_valid;
 	}
