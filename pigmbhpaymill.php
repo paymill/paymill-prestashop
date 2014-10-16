@@ -249,6 +249,14 @@ class PigmbhPaymill extends PaymentModule
 				PRIMARY KEY (`userId`)
 				);'
 			);
+			
+                        $db->execute('CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` (
+				`id` int(11) NOT NULL,
+				`preauth` text,
+				`transaction` text,
+				PRIMARY KEY (`id`)
+				);'
+			);
 
 			return true;
 		} catch (Exception $exception) {
@@ -261,9 +269,11 @@ class PigmbhPaymill extends PaymentModule
 		$old_config = $this->configuration_handler->loadConfiguration();
 		$new_config = new ConfigurationModel();
 		$accepted_brands = array();
-		foreach (Tools::getValue('accepted_brands') as $accepted_brand)
+		if(Tools::getValue('accepted_brands')){
+                    foreach (Tools::getValue('accepted_brands') as $accepted_brand)
 			$accepted_brands[$accepted_brand] = true;
-
+                }
+                
 		$accepted_brands_result = array();
 		foreach (array_keys($old_config->getAccpetedCreditCards()) as $key)
 		{
@@ -282,6 +292,7 @@ class PigmbhPaymill extends PaymentModule
 		$new_config->setPublicKey(trim(Tools::getValue('publickey', $old_config->getPublicKey())));
 		$new_config->setAccpetedCreditCards($accepted_brands_result);
 		$new_config->setDebitDays(Tools::getValue('debit_days', '7'));
+		$new_config->setCapture(Tools::getValue('capture_option', 'OFF'));
 		$this->configuration_handler->updateConfiguration($new_config);
 		$this->registerPaymillWebhook($new_config->getPrivateKey());
 	}
@@ -368,6 +379,7 @@ class PigmbhPaymill extends PaymentModule
 				'logging' => $this->getCheckboxState($configuration_model->getLogging()),
 				'fastcheckout' => $this->getCheckboxState($configuration_model->getFastcheckout()),
 				'accepted_brands' => $configuration_model->getAccpetedCreditCards(),
+				'capture_option' => $this->getCheckboxState($configuration_model->getCapture()),
 			),
 			'logging' => array(
 				'data' => $logdata,

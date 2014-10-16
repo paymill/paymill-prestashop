@@ -65,6 +65,11 @@ class ConfigurationModel
 	 * @var string
 	 */
 	private $debit_days;
+	
+        /**
+	 * @var boolean
+	 */
+	private $capture;
 
 	/**
 	 * @return string
@@ -209,5 +214,21 @@ class ConfigurationModel
 	{
 		$this->directdebit = $directdebit;
 	}
+        
+        /**
+         * @return boolean
+         */
+        public function getCapture() {
+            return $this->capture;
+        }
+
+        /**
+         * @param boolean $capture
+         */
+        public function setCapture($capture) {
+            $this->capture = $capture;
+        }
+
+
 
 }

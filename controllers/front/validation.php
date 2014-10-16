@@ -106,8 +106,8 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 			$this->saveUserData(
 				$this->payment_processor->getClientId(), $this->payment_processor->getPaymentId(), (int)$this->context->cart->id_customer
 			);
-
-			$payment_text = $this->getPaymentText();
+                        
+                        $payment_text = $this->getPaymentText();
 			$this->context->cookie->__set('paymill_payment_text', $payment_text);
 			$this->module->validateOrder(
 				(int)$this->context->cart->id,
@@ -122,6 +122,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 				$this->context->shop
 			);
 
+                        $this->saveTransactionData((int)$this->module->currentOrder, $this->payment_processor->getPreauthId(), $this->payment_processor->getTransactionId());
 			$this->updatePaymillTransaction(
 				$this->payment_processor->getTransactionId(),
 				Tools::substr('OrderID: '.(int)$this->module->currentOrder.' - Name:'.
@@ -189,7 +190,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		if ($this->token === 'dummyToken')
 			$this->payment_processor->setPaymentId(!empty($user_data['paymentId']) ? $user_data['paymentId'] : null);
 
-		$result = $this->payment_processor->processPayment();
+		$result = $this->payment_processor->processPayment(Configuration::get('PIGMBH_PAYMILL_CAPTURE'));
 
 		$this->log('Payment processing resulted in', ($result ? 'Success' : 'Fail'));
 		return $result;
@@ -251,6 +252,20 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		} catch (Exception $exception) {
 			$this->log('Failed saving UserData. ', $exception->getMessage());
 		}
+	}
+        
+	private function saveTransactionData($orderId, $preauth, $transaction)
+	{
+            $db = Db::getInstance();
+            $sql = 'INSERT INTO `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` (`id`, `preauth`, `transaction`) VALUES("'.
+                    intval($orderId).'", "'.
+                    (string)$db->_escape($preauth).'", "'.
+                    (string)$db->_escape($transaction).'");';
+            try{
+                $db->execute($sql);
+            } catch (Exception $exception) {
+                $this->log('Failed saving Transactiondata. ', $exception->getMessage());
+            }
 	}
 
 	/**

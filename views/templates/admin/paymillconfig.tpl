@@ -40,6 +40,18 @@
         </div>
         <div class="clear"></div>
 
+        <label>{l s='Create Preauthorisation and capture manually' mod='pigmbhpaymill'}</label>
+        <div class="margin-form">
+            <input type="checkbox" name="capture_option" {$config.capture_option|escape:'htmlall':'UTF-8'} />
+        </div>
+        <div class="clear"></div>
+        
+        <label>{l s='Activate fastCheckout' mod='pigmbhpaymill'}</label>
+        <div class="margin-form">
+            <input type="checkbox" name="fastcheckout" {$config.fastcheckout|escape:'htmlall':'UTF-8'} />
+        </div>
+        <div class="clear"></div>
+        
         <label>{l s='Activate debugging' mod='pigmbhpaymill'}</label>
         <div class="margin-form">
             <input type="checkbox" name="debug" {$config.debug|escape:'htmlall':'UTF-8'} />
@@ -49,12 +61,6 @@
         <label>{l s='Activate logging' mod='pigmbhpaymill'}</label>
         <div class="margin-form">
             <input type="checkbox" name="logging" {$config.logging|escape:'htmlall':'UTF-8'} />
-        </div>
-        <div class="clear"></div>
-
-        <label>{l s='Activate fastCheckout' mod='pigmbhpaymill'}</label>
-        <div class="margin-form">
-            <input type="checkbox" name="fastcheckout" {$config.fastcheckout|escape:'htmlall':'UTF-8'} />
         </div>
         <div class="clear"></div>
 

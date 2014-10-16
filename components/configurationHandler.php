@@ -43,6 +43,7 @@ class ConfigurationHandler
 					'PIGMBH_PAYMILL_CREDITCARD',
 					'PIGMBH_PAYMILL_FASTCHECKOUT',
 					'PIGMBH_PAYMILL_ACCEPTED_BRANDS',
+					'PIGMBH_PAYMILL_CAPTURE',
 				)
 		);
 
@@ -54,6 +55,7 @@ class ConfigurationHandler
 		$config_model->setDirectdebit(isset($config['PIGMBH_PAYMILL_DEBIT']) ? $config['PIGMBH_PAYMILL_DEBIT'] : false);
 		$config_model->setCreditcard(isset($config['PIGMBH_PAYMILL_CREDITCARD']) ? $config['PIGMBH_PAYMILL_CREDITCARD'] : false);
 		$config_model->setFastcheckout(isset($config['PIGMBH_PAYMILL_FASTCHECKOUT']) ? $config['PIGMBH_PAYMILL_FASTCHECKOUT'] : false);
+		$config_model->setCapture(isset($config['PIGMBH_PAYMILL_CAPTURE']) ? $config['PIGMBH_PAYMILL_CAPTURE'] : false);
 		$accepted_brands = false;
 		if (isset($config['PIGMBH_PAYMILL_ACCEPTED_BRANDS']))
 			$accepted_brands = Tools::jsonDecode($config['PIGMBH_PAYMILL_ACCEPTED_BRANDS'], true);
@@ -75,6 +77,7 @@ class ConfigurationHandler
 		Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', $model->getDebug());
 		Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', $model->getLogging());
 		Configuration::updateValue('PIGMBH_PAYMILL_FASTCHECKOUT', $model->getFastcheckout());
+		Configuration::updateValue('PIGMBH_PAYMILL_CAPTURE', $model->getCapture());
 		Configuration::updateValue('PIGMBH_PAYMILL_ACCEPTED_BRANDS', Tools::jsonEncode($model->getAccpetedCreditCards()));
 	}
 
@@ -91,6 +94,7 @@ class ConfigurationHandler
 		Configuration::updateValue('PIGMBH_PAYMILL_DEBUG', 'OFF');
 		Configuration::updateValue('PIGMBH_PAYMILL_LOGGING', 'ON');
 		Configuration::updateValue('PIGMBH_PAYMILL_FASTCHECKOUT', 'OFF');
+		Configuration::updateValue('PIGMBH_PAYMILL_CAPTURE', 'OFF');
 		Configuration::updateValue(
 			'PIGMBH_PAYMILL_ACCEPTED_BRANDS', Tools::jsonEncode(
 				array(
