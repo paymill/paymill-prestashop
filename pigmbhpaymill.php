@@ -14,6 +14,7 @@
  *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 
+require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/util.php');
 require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/configurationHandler.php');
 require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/models/configurationModel.php');
 require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/paymill/v2/lib/Services/Paymill/Webhooks.php');
@@ -71,10 +72,12 @@ class PigmbhPaymill extends PaymentModule
 		if (is_null($this->warning) && !function_exists('curl_init'))
 			$this->warning = $this->l('cURL is required to use this module. Please install the php extention cURL.');
 		if (is_null($this->warning) && !(parent::install()
-			&& $this->registerHook('payment')
-			&& $this->registerHook('paymentReturn')
-			&& $this->registerHook('Header')
-			&& $this->registerHook('paymentTop')))
+			&& $this->registerHook('displayPayment')
+			&& $this->registerHook('displayPaymentReturn')
+			&& $this->registerHook('displayAdminOrder')
+			&& $this->registerHook('displayHeader')
+			&& $this->registerHook('displayBackOfficeHeader')
+			&& $this->registerHook('displayPaymentTop')))
 			$this->warning = $this->l('There was an Error installing the module.');
 		if (is_null($this->warning) && !$this->configuration_handler->setDefaultConfiguration())
 			$this->warning = $this->l('There was an Error initiating the configuration.');
@@ -83,7 +86,7 @@ class PigmbhPaymill extends PaymentModule
 		if (is_null($this->warning) && !$this->addPaymillOrderState())
 			$this->warning = $this->l('There was an Error creating a custom orderstate.');
 
-        $this->registerHook('displayPaymentEU');
+                $this->registerHook('displayPaymentEU');
 		return is_null($this->warning);
 	}
 
@@ -110,33 +113,72 @@ class PigmbhPaymill extends PaymentModule
 	{
 		$webhook = new Services_Paymill_Webhooks($private_key, 'https://api.paymill.com/v2/');
 		return $webhook->create(array(
-				'url' => _PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/webHookEndpoint.php',
-				'event_types' => array('refund.succeeded')
+                    'url' => _PS_BASE_URL_.__PS_BASE_URI__.'modules/pigmbhpaymill/webHookEndpoint.php',
+                    'event_types' => array('refund.succeeded')
 		));
 	}
 
 	/**
 	 * Load CSS and JS into HTML Head-tag
 	 */
-	public function hookHeader()
+	public function hookdisplayAdminOrder($hook)
 	{
-		if (!$this->active || $this->name !== Tools::getValue('module'))
-			return;
+            $orderId = 0;
+            if(array_key_exists('id_order', $hook))
+                $orderId = (int)$hook['id_order'];
+            
+            $util = new util();
+            if (!$this->active || !$util->isPaymillOrder($orderId))
+                return;
+            
+            $db = Db::getInstance();
+            $transactiondata = $db->executeS('SELECT * FROM `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` WHERE `id`='.$db->escape($orderId),true,false);
+            $this->context->smarty->assign(array(
+                'paymill' => $transactiondata
+            ));
+            
+            return $this->display(__FILE__, 'views/templates/hook/displayAdminOrder.tpl');
+	}
+        
+	/**
+	 * Load CSS and JS into HTML Head-tag
+	 */
+	public function hookdisplayHeader()
+	{
+            if(!$this->active)
+                return;
+            
+            if ($this->name === Tools::getValue('module')){
+                $this->context->controller->addCSS(__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_styles.css');
+                if (_PS_VERSION_ < '1.6')
+                        $this->context->controller->addCSS(__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_checkout_1_5.css');
 
-		$this->context->controller->addCSS(__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_styles.css');
-		if (_PS_VERSION_ < '1.6')
-			$this->context->controller->addCSS(__PS_BASE_URI__.'modules/pigmbhpaymill/css/paymill_checkout_1_5.css');
-
-		$this->context->controller->addJS('https://bridge.paymill.com/');
-		$this->context->controller->addJS(__PS_BASE_URI__.'modules/pigmbhpaymill/js/BrandDetection.js');
-		$this->context->controller->addJS(__PS_BASE_URI__.'modules/pigmbhpaymill/js/Iban.js');
-		$this->context->controller->addJS(__PS_BASE_URI__.'modules/pigmbhpaymill/js/PaymillCheckout.js');
+                $this->context->controller->addJS('https://bridge.paymill.com/');
+                $this->context->controller->addJS(__PS_BASE_URI__.'modules/pigmbhpaymill/js/BrandDetection.js');
+                $this->context->controller->addJS(__PS_BASE_URI__.'modules/pigmbhpaymill/js/Iban.js');
+                $this->context->controller->addJS(__PS_BASE_URI__.'modules/pigmbhpaymill/js/PaymillCheckout.js');
+            }
+            
+	}
+        
+	/**
+	 * Load CSS and JS into HTML Head-tag for administration
+	 */
+	public function hookdisplayBackOfficeHeader()
+	{
+            if(!$this->active)
+                return;
+            
+            //Order detail view
+            if('AdminOrders' === Tools::getValue('controller')){
+                $this->context->controller->addJS(__PS_BASE_URI__.'modules/pigmbhpaymill/js/hook/displayAdminOrder.js');    
+            }
 	}
 
 	/**
 	 * @return string
 	 */
-	public function hookPayment()
+	public function hookdisplayPayment()
 	{
 		if (!$this->active)
 			return;
@@ -190,7 +232,7 @@ class PigmbhPaymill extends PaymentModule
 	/**
 	 * @return string
 	 */
-	public function hookPaymentTop()
+	public function hookdisplayPaymentTop()
 	{
 		if (!$this->active && Tools::getValue('paymillerror') != 1)
 			return;
@@ -207,7 +249,7 @@ class PigmbhPaymill extends PaymentModule
 	/**
 	 * @return string
 	 */
-	public function hookPaymentReturn()
+	public function hookdisplayPaymentReturn()
 	{
         if (!$this->active)
 			return;
@@ -324,7 +366,7 @@ class PigmbhPaymill extends PaymentModule
 		$page = $max_page < Tools::getValue('paymillpage', 1) ? $max_page : Tools::getValue('paymillpage', 1);
 		$start = $page * $this->limit - $this->limit;
 
-        $myaction = $this->context->link->getAdminLink('AdminModules', false);
+                $myaction = $this->context->link->getAdminLink('AdminModules', false);
 		$myaction .= '&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
 		$myaction .= '&token='.Tools::getAdminTokenLite('AdminModules');
 
