@@ -77,7 +77,8 @@ class PigmbhPaymill extends PaymentModule
 			&& $this->registerHook('displayAdminOrder')
 			&& $this->registerHook('displayHeader')
 			&& $this->registerHook('displayBackOfficeHeader')
-			&& $this->registerHook('displayPaymentTop')))
+			&& $this->registerHook('displayPaymentTop'))
+                    )
 			$this->warning = $this->l('There was an Error installing the module.');
 		if (is_null($this->warning) && !$this->configuration_handler->setDefaultConfiguration())
 			$this->warning = $this->l('There was an Error initiating the configuration.');
@@ -123,6 +124,8 @@ class PigmbhPaymill extends PaymentModule
 	 */
 	public function hookdisplayAdminOrder($hook)
 	{
+            // do refund / capture when submitted
+            
             $orderId = 0;
             if(array_key_exists('id_order', $hook))
                 $orderId = (int)$hook['id_order'];
@@ -134,7 +137,8 @@ class PigmbhPaymill extends PaymentModule
             $db = Db::getInstance();
             $transactiondata = $db->executeS('SELECT * FROM `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` WHERE `id`='.$db->escape($orderId),true,false);
             $this->context->smarty->assign(array(
-                'paymill' => $transactiondata
+                'paymill' => $transactiondata,
+                'orderId' => $orderId
             ));
             
             return $this->display(__FILE__, 'views/templates/hook/displayAdminOrder.tpl');
