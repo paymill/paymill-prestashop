@@ -309,6 +309,7 @@ class PigmbhPaymill extends PaymentModule
 				`id` int(11) NOT NULL,
 				`preauth` text,
 				`transaction` text,
+				`refund` int(1),
 				PRIMARY KEY (`id`)
 				);'
 			);
