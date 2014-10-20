@@ -55,7 +55,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 	 * @var int
 	 */
 	private $log_id;
-
+	
 
 	/**
 	 * Initialize needed class variables and session
@@ -190,7 +190,11 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		if ($this->token === 'dummyToken')
 			$this->payment_processor->setPaymentId(!empty($user_data['paymentId']) ? $user_data['paymentId'] : null);
 
-		$result = $this->payment_processor->processPayment(Configuration::get('PIGMBH_PAYMILL_CAPTURE') !== 'on' && $this->payment == 'creditcard');
+		$captureNow = true;
+		if($this->payment == 'creditcard'){
+		    $captureNow = Configuration::get('PIGMBH_PAYMILL_CAPTURE') !== 'on';
+		}
+		$result = $this->payment_processor->processPayment($captureNow);
 
 		$this->log('Payment processing resulted in', ($result ? 'Success' : 'Fail'));
 		return $result;
