@@ -146,9 +146,9 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 		if (isset($this->context->customer->id))
 		{
 			if (Tools::getValue('payment') == 'creditcard')
-				$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_creditcard_userdata` WHERE `userId`='.intval($this->context->customer->id);
+				$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_creditcard_userdata` WHERE `userId`='.(int)$this->context->customer->id;
 			elseif (Tools::getValue('payment') == 'debit')
-				$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_directdebit_userdata` WHERE `userId`='.intval($this->context->customer->id);
+				$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_directdebit_userdata` WHERE `userId`='.(int)$this->context->customer->id;
 
 			try {
 				$db_data = $db->getRow($sql);

@@ -95,7 +95,7 @@ class OrderActionService {
 	$sql =	'SELECT `'._DB_PREFIX_.'pigmbh_paymill_transactiondata`.*, `reference`, `total_paid`, `iso_code` FROM `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` '.
 		'LEFT JOIN `'._DB_PREFIX_.'orders` on `'._DB_PREFIX_.'pigmbh_paymill_transactiondata`.`id` = `'._DB_PREFIX_.'orders`.`id_order` '.
 		'LEFT JOIN `'._DB_PREFIX_.'currency` on `'._DB_PREFIX_.'orders`.`id_currency` = `'._DB_PREFIX_.'currency`.`id_currency` '.
-		'WHERE `'._DB_PREFIX_.'pigmbh_paymill_transactiondata`.`id`='.  intval($orderId);
+		'WHERE `'._DB_PREFIX_.'pigmbh_paymill_transactiondata`.`id`='.  (int)$orderId;
 	$result = $db->executeS($sql);
 	return array_shift($result);
     }
