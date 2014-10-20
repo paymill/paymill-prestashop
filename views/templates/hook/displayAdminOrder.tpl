@@ -35,7 +35,7 @@
             <div class="well hidden-print">
                 {if $paymill[0]['preauth'] ne ''}
                     <form method='POST' action="{$smarty.server.REQUEST_URI|escape:htmlall}">
-                        <input type="hidden" name='id_order' value="{$orderId}">
+                        <input type="hidden" name='id_order' value="{$orderId|escape:'intval'}">
                         <button type="submit" class="btn btn-default" name="paymillCapture" onclick="if (!confirm('{l s='Are you sure you want to capture?' mod='pigmbhpaymill'}'))return false;">
                             {l s='Capture' mod='pigmbhpaymill'}
                         </button>
@@ -43,7 +43,7 @@
                 {/if}
                 {if ($paymill[0]['transaction'] ne '' && $paymill[0]['refund'] ne 1)}
                 <form method='POST' action="{$smarty.server.REQUEST_URI|escape:htmlall}">
-                    <input type="hidden" name='id_order' value="{$orderId}">
+                    <input type="hidden" name='id_order' value="{$orderId|escape:'intval'}">
                     <button type="submit" class="btn btn-default" name="paymillRefund" onclick="if (!confirm('{l s='Are you sure you want to refund?' mod='pigmbhpaymill'}'))return false;">
                         {l s='Refund' mod='pigmbhpaymill'}
                     </button>
