@@ -190,7 +190,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		if ($this->token === 'dummyToken')
 			$this->payment_processor->setPaymentId(!empty($user_data['paymentId']) ? $user_data['paymentId'] : null);
 
-		$result = $this->payment_processor->processPayment(Configuration::get('PIGMBH_PAYMILL_CAPTURE'));
+		$result = $this->payment_processor->processPayment(Configuration::get('PIGMBH_PAYMILL_CAPTURE') !== 'on');
 
 		$this->log('Payment processing resulted in', ($result ? 'Success' : 'Fail'));
 		return $result;

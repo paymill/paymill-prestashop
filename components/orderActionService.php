@@ -73,15 +73,17 @@ class OrderActionService {
 	$data = $this->getTransactionData($orderId);
 	try{
 	    $result = $this->transaction->create(array(
-		'amount' => $data['total_paid'],
+		'amount' => number_format($data['total_paid'], 2) * 100,
 		'currency' => $data['iso_code'],
 		'preauthorization' => $data['preauth'],
+		'description' => 'OrderId: '. $orderId,
 	    ));
 
-	    $returnValue = isset($result['data']['response_code']) && $result['data']['response_code'] === 20000;
+	    $returnValue = isset($result['response_code']) && $result['response_code'] === 20000;
 	    $this->log('Capture resulted in ' . (string)$returnValue, var_export($result,true));
 	    $db = Db::getInstance();
-	    $db->execute('UPDATE `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` SET `transaction`='.$db->_escape($result['data']['id']));
+	    if(isset($result['id']))
+		$db->execute('UPDATE `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` SET `transaction`='.$db->_escape($result['id']));
 	}catch(Exception $exception){
 	    $returnValue = false;
 	}
