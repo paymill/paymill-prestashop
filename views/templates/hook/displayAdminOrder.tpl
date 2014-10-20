@@ -1,4 +1,19 @@
-{if $paymill[0]['preauth'] ne '' || $paymill[0]['transaction'] ne ''}
+{**
+* 2012-2014 PAYMILL
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+*
+*  @author    PAYMILL <support@paymill.com>
+*  @copyright 2012-2014 PAYMILL
+*  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*}
+
+{if $paymill[0]['preauth'] ne '' || ($paymill[0]['transaction'] ne '' && $paymill[0]['refund'] ne 1)}
 <div class="row">
     <div class="col-lg-7">
         <div class="panel">
@@ -15,7 +30,7 @@
                         </button>
                     </form>
                 {/if}
-                {if $paymill[0]['transaction'] ne ''}
+                {if ($paymill[0]['transaction'] ne '' && $paymill[0]['refund'] ne 1)}
                 <form method='POST' action="{$smarty.server.REQUEST_URI|escape:htmlall}">
                     <input type="hidden" name='id_order' value="{$orderId}">
                     <button type="submit" class="btn btn-default" name="paymillRefund" onclick="if (!confirm('{l s='Are you sure you want to refund?' mod='pigmbhpaymill'}'))return false;">
