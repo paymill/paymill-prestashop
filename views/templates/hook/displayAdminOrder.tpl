@@ -12,6 +12,17 @@
 *  @copyright 2012-2014 PAYMILL
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
+{if !is_null($orderaction)}
+<div class="alert alert-warning">
+    {if $orderaction}
+        {l s='PAYMILL action was successfull' mod='pigmbhpaymill'}
+    {else}
+        {l s='PAYMILL action has failed' mod='pigmbhpaymill'}
+        <br/>
+        {l s='Please check the Log' mod='pigmbhpaymill'}
+    {/if}
+</div>
+{/if}
 
 {if $paymill[0]['preauth'] ne '' || ($paymill[0]['transaction'] ne '' && $paymill[0]['refund'] ne 1)}
 <div class="row">

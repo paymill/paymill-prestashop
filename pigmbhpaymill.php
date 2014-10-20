@@ -135,7 +135,7 @@ class PigmbhPaymill extends PaymentModule
 	    
 	    
 	    $orderAction = new OrderActionService();
-	    $result = false;
+	    $result = null;
 	    if(Tools::isSubmit('paymillCapture')){
 		$result = $orderAction->capture($orderId);
 	    }elseif(Tools::isSubmit('paymillRefund')){
