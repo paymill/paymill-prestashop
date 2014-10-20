@@ -181,7 +181,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		$this->payment_processor->setSource(Configuration::get('PIGMBH_PAYMILL_VERSION').'_prestashop_core_'._PS_VERSION_);
 
 		if ($this->payment == 'creditcard')
-			$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_creditcard_userdata` WHERE `userId`='.intval ($this->context->customer->id);
+			$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_creditcard_userdata` WHERE `userId`='.intval($this->context->customer->id);
 		elseif ($this->payment == 'debit')
 			$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_directdebit_userdata` WHERE `userId`='.intval($this->context->customer->id);
 		$user_data = $this->db->getRow($sql);
@@ -190,7 +190,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		if ($this->token === 'dummyToken')
 			$this->payment_processor->setPaymentId(!empty($user_data['paymentId']) ? $user_data['paymentId'] : null);
 
-		$result = $this->payment_processor->processPayment(Configuration::get('PIGMBH_PAYMILL_CAPTURE') !== 'on');
+		$result = $this->payment_processor->processPayment(Configuration::get('PIGMBH_PAYMILL_CAPTURE') !== 'on' && $this->payment == 'creditcard');
 
 		$this->log('Payment processing resulted in', ($result ? 'Success' : 'Fail'));
 		return $result;
