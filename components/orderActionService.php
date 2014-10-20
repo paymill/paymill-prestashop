@@ -59,6 +59,7 @@ class OrderActionService {
 	    $db = Db::getInstance();
 	    $db->execute('UPDATE `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` SET `refund`=1');
 	}catch(Exception $exception){
+	    $this->log('Refund exception ', var_export($exception->getMessage(),true));
 	    $returnValue = false;
 	}
 	
@@ -79,12 +80,13 @@ class OrderActionService {
 		'description' => 'OrderId: '. $orderId,
 	    ));
 
-	    $returnValue = isset($result['response_code']) && $result['response_code'] === 20000;
-	    $this->log('Capture resulted in ' . (string)$returnValue, var_export($result,true));
+	    $returnValue = isset($result['id']);
+	    $this->log('Capture resulted in ' . var_export($returnValue,true), var_export($result,true));
 	    $db = Db::getInstance();
-	    if(isset($result['id']))
-		$db->execute('UPDATE `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` SET `transaction`='.$db->_escape($result['id']));
+	    if($returnValue)
+		$db->execute('UPDATE `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` SET `transaction`="'.$db->_escape($result['id']).'"');
 	}catch(Exception $exception){
+	    $this->log('Capture exception ', var_export($exception->getMessage(),true));
 	    $returnValue = false;
 	}
 	return $returnValue;

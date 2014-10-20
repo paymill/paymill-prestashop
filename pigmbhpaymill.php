@@ -145,7 +145,8 @@ class PigmbhPaymill extends PaymentModule
             $db = Db::getInstance();
             $transactiondata = $db->executeS('SELECT * FROM `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` WHERE `id`='.$db->escape($orderId),true,false);
             $this->context->smarty->assign(array(
-                'paymill' => $transactiondata,
+                'showCapture' => $transactiondata[0]['preauth'] == '' && $transactiondata[0]['transaction'] == '',
+                'showRefund' => $transactiondata[0]['transaction'] != '' && $transactiondata[0]['refund'] == 0,
                 'orderId' => $orderId,
                 'orderaction' => $result
             ));
