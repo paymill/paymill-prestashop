@@ -76,7 +76,6 @@ class PigmbhPaymill extends PaymentModule
 			&& $this->registerHook('displayPaymentReturn')
 			&& $this->registerHook('displayAdminOrder')
 			&& $this->registerHook('displayHeader')
-			&& $this->registerHook('displayBackOfficeHeader')
 			&& $this->registerHook('displayPaymentTop'))
                     )
 			$this->warning = $this->l('There was an Error installing the module.');
@@ -165,20 +164,6 @@ class PigmbhPaymill extends PaymentModule
             
 	}
         
-	/**
-	 * Load CSS and JS into HTML Head-tag for administration
-	 */
-	public function hookdisplayBackOfficeHeader()
-	{
-            if(!$this->active)
-                return;
-            
-            //Order detail view
-            if('AdminOrders' === Tools::getValue('controller')){
-                $this->context->controller->addJS(__PS_BASE_URI__.'modules/pigmbhpaymill/js/hook/displayAdminOrder.js');    
-            }
-	}
-
 	/**
 	 * @return string
 	 */
