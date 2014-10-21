@@ -93,7 +93,7 @@ class OrderActionService {
 	    $this->log('Capture resulted in ' . var_export($returnValue,true), var_export($result,true));
 	    $db = Db::getInstance();
 	    if($returnValue)
-		$db->execute('UPDATE `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` SET `transaction`="'.$db->_escape($result['id']).'"');
+		$db->execute('UPDATE `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` SET `transaction`="'.$db->_escape($result['id']).'" WHERE `id`='.(int)$orderId);
 	}catch(Exception $exception){
 	    $this->log('Capture exception ', var_export($exception->getMessage(),true));
 	    $returnValue = false;

@@ -263,10 +263,11 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 	private function saveTransactionData($orderId, $preauth, $transaction)
 	{
             $db = Db::getInstance();
-            $sql = 'INSERT INTO `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` (`id`, `preauth`, `transaction`) VALUES("'.
+            $sql = 'INSERT INTO `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` (`id`, `preauth`, `transaction`, `refund`) VALUES("'.
                     (int)$orderId.'", "'.
                     (string)$db->_escape($preauth).'", "'.
-                    (string)$db->_escape($transaction).'");';
+                    (string)$db->_escape($transaction).'", '
+                    . '0);';
             try{
                 $db->execute($sql);
             } catch (Exception $exception) {
