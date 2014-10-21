@@ -23,13 +23,13 @@ if (validateNotification($request))
 {
 	$order_id = getOrderIdFromNotification($request['event_resource']['transaction']['description']);
 
-	$dbResult = Db::getInstance()->executeS('SELECT `id_order_state` FROM `'._DB_PREFIX_
+	$db_result = Db::getInstance()->executeS('SELECT `id_order_state` FROM `'._DB_PREFIX_
 			.'order_state_lang` WHERE `template` = "refund" GROUP BY `template`;');
-	$newOrderState = (int)$dbResult[0]['id_order_state'];
-	$objOrder = new Order($order_id);
+	$new_order_state = (int)$db_result[0]['id_order_state'];
+	$order = new Order($order_id);
 	$history = new OrderHistory();
-	$history->id_order = (int)$objOrder->id;
-	$history->changeIdOrderState($newOrderState, (int)($objOrder->id)); //order status=3
+	$history->id_order = (int)$order->id;
+	$history->changeIdOrderState($new_order_state, (int)$order->id);
 	$history->add(true);
 
 	echo 'OK';
@@ -41,12 +41,11 @@ function validateNotification($notification)
 	if (isNotificationFormatValid($notification) && $notification['event_type'] === 'refund.succeeded')
 	{
 		$transaction_object = new Services_Paymill_Transactions(
-			Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), 'https://api.paymill.com/v2/'
+				Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), 'https://api.paymill.com/v2/'
 		);
 		$id = $notification['event_resource']['transaction']['id'];
 		$transaction_result = $transaction_object->getOne($id);
 		$result = isset($transaction_result['id']) && $transaction_result['id'] === $id;
-
 	}
 	return $result;
 }

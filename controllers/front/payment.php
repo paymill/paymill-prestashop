@@ -23,8 +23,8 @@ require_once dirname(__FILE__).'/../../paymill/v2/lib/Services/Paymill/Payments.
  * @category   PayIntelligent
  * @copyright  Copyright (c) 2013 PayIntelligent GmbH (http://payintelligent.de)
  */
-class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
-{
+class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController {
+
 	public $ssl = true;
 
 	/**
@@ -128,7 +128,7 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 				$client_object->update(array(
 					'id' => $db_data['clientId'],
 					'email' => $this->context->customer->email
-					)
+						)
 				);
 			}
 		}
@@ -145,10 +145,11 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController
 		$db_data = array();
 		if (isset($this->context->customer->id))
 		{
+			$user_id = (int)$this->context->customer->id;
 			if (Tools::getValue('payment') == 'creditcard')
-				$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_creditcard_userdata` WHERE `userId`='.(int)$this->context->customer->id;
+				$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_creditcard_userdata` WHERE `userId`='.$user_id;
 			elseif (Tools::getValue('payment') == 'debit')
-				$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_directdebit_userdata` WHERE `userId`='.(int)$this->context->customer->id;
+				$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_directdebit_userdata` WHERE `userId`='.$user_id;
 
 			try {
 				$db_data = $db->getRow($sql);

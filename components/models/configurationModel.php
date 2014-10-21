@@ -19,8 +19,8 @@
  * @category   PayIntelligent
  * @copyright  Copyright (c) 2011 PayIntelligent GmbH (http://payintelligent.de)
  */
-class ConfigurationModel
-{
+class ConfigurationModel {
+
 	/**
 	 * @var string
 	 */
@@ -65,8 +65,8 @@ class ConfigurationModel
 	 * @var string
 	 */
 	private $debit_days;
-	
-        /**
+
+	/**
 	 * @var boolean
 	 */
 	private $capture;
@@ -214,21 +214,21 @@ class ConfigurationModel
 	{
 		$this->directdebit = $directdebit;
 	}
-        
-        /**
-         * @return boolean
-         */
-        public function getCapture() {
-            return $this->capture;
-        }
 
-        /**
-         * @param boolean $capture
-         */
-        public function setCapture($capture) {
-            $this->capture = $capture;
-        }
+	/**
+	 * @return boolean
+	 */
+	public function getCapture()
+	{
+		return $this->capture;
+	}
 
-
+	/**
+	 * @param boolean $capture
+	 */
+	public function setCapture($capture)
+	{
+		$this->capture = $capture;
+	}
 
 }
