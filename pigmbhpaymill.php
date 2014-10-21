@@ -15,6 +15,7 @@
  */
 
 require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/util.php');
+require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/orderActionService.php');
 require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/configurationHandler.php');
 require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/models/configurationModel.php');
 require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/paymill/v2/lib/Services/Paymill/Webhooks.php');
@@ -123,21 +124,30 @@ class PigmbhPaymill extends PaymentModule
 	 */
 	public function hookdisplayAdminOrder($hook)
 	{
-            // do refund / capture when submitted
-            
             $orderId = 0;
             if(array_key_exists('id_order', $hook))
                 $orderId = (int)$hook['id_order'];
             
-            $util = new util();
+	    $util = new util();
             if (!$this->active || !$util->isPaymillOrder($orderId))
                 return;
-            
+	    
+	    
+	    $orderAction = new OrderActionService();
+	    $result = null;
+	    if(Tools::isSubmit('paymillCapture')){
+		$result = $orderAction->capture($orderId);
+	    }elseif(Tools::isSubmit('paymillRefund')){
+		$result = $orderAction->refund($orderId);
+	    }
+	    
             $db = Db::getInstance();
             $transactiondata = $db->executeS('SELECT * FROM `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` WHERE `id`='.$db->escape($orderId),true,false);
             $this->context->smarty->assign(array(
-                'paymill' => $transactiondata,
-                'orderId' => $orderId
+                'showCapture' => $transactiondata[0]['preauth'] == '' && $transactiondata[0]['transaction'] == '',
+                'showRefund' => $transactiondata[0]['transaction'] != '' && $transactiondata[0]['refund'] == 0,
+                'orderId' => $orderId,
+                'orderaction' => $result
             ));
             
             return $this->display(__FILE__, 'views/templates/hook/displayAdminOrder.tpl');
@@ -285,6 +295,7 @@ class PigmbhPaymill extends PaymentModule
 				`id` int(11) NOT NULL,
 				`preauth` text,
 				`transaction` text,
+				`refund` int(1),
 				PRIMARY KEY (`id`)
 				);'
 			);

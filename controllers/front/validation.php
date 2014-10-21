@@ -55,7 +55,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 	 * @var int
 	 */
 	private $log_id;
-
+	
 
 	/**
 	 * Initialize needed class variables and session
@@ -181,16 +181,20 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		$this->payment_processor->setSource(Configuration::get('PIGMBH_PAYMILL_VERSION').'_prestashop_core_'._PS_VERSION_);
 
 		if ($this->payment == 'creditcard')
-			$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_creditcard_userdata` WHERE `userId`='.intval ($this->context->customer->id);
+			$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_creditcard_userdata` WHERE `userId`='.(int)$this->context->customer->id;
 		elseif ($this->payment == 'debit')
-			$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_directdebit_userdata` WHERE `userId`='.intval($this->context->customer->id);
+			$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_directdebit_userdata` WHERE `userId`='.(int)$this->context->customer->id;
 		$user_data = $this->db->getRow($sql);
 		$this->payment_processor->setClientId(!empty($user_data['clientId']) ? $user_data['clientId'] : null);
 
 		if ($this->token === 'dummyToken')
 			$this->payment_processor->setPaymentId(!empty($user_data['paymentId']) ? $user_data['paymentId'] : null);
 
-		$result = $this->payment_processor->processPayment(Configuration::get('PIGMBH_PAYMILL_CAPTURE'));
+		$captureNow = true;
+		if($this->payment == 'creditcard'){
+		    $captureNow = Configuration::get('PIGMBH_PAYMILL_CAPTURE') !== 'on';
+		}
+		$result = $this->payment_processor->processPayment($captureNow);
 
 		$this->log('Payment processing resulted in', ($result ? 'Success' : 'Fail'));
 		return $result;
@@ -226,28 +230,25 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		$db = Db::getInstance();
 		$table = Tools::getValue('payment') == 'creditcard' ? 'pigmbh_paymill_creditcard_userdata' : 'pigmbh_paymill_directdebit_userdata';
 		try {
-			$query = 'SELECT COUNT(*) as `count` FROM `'._DB_PREFIX_.$table.'` WHERE userId="'.intval($user_id).'";';
+			$query = 'SELECT COUNT(*) as `count` FROM `'._DB_PREFIX_.$table.'` WHERE userId="'.(int)$user_id.'";';
 			$count = $db->executeS($query, true);
-			$dataAvailable = (int)$count[0]['count'] === 1;
-			if (!$dataAvailable)
+			$count = (int)$count[0]['count'];
+			if ($count === 0)
 			{
-                                if(Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') !== 'on'){
-                                    $payment_id = null;
-                                }    
-                                $this->log('Inserted new data.', var_export(array($client_id, $payment_id, $user_id), true));
-				$sql = 'INSERT INTO `'._DB_PREFIX_.$table.'` (`clientId`, `paymentId`, `userId`) VALUES("'.(string)$db->_escape($client_id).'", "'.(string)$db->_escape($payment_id).'", '.intval($user_id).');';
-                        }
-			elseif ($dataAvailable)
+				$this->log('Inserted new data.', var_export(array($client_id, $payment_id, $user_id), true));
+				$sql = 'INSERT INTO `'._DB_PREFIX_.$table.'` (`clientId`, `paymentId`, `userId`) VALUES("'.(string)$db->_escape($client_id).'", "'.(string)$db->_escape($payment_id).'", '.(int)$user_id.');';
+			}
+			elseif ($count === 1)
 			{
 				if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') === 'on')
 				{
 					$this->log('Updated User '.$client_id, var_export(array($client_id, $payment_id), true));
-					$sql = 'UPDATE `'._DB_PREFIX_.$table.'` SET `clientId`="'.(string)$db->_escape($client_id).'", `paymentId`="'.(string)$db->_escape($payment_id).'" WHERE `userId`='.intval($user_id);
+					$sql = 'UPDATE `'._DB_PREFIX_.$table.'` SET `clientId`="'.(string)$db->_escape($client_id).'", `paymentId`="'.(string)$db->_escape($payment_id).'" WHERE `userId`='.(int)$user_id;
 				}
 				else
 				{
 					$this->log('Updated User $client_id.', var_export(array($client_id), true));
-					$sql = 'UPDATE `'._DB_PREFIX_.$table.'` SET `clientId`="'.(string)$db->_escape($client_id).'" WHERE `userId`='.intval($user_id);
+					$sql = 'UPDATE `'._DB_PREFIX_.$table.'` SET `clientId`="'.(string)$db->_escape($client_id).'" WHERE `userId`='.(int)$user_id;
 				}
 			}
 
@@ -261,7 +262,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 	{
             $db = Db::getInstance();
             $sql = 'INSERT INTO `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` (`id`, `preauth`, `transaction`) VALUES("'.
-                    intval($orderId).'", "'.
+                    (int)$orderId.'", "'.
                     (string)$db->_escape($preauth).'", "'.
                     (string)$db->_escape($transaction).'");';
             try{
