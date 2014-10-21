@@ -13,15 +13,17 @@
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *}
 {if !is_null($orderaction)}
-<div class="alert alert-warning">
     {if $orderaction}
-        {l s='PAYMILL action was successfull' mod='pigmbhpaymill'}
+        <div class="alert alert-success">
+            {l s='PAYMILL action was successfull' mod='pigmbhpaymill'}
+        </div>
     {else}
-        {l s='PAYMILL action has failed' mod='pigmbhpaymill'}
-        <br/>
-        {l s='Please check the Log' mod='pigmbhpaymill'}
+        <div class="alert alert-warning">
+            {l s='PAYMILL action has failed' mod='pigmbhpaymill'}
+            <br/>
+            {l s='Please check the Log' mod='pigmbhpaymill'}
+        </div>
     {/if}
-</div>
 {/if}
 
 {if $showCapture || $showRefund}
