@@ -48,6 +48,7 @@
 <!--Get Started-->
 <fieldset style="position:relative">
     <legend>{l s='Get Started' mod='pigmbhpaymill'}</legend>
+        <b>{l s='Only 4 steps are missing to your first transaction' mod='pigmbhpaymill'}:</b><br/>
         <ol style="list-style-type:decimal;list-style-position:inside">
             <li>{l s='Register for free with your e-mail address to start testing paymill (no real transactions)' mod='pigmbhpaymill'}
                 <br>
