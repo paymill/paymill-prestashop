@@ -48,14 +48,14 @@
 <!--Get Started-->
 <fieldset style="position:relative">
     <legend>{l s='Get Started' mod='pigmbhpaymill'}</legend>
-        <ol>
+        <ol style="list-style-type:decimal;list-style-position:inside">
             <li>{l s='Register for free with your e-mail address to start testing paymill (no real transactions)' mod='pigmbhpaymill'}
                 <br>
-                <a href="https://app.paymill.com/user/register?referrer=prestashop" target="_blank">{l s='Open PAYMILL-Account' mod='pigmbhpaymill'}</a>
+                <a style="padding-left:5em" href="https://app.paymill.com/user/register?referrer=prestashop" target="_blank">{l s='Open PAYMILL-Account' mod='pigmbhpaymill'}</a>
             </li>
             <li>{l s='Make sure your website is ready for the PAYMILL activation process by consulting our ComplianceGuide. Fill out the activation form afterwards. You will then receive your contract.' mod='pigmbhpaymill'}
                 <br>
-                <a href="https://support.paymill.com/hc/de/article_attachments/200658737/paymill_complianceguide-EN.pdf" target="_blank">{l s='Open Compliance guide' mod='pigmbhpaymill'}</a>
+                <a style="padding-left:5em" href="https://support.paymill.com/hc/de/article_attachments/200658737/paymill_complianceguide-EN.pdf" target="_blank">{l s='Open Compliance guide' mod='pigmbhpaymill'}</a>
             </li>
             <li>{l s='Follow the instructions indicated on the first page of the contract PDF. Sign the contract and send it to us with the additionally required documents (e.g. Passport copy, Company registration)' mod='pigmbhpaymill'}</li>
             <li>{l s='Once your account has been activated, insert your API live-keys, and you are good to go!' mod='pigmbhpaymill'}</li>
