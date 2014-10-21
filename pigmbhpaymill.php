@@ -174,7 +174,7 @@ class PigmbhPaymill extends PaymentModule
 
 		$this->context->smarty->assign(array(
 			'this_path' => $this->_path,
-			'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/',
+			'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name,
 			'debit' => Configuration::get('PIGMBH_PAYMILL_DEBIT'),
 			'creditcard' => Configuration::get('PIGMBH_PAYMILL_CREDITCARD'),
 			'valid_key' => !in_array(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), array('', null))
@@ -197,7 +197,7 @@ class PigmbhPaymill extends PaymentModule
 
         $this->context->smarty->assign(array(
 			'this_path' => $this->_path,
-			'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/',
+			'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name,
 			'debit' => Configuration::get('PIGMBH_PAYMILL_DEBIT'),
 			'creditcard' => Configuration::get('PIGMBH_PAYMILL_CREDITCARD'),
 			'valid_key' => !in_array(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY'), array('', null))

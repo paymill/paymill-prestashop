@@ -16,7 +16,7 @@
 {if $creditcard === 'on' && $valid_key}
     <p class="payment_module">
         <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'creditcard'])|escape:'html':'UTF-8'}" title="{l s='Paymill Creditcard' mod='pigmbhpaymill'}">
-            <img src="{$this_path_ssl|escape:'url':'UTF-8'}/../img/icon-hook.png">
+            <img src="{$this_path_ssl|escape:'html':'UTF-8'}/img/icon-hook.png">
             {l s='Paymill Creditcard' mod='pigmbhpaymill'}
         </a>
     </p>
@@ -24,7 +24,7 @@
 {if $debit === 'on' && $valid_key}
     <p class="payment_module">
         <a href="{$link->getModuleLink('pigmbhpaymill', 'payment', ['payment'=>'debit'])|escape:'html':'UTF-8'}" title="{l s='Paymill Directdebit' mod='pigmbhpaymill'}">
-            <img src="{$this_path_ssl|escape:'url':'UTF-8'}/../img/icon-hook.png">
+            <img src="{$this_path_ssl|escape:'html':'UTF-8'}/img/icon-hook.png">
             {l s='Paymill Directdebit' mod='pigmbhpaymill'}
         </a>
     </p>
