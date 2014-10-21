@@ -62,7 +62,16 @@ class OrderActionService {
 	    $this->log('Refund exception ', var_export($exception->getMessage(),true));
 	    $returnValue = false;
 	}
-	
+	if($returnValue){
+            $dbResult = Db::getInstance()->executeS('SELECT `id_order_state` FROM `'._DB_PREFIX_
+			.'order_state_lang` WHERE `template` = "refund" GROUP BY `template`;');
+            $newOrderState = (int)$dbResult[0]['id_order_state'];
+            $objOrder = new Order($orderId);
+            $history = new OrderHistory();
+            $history->id_order = (int)$objOrder->id;
+            $history->changeIdOrderState($newOrderState, (int)($objOrder->id)); //order status=3
+            $history->add(true);
+        }
 	return $returnValue;
     }
     
