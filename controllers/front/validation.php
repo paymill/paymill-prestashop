@@ -235,7 +235,9 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 			$count = (int)$count[0]['count'];
 			if ($count === 0)
 			{
-				$this->log('Inserted new data.', var_export(array($client_id, $payment_id, $user_id), true));
+				if (Configuration::get('PIGMBH_PAYMILL_FASTCHECKOUT') !== 'on')
+                                    $payment_id = null;
+                                $this->log('Inserted new data.', var_export(array($client_id, $payment_id, $user_id), true));
 				$sql = 'INSERT INTO `'._DB_PREFIX_.$table.'` (`clientId`, `paymentId`, `userId`) VALUES("'.(string)$db->_escape($client_id).'", "'.(string)$db->_escape($payment_id).'", '.(int)$user_id.');';
 			}
 			elseif ($count === 1)
