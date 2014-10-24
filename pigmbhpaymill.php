@@ -14,7 +14,7 @@
  *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 
-require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/util.php');
+require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/paymillUtil.php');
 require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/orderActionService.php');
 require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/configurationHandler.php');
 require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/models/configurationModel.php');
@@ -128,7 +128,7 @@ class PigmbhPaymill extends PaymentModule {
 		$order_id = 0;
 		if (array_key_exists('id_order', $hook))
 			$order_id = (int)$hook['id_order'];
-		$util = new Util();
+		$util = new PaymillUtil();
 		if (!$this->active || !$util->isPaymillOrder($order_id))
 			return;
 		$order_action = new OrderActionService();

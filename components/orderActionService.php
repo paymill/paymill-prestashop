@@ -14,7 +14,7 @@
  *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 
-require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/util.php');
+require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/components/paymillUtil.php');
 require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/paymill/v2/lib/Services/Paymill/Refunds.php');
 require_once(_PS_ROOT_DIR_.'/modules/pigmbhpaymill/paymill/v2/lib/Services/Paymill/Transactions.php');
 
@@ -35,7 +35,7 @@ class OrderActionService {
 	public function __construct()
 	{
 		$private_key = Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY');
-		$this->util = new Util();
+		$this->util = new PaymillUtil();
 		$this->refund = new Services_Paymill_Refunds($private_key, $this->api_endpoint);
 		$this->transaction = new Services_Paymill_Transactions($private_key, $this->api_endpoint);
 	}
