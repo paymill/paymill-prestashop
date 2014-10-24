@@ -138,7 +138,7 @@ class PigmbhPaymill extends PaymentModule {
 		elseif (Tools::isSubmit('paymillRefund'))
 			$result = $order_action->refund($order_id);
 		$db = Db::getInstance();
-		$sql = 'SELECT * FROM `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` WHERE `id`='.$db->escape($order_id);
+		$sql = 'SELECT * FROM `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` WHERE `id`='.$order_id;
 		$transactiondata = $db->executeS($sql, true, false);
 		$this->context->smarty->assign(array(
 			'showCapture' => $transactiondata[0]['preauth'] != '' && $transactiondata[0]['transaction'] == '',
