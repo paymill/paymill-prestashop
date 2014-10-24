@@ -58,16 +58,14 @@ class OrderActionService {
 			$return_value = isset($result['response_code']) && $result['response_code'] === 20000;
 			$this->log('Refund resulted in '.(string)$return_value, var_export($result, true));
 			$db = Db::getInstance();
-			$db->execute('UPDATE `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` SET `refund`=1');
+			$db->execute('UPDATE `'._DB_PREFIX_.'pigmbh_paymill_transactiondata` SET `refund`=1 WHERE `id`='.$db->_escape($order_id));
 		} catch (Exception $exception) {
 			$this->log('Refund exception ', var_export($exception->getMessage(), true));
 			$return_value = false;
 		}
 		if ($return_value)
 		{
-			$db_result = Db::getInstance()->executeS('SELECT `id_order_state` FROM `'._DB_PREFIX_
-					.'order_state_lang` WHERE `template` = "refund" GROUP BY `template`;');
-			$new_order_state = (int)$db_result[0]['id_order_state'];
+			$new_order_state = Configuration::get('PS_OS_REFUND');
 			$order = new Order($order_id);
 			$history = new OrderHistory();
 			$history->id_order = (int)$order->id;

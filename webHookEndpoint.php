@@ -23,9 +23,7 @@ if (validateNotification($request))
 {
 	$order_id = getOrderIdFromNotification($request['event_resource']['transaction']['description']);
 
-	$db_result = Db::getInstance()->executeS('SELECT `id_order_state` FROM `'._DB_PREFIX_
-			.'order_state_lang` WHERE `template` = "refund" GROUP BY `template`;');
-	$new_order_state = (int)$db_result[0]['id_order_state'];
+	$new_order_state = Configuration::get('PS_OS_REFUND');
 	$order = new Order($order_id);
 	$history = new OrderHistory();
 	$history->id_order = (int)$order->id;
