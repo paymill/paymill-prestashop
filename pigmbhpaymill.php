@@ -180,12 +180,14 @@ class PigmbhPaymill extends PaymentModule {
 		if (!$this->active)
 			return;
 
+                $private_key = Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY');
+                $public_key = Configuration::get('PIGMBH_PAYMILL_PUBLICKEY');
 		$this->context->smarty->assign(array(
 			'this_path' => $this->_path,
 			'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name,
 			'debit' => Configuration::get('PIGMBH_PAYMILL_DEBIT'),
 			'creditcard' => Configuration::get('PIGMBH_PAYMILL_CREDITCARD'),
-			'valid_key' => !empty(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY')) && !empty(Configuration::get('PIGMBH_PAYMILL_PUBLICKEY')),
+			'valid_key' => !empty($private_key) && !empty($public_key),
 		));
 		$template = 'views/templates/hook/payment.tpl';
 		if (_PS_VERSION_ < '1.6')
@@ -202,12 +204,14 @@ class PigmbhPaymill extends PaymentModule {
 		if (!$this->active)
 			return;
 
+                $private_key = Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY');
+                $public_key = Configuration::get('PIGMBH_PAYMILL_PUBLICKEY');
 		$this->context->smarty->assign(array(
 			'this_path' => $this->_path,
 			'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name,
 			'debit' => Configuration::get('PIGMBH_PAYMILL_DEBIT'),
 			'creditcard' => Configuration::get('PIGMBH_PAYMILL_CREDITCARD'),
-			'valid_key' => !empty(Configuration::get('PIGMBH_PAYMILL_PRIVATEKEY')) && !empty(Configuration::get('PIGMBH_PAYMILL_PUBLICKEY')),
+			'valid_key' => !empty($private_key) && !empty($public_key),
 		));
 
 		return array(
