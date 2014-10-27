@@ -74,12 +74,12 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		if (empty($this->token))
 		{
 			$this->log('No paymill token was provided. Redirect to payments page.', null);
-			Tools::redirect('index.php?controller=order&step=1&paymillerror=1&paymillpayment='.$this->payment);
+			Tools::redirect($this->context->link->getPageLink('order', true, null, array('step' => '1', 'paymillerror' => '1', 'paymillpayment' => $this->payment)));
 		}
 		elseif (!in_array($this->payment, $valid_payments))
 		{
 			$this->log('The selected Paymentmethod is not valid.', $this->payment);
-			Tools::redirect('index.php?controller=order&step=1&paymillerror=1&paymillpayment='.$this->payment);
+			Tools::redirect($this->context->link->getPageLink('order', true, null, array('step' => '1', 'paymillerror' => '1', 'paymillpayment' => $this->payment)));
 		}
 
 		$this->log('Start processing payment with token', $this->token);
@@ -129,15 +129,25 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 							$this->context->customer->lastname.', '.$this->context->customer->firstname, 0, 128)
 			);
 
-			Tools::redirect('index.php?controller=order-confirmation?key='
-					.$customer->secure_key.'&id_cart='.(int)$this->context->cart->id
-					.'&id_module='.(int)$this->module->id.'&id_order='.(int)$this->module->currentOrder);
+			$url = $this->context->link->getPageLink(
+				'order-confirmation',
+				true,
+				null,
+				array(
+					'key' => $customer->secure_key,
+					'id_cart' => (int)$this->context->cart->id,
+					'id_module' => (int)$this->module->id,
+					'id_order' => (int)$this->module->currentOrder
+				)
+			);
+			Tools::redirect($url);
+			
 		}
 		else
 		{
 			$error_message = $this->module->errorCodeMapping($this->payment_processor->getErrorCode());
 			$this->log('ErrorCode', $error_message);
-			Tools::redirect('index.php?controller=order&step=3&paymillerror=1&errorCode='.$this->payment_processor->getErrorCode());
+			Tools::redirect($this->context->link->getPageLink('order', true, null, array('step' => '3', 'paymillerror' => '1', 'errorCode' => $this->payment_processor->getErrorCode())));
 		}
 	}
 
