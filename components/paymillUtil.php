@@ -20,7 +20,7 @@
  * @category   PayIntelligent
  * @copyright  Copyright (c) 2014 PayIntelligent GmbH (http://payintelligent.de)
  */
-class Util {
+class PaymillUtil {
 
 	/**
 	 * @param integer $id

@@ -41,8 +41,8 @@ class PigmbhpaymillPaymentModuleFrontController extends ModuleFrontController {
 		if (Configuration::get('PIGMBH_PAYMILL_CREDITCARD'))
 			$valid_payments[] = 'creditcard';
 		if (!in_array(Tools::getValue('payment'), $valid_payments))
-			Tools::redirectLink(__PS_BASE_URI__.'order.php?step=1');
-
+			Tools::redirectLink($this->context->link->getPageLink('order', true, null, array('step'=>'1')));
+		
 		$db_data = $this->getPaymillUserData();
 
 		$this->updatePaymillClient($db_data);
