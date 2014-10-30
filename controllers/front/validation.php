@@ -188,7 +188,7 @@ class PigmbhpaymillValidationModuleFrontController extends ModuleFrontController
 		$this->payment_processor->setEmail($this->context->customer->email);
 		$this->payment_processor->setDescription('');
 		$this->payment_processor->setLogger($this);
-		$this->payment_processor->setSource(Configuration::get('PIGMBH_PAYMILL_VERSION').'_prestashop_core_'._PS_VERSION_);
+		$this->payment_processor->setSource(Configuration::get('PIGMBH_PAYMILL_VERSION').'_prestashop_'._PS_VERSION_);
 
 		if ($this->payment == 'creditcard')
 			$sql = 'SELECT `clientId`,`paymentId` FROM `'._DB_PREFIX_.'pigmbh_paymill_creditcard_userdata` WHERE `userId`='.

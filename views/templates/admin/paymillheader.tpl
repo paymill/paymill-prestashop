@@ -64,7 +64,6 @@
 
         <p>{l s='Are you already registered with PAYMILL?' mod='pigmbhpaymill'}</p>
     <form action="https://app.paymill.com/user/register" target="_blank">
-        <input type="hidden" name="referrer" value="prestashop">
         <input type="submit" value="{l s='CREATE AN ACCOUNT' mod='pigmbhpaymill'}" class="paymill_config_button">
     </form>
 </fieldset>
