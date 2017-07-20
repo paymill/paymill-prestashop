@@ -1,3 +1,7 @@
+*Attention:* this one is deprecated, please use: https://github.com/paymill/paymill-prestashop-1.6
+
+-------
+
 PAYMILL-Prestashop Extension for credit card and direct debit payments
 ==================
 
